@@ -19,22 +19,11 @@ class HeroSlide {
 }
 
 class AppConstants {
-  // 유튜브 채널 ID
-  static const String youtubeChannelId = 'UCxxxxxxxxxxxxxx';
+  // 유튜브 Data API v3 키 (https://console.cloud.google.com 에서 발급)
+  static const String youtubeApiKey = 'AIzaSyBxMKAcT5pecsy-2lYrFnjE47PMPWImPHE';
 
   // 유튜브 영상 ID 목록
-  static const List<String> youtubeVideoIds = ['VIDEO_ID_1', 'VIDEO_ID_2', 'VIDEO_ID_3', 'VIDEO_ID_4'];
-
-  // 영상 제목 목록 (youtubeVideoIds와 순서 일치)
-  static const List<String> youtubeTitles = [
-    'OURORA STUDIO - #공방일상 : 밀대와 수압대패에 가죽 붙이기',
-    'OURORA STUDIO - 작업대용 긴 스툴 만들기 Making a long stool for workbench',
-    'OURORA STUDIO - FESTOOL 페스툴 라우터 OF 2200 사용방법 소개',
-    'OURORA STUDIO - 테이블쏘 썰매 지그 만들기 Making a Sled jig for Table saw',
-  ];
-
-  // 영상 길이 표시 문자열
-  static const List<String> youtubeDurations = ['08:17', '20:28', '28:42', '21:17'];
+  static const List<String> youtubeVideoIds = ['3QSZ5ahBXkY', 'BaAVRvF6kEQ', '08iU4uU0vZg', 'bz4h65cJyWE'];
 
   // Hero 슬라이더 텍스트
   static const List<HeroSlide> heroSlides = [

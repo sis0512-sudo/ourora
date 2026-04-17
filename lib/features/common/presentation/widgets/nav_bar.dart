@@ -79,7 +79,7 @@ class _NavItemState extends State<_NavItem> {
         onTap: () => context.go(widget.route),
         child: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 150),
-          style: AppTheme.navItem().copyWith(color: _hovered ? AppTheme.red : AppTheme.black),
+          style: AppTheme.navItem().copyWith(color: _hovered ? AppTheme.red : AppTheme.textGray),
           child: Text(widget.label),
         ),
       ),
