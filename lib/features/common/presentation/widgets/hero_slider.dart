@@ -1,4 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
@@ -12,34 +13,56 @@ class HeroSlider extends StatefulWidget {
 
 class _HeroSliderState extends State<HeroSlider> {
   int _currentIndex = 0;
-  final CarouselSliderController _controller = CarouselSliderController();
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (_) => _next());
+  }
+
+  void _resetTimer() {
+    _timer?.cancel();
+    _startTimer();
+  }
+
+  void _next() {
+    setState(() => _currentIndex = (_currentIndex + 1) % AppConstants.heroSlides.length);
+  }
+
+  void _prev() {
+    setState(() => _currentIndex = (_currentIndex - 1 + AppConstants.heroSlides.length) % AppConstants.heroSlides.length);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return _buildSlider(694);
-  }
+    const double height = 694;
+    final slide = AppConstants.heroSlides[_currentIndex];
 
-  Widget _buildSlider(double height) {
     return SizedBox(
       height: height,
       child: Stack(
         children: [
-          CarouselSlider(
-            carouselController: _controller,
-            options: CarouselOptions(
-              height: height,
-              viewportFraction: 1.0,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 4),
-              autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              autoPlayCurve: Curves.easeInOut,
-              enableInfiniteScroll: true,
-              scrollPhysics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (index, _) => setState(() => _currentIndex = index),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 800),
+            transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
+            child: _HeroSlide(
+              key: ValueKey(_currentIndex),
+              image: slide.image,
+              subtitle: slide.subtitle,
+              title: slide.title,
+              mainAxisAlignment: slide.mainAxisAlignment,
             ),
-            items: AppConstants.heroSlides.map((slide) {
-              return _HeroSlide(image: slide.image, subtitle: slide.subtitle, title: slide.title, mainAxisAlignment: slide.mainAxisAlignment);
-            }).toList(),
           ),
           // 좌우 화살표
           Positioned(
@@ -47,7 +70,7 @@ class _HeroSliderState extends State<HeroSlider> {
             top: 0,
             bottom: 0,
             child: Center(
-              child: _ArrowButton(icon: Icons.chevron_left, onTap: () => _controller.previousPage()),
+              child: _ArrowButton(icon: Icons.chevron_left, onTap: () { _prev(); _resetTimer(); }),
             ),
           ),
           Positioned(
@@ -55,7 +78,7 @@ class _HeroSliderState extends State<HeroSlider> {
             top: 0,
             bottom: 0,
             child: Center(
-              child: _ArrowButton(icon: Icons.chevron_right, onTap: () => _controller.nextPage()),
+              child: _ArrowButton(icon: Icons.chevron_right, onTap: () { _next(); _resetTimer(); }),
             ),
           ),
           // 하단 도트 인디케이터
@@ -70,7 +93,10 @@ class _HeroSliderState extends State<HeroSlider> {
                   width: 8,
                   height: 8,
                   margin: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: _currentIndex == entry.key ? Colors.white : Colors.white38),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentIndex == entry.key ? Colors.white : Colors.white38,
+                  ),
                 );
               }).toList(),
             ),
@@ -87,7 +113,13 @@ class _HeroSlide extends StatelessWidget {
   final String title;
   final MainAxisAlignment mainAxisAlignment;
 
-  const _HeroSlide({required this.image, required this.subtitle, required this.title, this.mainAxisAlignment = MainAxisAlignment.end});
+  const _HeroSlide({
+    super.key,
+    required this.image,
+    required this.subtitle,
+    required this.title,
+    this.mainAxisAlignment = MainAxisAlignment.end,
+  });
 
   @override
   Widget build(BuildContext context) {

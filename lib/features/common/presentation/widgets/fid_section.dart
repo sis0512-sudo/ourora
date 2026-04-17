@@ -17,7 +17,7 @@ class FidSection extends StatelessWidget {
             children: [
               Text(
                 '오로라 공방은?',
-                style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 20, fontWeight: FontWeight.w700, letterSpacing: 4, color: AppTheme.darkBg),
+                style: const TextStyle(fontFamily: 'BMHanna', fontSize: 20, fontWeight: FontWeight.w700, letterSpacing: 4, color: AppTheme.darkBg),
               ),
               const SizedBox(height: 12),
               Container(
@@ -29,17 +29,13 @@ class FidSection extends StatelessWidget {
               ),
               const SizedBox(height: 48),
               SizedBox(
-                height: 340,
+                height: 240,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: AppConstants.fidItems.map((item) {
                     return SizedBox(
                       width: 245,
-                      child: _FidItem(
-                        letter: item['letter']!,
-                        title: item['title']!,
-                        desc: item['desc']!,
-                      ),
+                      child: _FidItem(letter: item['letter']!, title: item['title']!, desc: item['desc']!),
                     );
                   }).toList(),
                 ),
@@ -49,9 +45,7 @@ class FidSection extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.black),
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                 ),
                 onPressed: () {},
                 child: Text('Read More >>', style: AppTheme.navItem()),
@@ -69,11 +63,7 @@ class _FidItem extends StatelessWidget {
   final String title;
   final String desc;
 
-  const _FidItem({
-    required this.letter,
-    required this.title,
-    required this.desc,
-  });
+  const _FidItem({required this.letter, required this.title, required this.desc});
 
   @override
   Widget build(BuildContext context) {
@@ -84,29 +74,17 @@ class _FidItem extends StatelessWidget {
         children: [
           Text(
             letter,
-            style: const TextStyle(
-              fontFamily: 'Arial',
-              fontSize: 70,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.darkBg,
-              height: 1,
-            ),
+            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 70, fontWeight: FontWeight.bold, color: AppTheme.black, height: 1),
           ),
           const SizedBox(height: 8),
           Text(
             title,
-            style: const TextStyle(
-              fontFamily: 'Arial',
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.darkBg,
-              letterSpacing: 1,
-            ),
+            style: const TextStyle(fontFamily: 'Arial', fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.black, letterSpacing: 1),
           ),
           const SizedBox(height: 12),
           Text(
             desc,
-            style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 14, color: AppTheme.darkBg),
+            style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 14, color: AppTheme.black),
             textAlign: TextAlign.center,
           ),
         ],

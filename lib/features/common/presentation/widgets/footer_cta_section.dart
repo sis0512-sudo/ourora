@@ -74,7 +74,7 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
                 children: [
                   Text(
                     'YOUR OWN LIGHT',
-                    style: const TextStyle(color: Colors.white, fontSize: 70, fontWeight: FontWeight.bold, height: 1.2),
+                    style: const TextStyle(fontFamily: 'Arial Black', color: Colors.white, fontSize: 70, fontWeight: FontWeight.bold, height: 1.2),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),

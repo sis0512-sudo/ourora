@@ -30,16 +30,22 @@ void _registerMapView() {
 }
 
 class ContactScreen extends StatelessWidget {
-  const ContactScreen({super.key});
+  const ContactScreen({super.key, this.titleStyle, this.bodyStyle});
+
+  final TextStyle? titleStyle;
+  final TextStyle? bodyStyle;
 
   @override
   Widget build(BuildContext context) {
     _registerMapView();
     return Scaffold(
+      backgroundColor: AppTheme.black,
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(delegate: NavBarDelegate(), pinned: true),
-          const SliverToBoxAdapter(child: _Body()),
+          SliverToBoxAdapter(
+            child: _Body(titleStyle: titleStyle, bodyStyle: bodyStyle),
+          ),
           const SliverToBoxAdapter(child: SiteFooter()),
         ],
       ),
@@ -48,15 +54,19 @@ class ContactScreen extends StatelessWidget {
 }
 
 class _Body extends StatelessWidget {
-  const _Body();
+  const _Body({this.titleStyle, this.bodyStyle});
+
+  final TextStyle? titleStyle;
+  final TextStyle? bodyStyle;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 450, child: _MapView()),
-        _InfoPanel(),
-        _ParkingPanel(),
+        _InfoPanel(titleStyle: titleStyle, bodyStyle: bodyStyle),
+        _ParkingPanel(titleStyle: titleStyle, bodyStyle: bodyStyle),
+        Container(height: 180, color: AppTheme.white),
       ],
     );
   }
@@ -71,11 +81,20 @@ class _MapView extends StatelessWidget {
   }
 }
 
+TextStyle _defaultTitleStyle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 28, color: AppTheme.black);
+
+TextStyle _defaultBodyStyle() => GoogleFonts.nanumMyeongjo(fontSize: 20, fontWeight: FontWeight.w400, height: 1.5, color: AppTheme.black);
+
 class _InfoPanel extends StatelessWidget {
+  const _InfoPanel({this.titleStyle, this.bodyStyle});
+
+  final TextStyle? titleStyle;
+  final TextStyle? bodyStyle;
+
   @override
   Widget build(BuildContext context) {
-    const textColor = AppTheme.textGray;
-    final bodyStyle = GoogleFonts.nanumMyeongjo(fontSize: 20, fontWeight: FontWeight.w400, height: 1.5, letterSpacing: -0.05 * 20, color: textColor);
+    final ts = titleStyle ?? _defaultTitleStyle();
+    final bs = bodyStyle ?? _defaultBodyStyle();
 
     return Container(
       color: AppTheme.white,
@@ -84,31 +103,23 @@ class _InfoPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '주소 / 연락처',
-            style: GoogleFonts.notoSansKr(fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 0.15 * 28, color: AppTheme.black),
-          ),
-          const SizedBox(height: 12),
-          Container(width: 36, height: 3, color: AppTheme.black),
-          const SizedBox(height: 32),
-          Text('주소 : 서울특별시 양천구 목동로21길 6', style: bodyStyle),
-          Text('        지하1층 (우: 08022)', style: bodyStyle),
-          Text('        (목동역(5호선) 8번출구에서 2분)', style: bodyStyle),
+          Text('주소 / 연락처', style: ts),
           const SizedBox(height: 8),
-          Text('전화 : ${AppConstants.phone}', style: bodyStyle),
+          Container(width: 36, height: 6, color: AppTheme.black),
+          const SizedBox(height: 32),
+          Text('주소 : 서울특별시 양천구 목동로21길 6', style: bs),
+          Text('        지하1층 (우: 08022)', style: bs),
+          Text('        (목동역(5호선) 8번출구에서 2분)', style: bs),
+          const SizedBox(height: 8),
+          Text('전화 : ${AppConstants.phone}', style: bs),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: () => launchUrl(Uri.parse('mailto:${AppConstants.email}')),
             child: Text.rich(
               TextSpan(
                 text: '이메일 : ',
-                style: bodyStyle,
-                children: [
-                  TextSpan(
-                    text: AppConstants.email,
-                    style: bodyStyle.copyWith(decoration: TextDecoration.underline),
-                  ),
-                ],
+                style: bs,
+                children: [TextSpan(text: AppConstants.email, style: bs)],
               ),
             ),
           ),
@@ -119,41 +130,43 @@ class _InfoPanel extends StatelessWidget {
 }
 
 class _ParkingPanel extends StatelessWidget {
+  const _ParkingPanel({this.titleStyle, this.bodyStyle});
+
+  final TextStyle? titleStyle;
+  final TextStyle? bodyStyle;
+
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF414141);
-    final bodyStyle = GoogleFonts.nanumMyeongjo(fontSize: 20, fontWeight: FontWeight.w400, height: 1.5, letterSpacing: -0.05 * 20, color: textColor);
+    final ts = titleStyle ?? _defaultTitleStyle();
+    final bs = bodyStyle ?? _defaultBodyStyle();
 
     Widget bullet(String text) => Padding(
       padding: const EdgeInsets.only(left: 20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('• ', style: bodyStyle),
-          Expanded(child: Text(text, style: bodyStyle)),
+          Text('• ', style: bs),
+          Expanded(child: Text(text, style: bs)),
         ],
       ),
     );
 
     return Container(
-      color: Colors.white,
+      color: AppTheme.white,
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '주차 안내',
-            style: GoogleFonts.notoSansKr(fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 0.15 * 28, color: AppTheme.black),
-          ),
-          const SizedBox(height: 12),
-          Container(width: 36, height: 3, color: AppTheme.black),
+          Text('주차 안내', style: ts),
+          const SizedBox(height: 8),
+          Container(width: 36, height: 6, color: AppTheme.black),
           const SizedBox(height: 32),
-          Text('공영주차장', style: bodyStyle),
+          Text('공영주차장', style: bs),
           bullet('바로 앞 사거리 공유주차(약 50m) (평상시 약 1~2대 비어있음)'),
           bullet('신정4동길노상공영주차장(약 300m) : 서울 양천구 신정4동 1065'),
           bullet('신서 공영주차장(약 400m) : 서울 양천구 은행정로 42 신서고등학교'),
           const SizedBox(height: 20),
-          Text('유료주차장', style: bodyStyle),
+          Text('유료주차장', style: bs),
           bullet('보성팰리스(바로 뒷건물) : 서울 양천구 오목로 232'),
         ],
       ),

@@ -108,13 +108,13 @@ class _FeatureCardWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.string(card.svgString, width: 60, height: 60, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
+          SvgPicture.string(card.svgString, height: 87, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
           const SizedBox(height: 20),
           Text(card.title, style: AppTheme.sectionTitle()),
-          const SizedBox(height: 6),
+          const SizedBox(height: 12),
           Text(card.subtitle, style: AppTheme.bodyKorean()),
           const SizedBox(height: 12),
-          Text(card.desc, style: AppTheme.bodyKorean(), textAlign: TextAlign.center),
+          Text(card.desc, style: AppTheme.bodyKoreanSmall(), textAlign: TextAlign.center),
           const SizedBox(height: 16),
           SizedBox(
             width: 158,
