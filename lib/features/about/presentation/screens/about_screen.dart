@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ourora/features/about/presentation/widgets/about_brand_section.dart';
+import 'package:ourora/features/about/presentation/widgets/about_fidp_section.dart';
+import 'package:ourora/features/about/presentation/widgets/about_profile_section.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 
@@ -14,11 +17,9 @@ class AboutScreen extends StatelessWidget {
             delegate: NavBarDelegate(),
             pinned: true,
           ),
-          const SliverFillRemaining(
-            child: Center(
-              child: Text('ABOUT — 공방 소개'),
-            ),
-          ),
+          const SliverToBoxAdapter(child: AboutBrandSection()),
+          const SliverToBoxAdapter(child: AboutFidpSection()),
+          const SliverToBoxAdapter(child: AboutProfileSection()),
           const SliverToBoxAdapter(child: SiteFooter()),
         ],
       ),
