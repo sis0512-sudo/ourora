@@ -74,14 +74,7 @@ class _InstagramGridSectionState extends State<InstagramGridSection> {
                         (_displayCount + 6).clamp(0, _allImages.length);
                   });
                 },
-                child: const Text(
-                  'Load More',
-                  style: TextStyle(
-                    fontFamily: 'Arial',
-                    fontSize: 13,
-                    color: AppTheme.black,
-                  ),
-                ),
+                child: Text('Load More', style: AppTheme.loadMoreButton()),
               ),
             ),
           ],

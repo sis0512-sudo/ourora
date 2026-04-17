@@ -17,7 +17,7 @@ class FidSection extends StatelessWidget {
             children: [
               Text(
                 '오로라 공방은?',
-                style: const TextStyle(fontFamily: 'BMHanna', fontSize: 20, fontWeight: FontWeight.w700, letterSpacing: 4, color: AppTheme.darkBg),
+                style: AppTheme.fidSectionHeader(),
               ),
               const SizedBox(height: 12),
               Container(
@@ -72,21 +72,11 @@ class _FidItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            letter,
-            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 70, fontWeight: FontWeight.bold, color: AppTheme.black, height: 1),
-          ),
+          Text(letter, style: AppTheme.fidLetter()),
           const SizedBox(height: 8),
-          Text(
-            title,
-            style: const TextStyle(fontFamily: 'Arial', fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.black, letterSpacing: 1),
-          ),
+          Text(title, style: AppTheme.fidItemTitle()),
           const SizedBox(height: 12),
-          Text(
-            desc,
-            style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 14, color: AppTheme.black),
-            textAlign: TextAlign.center,
-          ),
+          Text(desc, style: AppTheme.bodyKoreanSmall(), textAlign: TextAlign.center),
         ],
       ),
     );

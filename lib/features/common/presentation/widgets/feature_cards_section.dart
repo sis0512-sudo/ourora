@@ -83,7 +83,7 @@ class FeatureCardsSection extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 980),
           child: SizedBox(
-            height: 517,
+            height: 450,
             child: Row(
               children: FeatureCard.values.map((card) {
                 return SizedBox(width: 245, child: _FeatureCardWidget(card: card));
@@ -108,12 +108,12 @@ class _FeatureCardWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.string(card.svgString, height: 87, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
-          const SizedBox(height: 20),
+          SvgPicture.string(card.svgString, height: 90, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
+          const SizedBox(height: 36),
           Text(card.title, style: AppTheme.sectionTitle()),
-          const SizedBox(height: 12),
+          const SizedBox(height: 24),
           Text(card.subtitle, style: AppTheme.bodyKorean()),
-          const SizedBox(height: 12),
+          const SizedBox(height: 24),
           Text(card.desc, style: AppTheme.bodyKoreanSmall(), textAlign: TextAlign.center),
           const SizedBox(height: 16),
           SizedBox(

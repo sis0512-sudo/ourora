@@ -1,7 +1,6 @@
 import 'dart:ui_web' as ui_web;
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
@@ -81,9 +80,9 @@ class _MapView extends StatelessWidget {
   }
 }
 
-TextStyle _defaultTitleStyle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 28, color: AppTheme.black);
+TextStyle _defaultTitleStyle() => AppTheme.contactTitle();
 
-TextStyle _defaultBodyStyle() => GoogleFonts.nanumMyeongjo(fontSize: 20, fontWeight: FontWeight.w400, height: 1.5, color: AppTheme.black);
+TextStyle _defaultBodyStyle() => AppTheme.contactBody();
 
 class _InfoPanel extends StatelessWidget {
   const _InfoPanel({this.titleStyle, this.bodyStyle});

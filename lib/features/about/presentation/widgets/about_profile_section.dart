@@ -22,14 +22,8 @@ class _ProfileContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'CHIEF',
-            style: TextStyle(fontFamily: 'sans-serif', fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 0.25 * 46, color: AppTheme.textGray),
-          ),
-          const Text(
-            '공방장 프로필',
-            style: TextStyle(fontFamily: 'Noto Sans KR', fontSize: 17, fontWeight: FontWeight.normal, letterSpacing: 4, color: AppTheme.textGray),
-          ),
+          Text('CHIEF', style: AppTheme.chiefHeading()),
+          Text('공방장 프로필', style: AppTheme.profileSubheading()),
           const SizedBox(height: 32),
           _Section(
             title: 'EDUCATION',
@@ -93,10 +87,7 @@ class _TextItem extends _ProfileItem {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 14, height: 2.5, letterSpacing: 1.4 * 0.1, color: AppTheme.textGray),
-    );
+    return Text(text, style: AppTheme.profileText());
   }
 }
 
@@ -109,16 +100,10 @@ class _LinkItem extends _ProfileItem {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          '$label - ',
-          style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 14, height: 2.5, letterSpacing: 1.4 * 0.1, color: AppTheme.textGray),
-        ),
+        Text('$label - ', style: AppTheme.profileText()),
         GestureDetector(
           onTap: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
-          child: Text(
-            url,
-            style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 10, height: 2.5, color: AppTheme.textGray, decoration: TextDecoration.underline),
-          ),
+          child: Text(url, style: AppTheme.profileLink()),
         ),
       ],
     );
@@ -138,17 +123,7 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontFamily: 'Noto Sans KR',
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              height: 2.5,
-              letterSpacing: 1.4 * 0.1,
-              color: AppTheme.textGray,
-            ),
-          ),
+          Text(title, style: AppTheme.profileSectionTitle()),
           ...items.map((item) => item.build(context)),
           const SizedBox(height: 8),
         ],

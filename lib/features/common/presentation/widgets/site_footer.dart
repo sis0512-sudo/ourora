@@ -34,14 +34,14 @@ class SiteFooter extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () => launchUrl(Uri.parse('mailto:contact@ourora.com')),
-                      child: const Text(
+                      child: Text(
                         'E. contact@ourora.com',
-                        style: TextStyle(color: AppTheme.textGray, fontSize: 14, height: 1.5, fontFamily: 'Roboto', fontWeight: FontWeight.w100),
+                        style: AppTheme.footerText(),
                       ),
                     ),
-                    const Text(
+                    Text(
                       'T. 010-7586-8765',
-                      style: TextStyle(color: AppTheme.textGray, fontSize: 14, height: 1.5, fontFamily: 'Roboto', fontWeight: FontWeight.w100),
+                      style: AppTheme.footerText(),
                     ),
                   ],
                 ),
@@ -72,7 +72,7 @@ class _FooterTextBlock extends StatelessWidget {
           .map(
             (line) => Text(
               line,
-              style: const TextStyle(color: AppTheme.textGray, fontSize: 14, height: 1.5, fontFamily: 'Roboto', fontWeight: FontWeight.w100),
+              style: AppTheme.footerText(),
             ),
           )
           .toList(),

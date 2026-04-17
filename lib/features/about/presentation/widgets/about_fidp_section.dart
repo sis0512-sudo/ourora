@@ -16,17 +16,13 @@ class AboutFidpSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'F+I+D+P',
-                style: TextStyle(fontFamily: 'sans-serif', fontSize: 36, fontWeight: FontWeight.w300, letterSpacing: 3, color: AppTheme.black),
-                textAlign: TextAlign.center,
-              ),
+              Text('F+I+D+P', style: AppTheme.aboutFidpTitle(), textAlign: TextAlign.center),
               const SizedBox(height: 20),
               Container(width: double.infinity, height: 1, color: AppTheme.borderGray),
               const SizedBox(height: 28),
               Text(
                 '오로라공방은 가구(Furniture)와 IT(Information Technology), 그리고 디자인(Design)과 사람(People)이라는 4가지 주제들과 함께 합니다.',
-                style: TextStyle(fontFamily: 'NanumGothic', fontSize: 16, height: 1.6, color: AppTheme.black),
+                style: AppTheme.bodyKorean().copyWith(height: 1.6),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 36),
@@ -38,10 +34,7 @@ class AboutFidpSection extends StatelessWidget {
                   foregroundColor: AppTheme.white,
                   backgroundColor: AppTheme.textGray,
                 ),
-                child: const Text(
-                  '더 읽어보기 >>',
-                  style: TextStyle(fontFamily: 'Montserrat', fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: 1.5),
-                ),
+                child: Text('더 읽어보기 >>', style: AppTheme.fidpButton()),
               ),
             ],
           ),

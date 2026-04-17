@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ourora/config/theme.dart';
 
 class FooterCtaSection extends StatefulWidget {
   const FooterCtaSection({super.key, required this.scrollController});
@@ -74,13 +75,13 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
                 children: [
                   Text(
                     'YOUR OWN LIGHT',
-                    style: const TextStyle(fontFamily: 'Arial Black', color: Colors.white, fontSize: 70, fontWeight: FontWeight.bold, height: 1.2),
+                    style: AppTheme.footerCtaTitle().copyWith(height: 1.2),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'MAKE YOU SHINE IN THE WORLD',
-                    style: const TextStyle(color: Colors.white, fontSize: 24, letterSpacing: 0.05 * 24, fontWeight: FontWeight.w400),
+                    style: AppTheme.footerCtaSubtitle().copyWith(letterSpacing: 0.05 * 24),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
@@ -91,7 +92,7 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
                       side: const BorderSide(color: Colors.white, width: 1.5),
                       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                     ),
-                    child: const Text('Read More >>', style: TextStyle(fontSize: 16, letterSpacing: 0.5)),
+                    child: Text('Read More >>', style: AppTheme.ctaButton()),
                   ),
                 ],
               ),
