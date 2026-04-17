@@ -77,34 +77,19 @@ class FeatureCardsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = MediaQuery.of(context).size.width >= 1200;
-    final isTablet = MediaQuery.of(context).size.width >= 768;
-
     return Container(
       color: AppTheme.white,
-      padding: const EdgeInsets.symmetric(vertical: 80),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 980),
-          child: isDesktop
-              ? SizedBox(
-                  height: 517,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: FeatureCard.values.map((card) {
-                      return SizedBox(width: 245, child: _FeatureCardWidget(card: card));
-                    }).toList(),
-                  ),
-                )
-              : GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: isTablet ? 2 : 1, childAspectRatio: 0.85),
-                  itemCount: FeatureCard.values.length,
-                  itemBuilder: (context, index) {
-                    return _FeatureCardWidget(card: FeatureCard.values[index]);
-                  },
-                ),
+          child: SizedBox(
+            height: 517,
+            child: Row(
+              children: FeatureCard.values.map((card) {
+                return SizedBox(width: 245, child: _FeatureCardWidget(card: card));
+              }).toList(),
+            ),
+          ),
         ),
       ),
     );
@@ -119,7 +104,7 @@ class _FeatureCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

@@ -1,3 +1,14 @@
+import 'package:flutter/material.dart';
+
+class HeroSlide {
+  final String subtitle;
+  final String title;
+  final String image;
+  final MainAxisAlignment mainAxisAlignment;
+
+  const HeroSlide({required this.subtitle, required this.title, required this.image, this.mainAxisAlignment = MainAxisAlignment.end});
+}
+
 class AppConstants {
   // 유튜브 채널 ID
   static const String youtubeChannelId = 'UCxxxxxxxxxxxxxx';
@@ -17,11 +28,16 @@ class AppConstants {
   static const List<String> youtubeDurations = ['08:17', '20:28', '28:42', '21:17'];
 
   // Hero 슬라이더 텍스트
-  static const List<Map<String, String>> heroSlides = [
-    {'subtitle': 'All good things which exist are', 'title': 'THE FRUITS OF\nORIGINALITY', 'image': 'assets/images/hero_1.webp'},
-    {'subtitle': 'Make', 'title': 'IT HAPPEN', 'image': 'assets/images/hero_2.webp'},
-    {'subtitle': 'Show me', 'title': 'YOUR STORY', 'image': 'assets/images/hero_3.webp'},
-    {'subtitle': 'It\'s', 'title': 'YOUR PLACE', 'image': 'assets/images/hero_4.webp'},
+  static const List<HeroSlide> heroSlides = [
+    HeroSlide(
+      subtitle: 'All good things which exist are',
+      title: 'THE FRUITS OF\nORIGINALITY',
+      image: 'assets/images/hero_1.webp',
+      mainAxisAlignment: MainAxisAlignment.end,
+    ),
+    HeroSlide(subtitle: 'Make', title: 'IT HAPPEN', image: 'assets/images/hero_2.webp', mainAxisAlignment: MainAxisAlignment.start),
+    HeroSlide(subtitle: 'Show me', title: 'YOUR STORY', image: 'assets/images/hero_3.webp', mainAxisAlignment: MainAxisAlignment.start),
+    HeroSlide(subtitle: 'It\'s', title: 'YOUR PLACE', image: 'assets/images/hero_4.webp', mainAxisAlignment: MainAxisAlignment.center),
   ];
 
   // Feature Cards 데이터

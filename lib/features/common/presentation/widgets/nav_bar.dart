@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -9,7 +10,7 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 768;
+    final isMobile = Responsive.isMobile(context);
 
     return Container(
       height: height,
@@ -18,9 +19,12 @@ class NavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          GestureDetector(
-            onTap: () => context.go('/'),
-            child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () => context.go('/'),
+              child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
+            ),
           ),
           if (isMobile) _MobileMenu() else _DesktopMenu(),
         ],
@@ -32,18 +36,53 @@ class NavBar extends StatelessWidget {
 class _DesktopMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    const items = [('ABOUT', '/about'), ('WORKS', '/works'), ('CLASS', '/class'), ('MEMBERSHIP', '/membership'), ('BOARD', '/board'), ('CONTACT', '/contact')];
+    const items = [
+      ('ABOUT', '/about'),
+      ('WORKS', '/works'),
+      ('CLASS', '/class'),
+      ('MEMBERSHIP', '/membership'),
+      // ('BOARD', '/board'),
+      ('CONTACT', '/contact'),
+    ];
 
     return Row(
       children: items.map((item) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 13),
-          child: GestureDetector(
-            onTap: () => context.go(item.$2),
-            child: Text(item.$1, style: AppTheme.navItem()),
-          ),
+          padding: const EdgeInsets.only(left: 28),
+          child: _NavItem(label: item.$1, route: item.$2),
         );
       }).toList(),
+    );
+  }
+}
+
+class _NavItem extends StatefulWidget {
+  const _NavItem({required this.label, required this.route});
+
+  final String label;
+  final String route;
+
+  @override
+  State<_NavItem> createState() => _NavItemState();
+}
+
+class _NavItemState extends State<_NavItem> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: () => context.go(widget.route),
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 150),
+          style: AppTheme.navItem().copyWith(color: _hovered ? AppTheme.red : AppTheme.black),
+          child: Text(widget.label),
+        ),
+      ),
     );
   }
 }
@@ -51,11 +90,14 @@ class _DesktopMenu extends StatelessWidget {
 class _MobileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.menu, color: AppTheme.black),
-      onPressed: () {
-        showModalBottomSheet(context: context, builder: (_) => const _MobileDrawer());
-      },
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: IconButton(
+        icon: const Icon(Icons.menu, color: AppTheme.black),
+        onPressed: () {
+          showModalBottomSheet(context: context, builder: (_) => const _MobileDrawer());
+        },
+      ),
     );
   }
 }

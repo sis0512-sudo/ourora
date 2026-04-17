@@ -34,10 +34,11 @@ class _HeroSliderState extends State<HeroSlider> {
               autoPlayAnimationDuration: const Duration(milliseconds: 800),
               autoPlayCurve: Curves.easeInOut,
               enableInfiniteScroll: true,
+              scrollPhysics: const NeverScrollableScrollPhysics(),
               onPageChanged: (index, _) => setState(() => _currentIndex = index),
             ),
             items: AppConstants.heroSlides.map((slide) {
-              return _HeroSlide(image: slide['image']!, subtitle: slide['subtitle']!, title: slide['title']!);
+              return _HeroSlide(image: slide.image, subtitle: slide.subtitle, title: slide.title, mainAxisAlignment: slide.mainAxisAlignment);
             }).toList(),
           ),
           // 좌우 화살표
@@ -84,8 +85,9 @@ class _HeroSlide extends StatelessWidget {
   final String image;
   final String subtitle;
   final String title;
+  final MainAxisAlignment mainAxisAlignment;
 
-  const _HeroSlide({required this.image, required this.subtitle, required this.title});
+  const _HeroSlide({required this.image, required this.subtitle, required this.title, this.mainAxisAlignment = MainAxisAlignment.end});
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +97,14 @@ class _HeroSlide extends StatelessWidget {
         Image.asset(image, fit: BoxFit.cover),
         Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: mainAxisAlignment,
+            mainAxisSize: MainAxisSize.max,
             children: [
+              const SizedBox(height: 96),
               Text(subtitle, style: AppTheme.heroSubtitle(), textAlign: TextAlign.center),
               const SizedBox(height: 12),
               Text(title, style: AppTheme.heroTitle(), textAlign: TextAlign.center),
+              const SizedBox(height: 96),
             ],
           ),
         ),
@@ -118,12 +123,7 @@ class _ArrowButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white24),
-        child: Icon(icon, color: Colors.white, size: 28),
-      ),
+      child: SizedBox(width: 48, height: 48, child: Icon(icon, color: Colors.white, size: 48)),
     );
   }
 }
