@@ -1,74 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/utils/constants.dart';
-import 'package:ourora/features/common/utils/responsive.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SiteFooter extends StatelessWidget {
   const SiteFooter({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
-
     return Container(
-      color: AppTheme.darkBg,
-      constraints: const BoxConstraints(minHeight: 231),
-      padding: const EdgeInsets.symmetric(vertical: 40),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 980),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: isMobile
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ..._footerTextItems(),
-                      const SizedBox(height: 24),
-                      _logoWidget(),
-                    ],
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: _footerTextItems(),
+      width: double.infinity,
+      color: AppTheme.black,
+      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: double.maxFinite,
+            child: Wrap(
+              spacing: 40,
+              runSpacing: 24,
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                // 저작권
+                _FooterTextBlock(lines: const ['© 2021 OURORA STUDIO.', 'All rights reserved.']),
+
+                // 주소
+                _FooterTextBlock(lines: const ['B1 6 Mokdong-ro21Gil, Yangcheon-gu,', 'Seoul, Korea.']),
+
+                // 이메일 + 전화
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () => launchUrl(Uri.parse('mailto:contact@ourora.com')),
+                      child: const Text(
+                        'E. contact@ourora.com',
+                        style: TextStyle(color: AppTheme.textGray, fontSize: 14, height: 1.5, fontFamily: 'Roboto', fontWeight: FontWeight.w100),
                       ),
-                      _logoWidget(),
-                    ],
-                  ),
+                    ),
+                    const Text(
+                      'T. 010-7586-8765',
+                      style: TextStyle(color: AppTheme.textGray, fontSize: 14, height: 1.5, fontFamily: 'Roboto', fontWeight: FontWeight.w100),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
+          const SizedBox(height: 40),
+          // 로고
+          ColorFiltered(
+            colorFilter: const ColorFilter.matrix([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]),
+            child: Image.asset('assets/images/logo.png', width: 221, height: 60, fit: BoxFit.contain),
+          ),
+        ],
       ),
     );
   }
+}
 
-  List<Widget> _footerTextItems() {
-    return [
-      Text('© 2021 OURORA STUDIO.', style: _footerText()),
-      Text('All rights reserved.', style: _footerText()),
-      Text(AppConstants.address, style: _footerText()),
-      Text(AppConstants.email, style: _footerText()),
-      Text('T. ${AppConstants.phone}', style: _footerText()),
-    ];
-  }
+class _FooterTextBlock extends StatelessWidget {
+  final List<String> lines;
+  const _FooterTextBlock({required this.lines});
 
-  Widget _logoWidget() {
-    return Image.asset(
-      'assets/images/logo.png',
-      width: 221,
-      height: 60,
-      fit: BoxFit.contain,
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: lines
+          .map(
+            (line) => Text(
+              line,
+              style: const TextStyle(color: AppTheme.textGray, fontSize: 14, height: 1.5, fontFamily: 'Roboto', fontWeight: FontWeight.w100),
+            ),
+          )
+          .toList(),
     );
   }
-
-  TextStyle _footerText() => GoogleFonts.roboto(
-        fontSize: 14,
-        fontWeight: FontWeight.w100,
-        color: AppTheme.white,
-        height: 1.8,
-      );
 }
