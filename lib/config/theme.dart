@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // 색상
@@ -13,15 +12,15 @@ class AppTheme {
   static const Color red = Color(0xFFF80000);
 
   // 타이포그래피
-  static TextStyle navItem() => GoogleFonts.raleway(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 1.5, color: black);
+  static TextStyle navItem() => const TextStyle(fontFamily: 'Raleway', fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 1.5, color: black);
 
-  static TextStyle heroSubtitle() => GoogleFonts.playfairDisplay(fontSize: 26, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: Colors.white);
+  static TextStyle heroSubtitle() => const TextStyle(fontFamily: 'Playfair Display', fontSize: 26, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: Colors.white);
 
-  static TextStyle heroTitle() => GoogleFonts.montserrat(fontSize: 60, fontWeight: FontWeight.w600, color: Colors.white, height: 1.1);
+  static TextStyle heroTitle() => const TextStyle(fontFamily: 'Montserrat', fontSize: 60, fontWeight: FontWeight.w600, color: Colors.white, height: 1.1);
 
-  static TextStyle sectionTitle() => GoogleFonts.montserrat(fontSize: 19, fontWeight: FontWeight.w800, letterSpacing: 3, color: black);
+  static TextStyle sectionTitle() => const TextStyle(fontFamily: 'Montserrat', fontSize: 19, fontWeight: FontWeight.w800, letterSpacing: 3, color: black);
 
-  static TextStyle bodyKorean() => GoogleFonts.notoSansKr(fontSize: 14, height: 1.8, color: textGray);
+  static TextStyle bodyKorean() => const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 14, height: 1.8, color: textGray);
 
   static TextStyle footerCtaTitle() => const TextStyle(fontFamily: 'Arial', fontSize: 70, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 4);
 

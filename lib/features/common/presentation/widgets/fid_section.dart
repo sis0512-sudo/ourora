@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 
@@ -18,12 +17,7 @@ class FidSection extends StatelessWidget {
             children: [
               Text(
                 '오로라 공방은?',
-                style: GoogleFonts.notoSansKr(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 4,
-                  color: AppTheme.darkBg,
-                ),
+                style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 20, fontWeight: FontWeight.w700, letterSpacing: 4, color: AppTheme.darkBg),
               ),
               const SizedBox(height: 12),
               Container(
@@ -112,7 +106,7 @@ class _FidItem extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             desc,
-            style: GoogleFonts.notoSansKr(fontSize: 14, color: AppTheme.darkBg),
+            style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 14, color: AppTheme.darkBg),
             textAlign: TextAlign.center,
           ),
         ],

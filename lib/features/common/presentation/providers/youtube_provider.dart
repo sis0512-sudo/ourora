@@ -8,6 +8,7 @@ final youtubeRepositoryProvider = Provider<YoutubeRepository>(
 );
 
 final youtubeVideosProvider = FutureProvider<List<YoutubeVideo>>((ref) {
+  ref.keepAlive();
   return ref
       .read(youtubeRepositoryProvider)
       .fetchVideos(AppConstants.youtubeVideoIds);
