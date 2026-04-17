@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
@@ -51,7 +52,7 @@ class _HeaderSection extends StatelessWidget {
           const SizedBox(height: 12),
           Container(width: 40, height: 3, color: AppTheme.black),
           const SizedBox(height: 20),
-          const Icon(Icons.home_work_outlined, size: 48, color: AppTheme.black),
+          SvgPicture.asset('assets/svgs/ourora_membership_logo.svg', height: 200),
           const SizedBox(height: 16),
           Text(
             'OURORA MEMBERSHIP',
