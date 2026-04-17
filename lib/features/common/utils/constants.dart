@@ -19,11 +19,9 @@ class HeroSlide {
 }
 
 class AppConstants {
-  // 유튜브 Data API v3 키 (https://console.cloud.google.com 에서 발급)
+  //todo apikey 서버로 옮기고 정보 저장해놓는 식으로 바꾸기
   static const String youtubeApiKey = 'AIzaSyBxMKAcT5pecsy-2lYrFnjE47PMPWImPHE';
-
-  // 유튜브 영상 ID 목록
-  static const List<String> youtubeVideoIds = ['3QSZ5ahBXkY', 'BaAVRvF6kEQ', '08iU4uU0vZg', 'bz4h65cJyWE'];
+  static const List<String> youtubeVideoIds = ['3QSZ5ahBXkY', '08iU4uU0vZg', 'BaAVRvF6kEQ', 'bz4h65cJyWE'];
 
   // Hero 슬라이더 텍스트
   static const List<HeroSlide> heroSlides = [
