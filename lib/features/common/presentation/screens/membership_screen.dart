@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
-import 'package:ourora/features/common/utils/responsive.dart';
+import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
 
 class MembershipScreen extends StatelessWidget {
   const MembershipScreen({super.key});
@@ -29,7 +29,12 @@ class _MembershipBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: const [_HeaderSection(), _ShareMembershipSection(), _PartnershipSection(), _PartnerCardsSection(), SizedBox(height: 80)]);
+    return Container(
+      color: AppTheme.white,
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 120),
+      child: const Column(children: [_HeaderSection(), _ShareMembershipSection(), _PartnershipSection(), _PartnerCardsSection(), SizedBox(height: 80)]),
+    );
   }
 }
 
@@ -40,24 +45,31 @@ class _HeaderSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppTheme.white,
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 55),
+      width: double.maxFinite,
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 40),
           Text(
             '오로라 멤버십',
-            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 36, fontWeight: FontWeight.w700, color: AppTheme.black, letterSpacing: 2),
+            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 28, fontWeight: FontWeight.w400, color: AppTheme.black, letterSpacing: 2),
           ),
-          const SizedBox(height: 12),
-          Container(width: 40, height: 3, color: AppTheme.black),
+          const TitleDivider(),
           const SizedBox(height: 20),
-          SvgPicture.asset('assets/svgs/ourora_membership_logo.svg', height: 200),
-          const SizedBox(height: 16),
-          Text(
-            'OURORA MEMBERSHIP',
-            style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: 4, color: AppTheme.textGray),
+          Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SvgPicture.asset('assets/svgs/ourora_membership_logo.svg', height: 200),
+                Text(
+                  'OURORA MEMBERSHIP',
+                  style: GoogleFonts.roboto(fontSize: 25, fontWeight: FontWeight.bold, color: AppTheme.black),
+                ),
+              ],
+            ),
           ),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -70,83 +82,44 @@ class _ShareMembershipSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
-    return Container(
-      color: AppTheme.white,
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(isMobile ? 24 : 60, 16, isMobile ? 24 : 60, 40),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '공방 쉐어(share) 멤버십',
-            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 24, fontWeight: FontWeight.w700, color: AppTheme.black),
+            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black),
           ),
-          const SizedBox(height: 8),
-          Container(width: 36, height: 4, color: AppTheme.black),
+          TitleDivider(isSubTitle: true),
           const SizedBox(height: 20),
-          Text(
-            '공방 자유이용 멤버십으로 개인 작품활동, 지속적인 취미목공 등을 위해 공방을 자유롭게 이용할 수 있습니다.\n'
-            '공방의 모든 공구와 기계를 이용할 수 있으며, 작품 제작을 위한 공간을 충분히 사용하실 수 있습니다.',
-            style: AppTheme.bodyKorean(),
+          Text('클래스 이수 후, 지속적인 개인 자유작업, 취미 목공, 작품활동, 기술 및 디자인 연구 등을 위한 공방 쉐어(share)입니다.', style: AppTheme.bodyKorean()),
+          const SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              _ShareCard(
+                bgColor: Color(0xFFFF6161),
+                title: '자유반',
+                subtitle: 'FREE PASS MEMBERSHIP',
+                description:
+                    '정규과정 수료자 분들의 지속적인 취미활동을 위한 자유제작반 멤버십니다.\n'
+                    '\n'
+                    '매주 정해진 요일(주 1~2회)에 시간제한 없이 자유롭게 공방을 이용할 수 있습니다.\n'
+                    '(주문제작, 판매상품 제작 등 ​상업적 목적의 이용은 불가능합니다)',
+              ),
+              _ShareCard(
+                bgColor: Color(0xFFB08484),
+                title: '연구반',
+                subtitle: 'RESEARCH & TRAINING MEMBERSHIP',
+                description:
+                    '오로라공방의 전문가반 클래스 \'오로라에잇(OURORA 8)\' 과정이수자를 위한 멤버십입니다.\n'
+                    '\n'
+                    '수료를 위한 작품 제작. 디자인 연구 등의 작업을 진행할 수 있으며, 이용료 외 별도의 추가 수업료 없이, 재수강이나 코칭을 받을 수 있습니다.\n'
+                    '365일 공방오픈 시간내 공방 자유이용(11:00~23:00)\n(기계사용은 22:00까지 가능)',
+              ),
+            ],
           ),
-          const SizedBox(height: 32),
-          isMobile
-              ? Column(
-                  children: const [
-                    _ShareCard(
-                      bgColor: Color(0xFFFF6161),
-                      title: '자유반',
-                      subtitle: 'FREE PASS MEMBERSHIP',
-                      description:
-                          '공방을 자유롭게 이용할 수 있는 기본 멤버십입니다.\n'
-                          '월정액으로 공방 운영 시간 내 자유롭게 이용 가능하며,\n'
-                          '모든 수공구 및 전동공구를 사용하실 수 있습니다.\n'
-                          '재료비는 별도로 청구됩니다.',
-                    ),
-                    SizedBox(height: 16),
-                    _ShareCard(
-                      bgColor: Color(0xFFB08484),
-                      title: '연구반',
-                      subtitle: 'RESEARCH & TRAINING MEMBERSHIP',
-                      description:
-                          '심화 연구와 훈련을 위한 프리미엄 멤버십입니다.\n'
-                          '자유반의 모든 혜택에 더해 개인 작업 공간이 배정되며,\n'
-                          '정기적인 기술 세션과 1:1 지도를 받을 수 있습니다.\n'
-                          '재료비는 별도로 청구됩니다.',
-                    ),
-                  ],
-                )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Expanded(
-                      child: _ShareCard(
-                        bgColor: Color(0xFFFF6161),
-                        title: '자유반',
-                        subtitle: 'FREE PASS MEMBERSHIP',
-                        description:
-                            '공방을 자유롭게 이용할 수 있는 기본 멤버십입니다.\n'
-                            '월정액으로 공방 운영 시간 내 자유롭게 이용 가능하며,\n'
-                            '모든 수공구 및 전동공구를 사용하실 수 있습니다.\n'
-                            '재료비는 별도로 청구됩니다.',
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: _ShareCard(
-                        bgColor: Color(0xFFB08484),
-                        title: '연구반',
-                        subtitle: 'RESEARCH & TRAINING MEMBERSHIP',
-                        description:
-                            '심화 연구와 훈련을 위한 프리미엄 멤버십입니다.\n'
-                            '자유반의 모든 혜택에 더해 개인 작업 공간이 배정되며,\n'
-                            '정기적인 기술 세션과 1:1 지도를 받을 수 있습니다.\n'
-                            '재료비는 별도로 청구됩니다.',
-                      ),
-                    ),
-                  ],
-                ),
         ],
       ),
     );
@@ -165,37 +138,34 @@ class _ShareCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: bgColor,
-      padding: const EdgeInsets.all(32),
-      child: Row(
+      padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 40),
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 왼쪽: 제목 + 영문
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontFamily: 'BMHanna', fontSize: 28, fontWeight: FontWeight.w700, color: AppTheme.white),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.montserrat(fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: 1.5, color: Colors.white70),
-                ),
-              ],
-            ),
+          Text(
+            title,
+            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 35, color: AppTheme.white),
           ),
-          // 세로 구분선
-          Container(width: 1, height: 100, color: Colors.white38, margin: const EdgeInsets.symmetric(horizontal: 20)),
-          // 오른쪽: 설명
-          Expanded(
-            flex: 3,
-            child: Text(
-              description,
-              style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 13, color: AppTheme.white, height: 1.8),
-            ),
+          const SizedBox(height: 40),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 150,
+                child: Text(
+                  subtitle,
+                  style: GoogleFonts.openSans(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.white),
+                ),
+              ),
+              Container(width: 1, height: 100, color: AppTheme.white, margin: const EdgeInsets.symmetric(horizontal: 30)),
+              Expanded(
+                child: Text(
+                  description,
+                  style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 16, color: AppTheme.white),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -209,11 +179,8 @@ class _PartnershipSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
-    return Container(
-      color: AppTheme.white,
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(isMobile ? 24 : 60, 44, isMobile ? 24 : 60, 32),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 44, 0, 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -242,66 +209,40 @@ class _PartnerCardsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
-    return Container(
-      color: AppTheme.white,
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(isMobile ? 24 : 60, 11, isMobile ? 24 : 60, 40),
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(0, 11, 0, 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isMobile
-              ? Column(
-                  children: const [
-                    _PartnerCard(
-                      title: '오로라에이터',
-                      subtitle: 'OURORA 8s',
-                      description:
-                          '월 8회 공방 이용이 가능한 입문 파트너십입니다.\n'
-                          '공방의 모든 기계와 공구를 사용할 수 있으며,\n'
-                          '정기 미팅을 통해 다른 메이커들과 교류할 수 있습니다.',
-                    ),
-                    SizedBox(height: 16),
-                    _PartnerCard(
-                      title: '오로라펠로우',
-                      subtitle: 'OURORA FELLOW',
-                      description:
-                          '오로라스튜디오의 핵심 파트너 멤버십입니다.\n'
-                          '공방을 무제한으로 이용할 수 있으며,\n'
-                          '개인 작업 공간과 수납 공간이 제공됩니다.\n'
-                          '오로라스튜디오 브랜드와의 협업 기회가 주어집니다.',
-                    ),
-                  ],
-                )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Expanded(
-                      child: _PartnerCard(
-                        title: '오로라에이터',
-                        subtitle: 'OURORA 8s',
-                        description:
-                            '월 8회 공방 이용이 가능한 입문 파트너십입니다.\n'
-                            '공방의 모든 기계와 공구를 사용할 수 있으며,\n'
-                            '정기 미팅을 통해 다른 메이커들과 교류할 수 있습니다.',
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: _PartnerCard(
-                        title: '오로라펠로우',
-                        subtitle: 'OURORA FELLOW',
-                        description:
-                            '오로라스튜디오의 핵심 파트너 멤버십입니다.\n'
-                            '공방을 무제한으로 이용할 수 있으며,\n'
-                            '개인 작업 공간과 수납 공간이 제공됩니다.\n'
-                            '오로라스튜디오 브랜드와의 협업 기회가 주어집니다.',
-                      ),
-                    ),
-                  ],
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _PartnerCard(
+                  title: '오로라에이터',
+                  subtitle: 'OURORA 8s',
+                  description:
+                      '월 8회 공방 이용이 가능한 입문 파트너십입니다.\n'
+                      '공방의 모든 기계와 공구를 사용할 수 있으며,\n'
+                      '정기 미팅을 통해 다른 메이커들과 교류할 수 있습니다.',
                 ),
-          const SizedBox(height: 48),
-          const _CommonTermsSection(),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: _PartnerCard(
+                  title: '오로라펠로우',
+                  subtitle: 'OURORA FELLOW',
+                  description:
+                      '오로라스튜디오의 핵심 파트너 멤버십입니다.\n'
+                      '공방을 무제한으로 이용할 수 있으며,\n'
+                      '개인 작업 공간과 수납 공간이 제공됩니다.\n'
+                      '오로라스튜디오 브랜드와의 협업 기회가 주어집니다.',
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 48),
+          _CommonTermsSection(),
         ],
       ),
     );

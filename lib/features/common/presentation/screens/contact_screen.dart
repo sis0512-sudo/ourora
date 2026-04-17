@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
+import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web/web.dart' as web;
@@ -103,8 +104,7 @@ class _InfoPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('주소 / 연락처', style: ts),
-          const SizedBox(height: 8),
-          Container(width: 36, height: 6, color: AppTheme.black),
+          const TitleDivider(),
           const SizedBox(height: 32),
           Text('주소 : 서울특별시 양천구 목동로21길 6', style: bs),
           Text('        지하1층 (우: 08022)', style: bs),
@@ -157,8 +157,7 @@ class _ParkingPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('주차 안내', style: ts),
-          const SizedBox(height: 8),
-          Container(width: 36, height: 6, color: AppTheme.black),
+          const TitleDivider(),
           const SizedBox(height: 32),
           Text('공영주차장', style: bs),
           bullet('바로 앞 사거리 공유주차(약 50m) (평상시 약 1~2대 비어있음)'),
