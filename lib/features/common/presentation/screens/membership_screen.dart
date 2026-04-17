@@ -33,7 +33,7 @@ class _MembershipBody extends StatelessWidget {
       color: AppTheme.white,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 120),
-      child: const Column(children: [_HeaderSection(), _ShareMembershipSection(), _PartnershipSection(), _PartnerCardsSection(), SizedBox(height: 80)]),
+      child: const Column(children: [_HeaderSection(), _ShareMembershipSection(), _PartnershipSection(), _PartnerCardsSection(), SizedBox(height: 200)]),
     );
   }
 }
@@ -83,7 +83,7 @@ class _ShareMembershipSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -98,7 +98,7 @@ class _ShareMembershipSection extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              _ShareCard(
+              MembershipScreenCard(
                 bgColor: Color(0xFFFF6161),
                 title: '자유반',
                 subtitle: 'FREE PASS MEMBERSHIP',
@@ -108,7 +108,7 @@ class _ShareMembershipSection extends StatelessWidget {
                     '매주 정해진 요일(주 1~2회)에 시간제한 없이 자유롭게 공방을 이용할 수 있습니다.\n'
                     '(주문제작, 판매상품 제작 등 ​상업적 목적의 이용은 불가능합니다)',
               ),
-              _ShareCard(
+              MembershipScreenCard(
                 bgColor: Color(0xFFB08484),
                 title: '연구반',
                 subtitle: 'RESEARCH & TRAINING MEMBERSHIP',
@@ -126,8 +126,8 @@ class _ShareMembershipSection extends StatelessWidget {
   }
 }
 
-class _ShareCard extends StatelessWidget {
-  const _ShareCard({required this.bgColor, required this.title, required this.subtitle, required this.description});
+class MembershipScreenCard extends StatelessWidget {
+  const MembershipScreenCard({super.key, required this.bgColor, required this.title, required this.subtitle, required this.description});
 
   final Color bgColor;
   final String title;
@@ -180,22 +180,38 @@ class _PartnershipSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 44, 0, 32),
+      padding: const EdgeInsets.symmetric(vertical: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             '협력 파트너십',
-            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 24, fontWeight: FontWeight.w700, color: AppTheme.black),
+            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black),
           ),
-          const SizedBox(height: 8),
-          Container(width: 36, height: 4, color: AppTheme.black),
+          TitleDivider(isSubTitle: true),
           const SizedBox(height: 20),
-          Text(
-            '오로라스튜디오와 함께 성장하고 싶은 분들을 위한 파트너십 프로그램입니다.\n'
-            '공방 공간과 장비를 활용하여 자신만의 프로젝트를 진행하거나,\n'
-            '오로라스튜디오의 네트워크를 통해 다양한 협력 기회를 만들어 나갈 수 있습니다.',
-            style: AppTheme.bodyKorean(),
+          Text('개인 / 팀 단위의 작품 활동, 또는 공방 창업 및 사업준비를 위한 협력 파트너십입니다.', style: AppTheme.bodyKorean()),
+          const SizedBox(height: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              MembershipScreenCard(
+                bgColor: AppTheme.black,
+                title: '오로라에잇츠',
+                subtitle: 'OURORA 8s',
+                description:
+                    '오로라공방의 지원을 받아 작품 활동을 하는 작가 그룹입니다.\n\n'
+                    '오로라에잇 수료자 또는 외부 공방/기관의 중급이상 수료자 중, 기존 멤버에 의해 추천을 받아 선정됩니다. ​다양한 작품 활동 및 전시 등을 개인 / 팀 단위로 진행합니다.',
+              ),
+              MembershipScreenCard(
+                bgColor: AppTheme.black,
+                title: '오로라펠로우',
+                subtitle: 'OURORA FELLOW',
+                description:
+                    '공방창업 및 관련 사업을 준비하는 예비사업 멤버입니다.\n\n'
+                    '오로라에잇 수료자 중, 높은 기술력을 갖춘 분을 중심으로 선발과정을 거쳐 선정되며, 개인 사업준비를 위한 상품개발(샘플링)은 물론, 조교 또는 강의를 할 수 있고, 상품 판매, 주문제작 등 공방에서 상업적 활동을 하실 수 있는 파트너입니다.',
+              ),
+            ],
           ),
         ],
       ),
@@ -209,89 +225,7 @@ class _PartnerCardsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(0, 11, 0, 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: _PartnerCard(
-                  title: '오로라에이터',
-                  subtitle: 'OURORA 8s',
-                  description:
-                      '월 8회 공방 이용이 가능한 입문 파트너십입니다.\n'
-                      '공방의 모든 기계와 공구를 사용할 수 있으며,\n'
-                      '정기 미팅을 통해 다른 메이커들과 교류할 수 있습니다.',
-                ),
-              ),
-              SizedBox(width: 16),
-              Expanded(
-                child: _PartnerCard(
-                  title: '오로라펠로우',
-                  subtitle: 'OURORA FELLOW',
-                  description:
-                      '오로라스튜디오의 핵심 파트너 멤버십입니다.\n'
-                      '공방을 무제한으로 이용할 수 있으며,\n'
-                      '개인 작업 공간과 수납 공간이 제공됩니다.\n'
-                      '오로라스튜디오 브랜드와의 협업 기회가 주어집니다.',
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 48),
-          _CommonTermsSection(),
-        ],
-      ),
-    );
-  }
-}
-
-class _PartnerCard extends StatelessWidget {
-  const _PartnerCard({required this.title, required this.subtitle, required this.description});
-
-  final String title;
-  final String subtitle;
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppTheme.black,
-      padding: const EdgeInsets.all(32),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontFamily: 'BMHanna', fontSize: 24, fontWeight: FontWeight.w700, color: AppTheme.white),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.montserrat(fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: 1.5, color: Colors.white54),
-                ),
-              ],
-            ),
-          ),
-          Container(width: 1, height: 80, color: Colors.white24, margin: const EdgeInsets.symmetric(horizontal: 20)),
-          Expanded(
-            flex: 3,
-            child: Text(
-              description,
-              style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 13, color: AppTheme.white, height: 1.8),
-            ),
-          ),
-        ],
-      ),
-    );
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_CommonTermsSection()]);
   }
 }
 
@@ -314,10 +248,9 @@ class _CommonTermsSection extends StatelessWidget {
       children: [
         Text(
           '공통 이용사항',
-          style: const TextStyle(fontFamily: 'BMHanna', fontSize: 20, fontWeight: FontWeight.w700, color: AppTheme.black),
+          style: const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black),
         ),
-        const SizedBox(height: 8),
-        Container(width: 36, height: 4, color: AppTheme.black),
+        TitleDivider(isSubTitle: true),
         const SizedBox(height: 20),
         ..._items.map(
           (item) => Padding(
