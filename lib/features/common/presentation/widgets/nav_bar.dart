@@ -14,18 +14,13 @@ class NavBar extends StatelessWidget {
     return Container(
       height: height,
       color: AppTheme.white,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 110),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () => context.go('/'),
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 169,
-              height: 49,
-              fit: BoxFit.contain,
-            ),
+            child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
           ),
           if (isMobile) _MobileMenu() else _DesktopMenu(),
         ],
@@ -37,19 +32,12 @@ class NavBar extends StatelessWidget {
 class _DesktopMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    const items = [
-      ('ABOUT', '/about'),
-      ('WORKS', '/works'),
-      ('CLASS', '/class'),
-      ('MEMBERSHIP', '/membership'),
-      ('BOARD', '/board'),
-      ('CONTACT', '/contact'),
-    ];
+    const items = [('ABOUT', '/about'), ('WORKS', '/works'), ('CLASS', '/class'), ('MEMBERSHIP', '/membership'), ('BOARD', '/board'), ('CONTACT', '/contact')];
 
     return Row(
       children: items.map((item) {
         return Padding(
-          padding: const EdgeInsets.only(left: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 13),
           child: GestureDetector(
             onTap: () => context.go(item.$2),
             child: Text(item.$1, style: AppTheme.navItem()),
@@ -77,14 +65,7 @@ class _MobileDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = [
-      ('ABOUT', '/about'),
-      ('WORKS', '/works'),
-      ('CLASS', '/class'),
-      ('MEMBERSHIP', '/membership'),
-      ('BOARD', '/board'),
-      ('CONTACT', '/contact'),
-    ];
+    const items = [('ABOUT', '/about'), ('WORKS', '/works'), ('CLASS', '/class'), ('MEMBERSHIP', '/membership'), ('BOARD', '/board'), ('CONTACT', '/contact')];
 
     return SafeArea(
       child: Column(
