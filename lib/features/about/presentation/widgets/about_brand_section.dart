@@ -75,36 +75,25 @@ class _LeftPanelState extends State<_LeftPanel> {
           if (_initialized)
             FittedBox(
               fit: BoxFit.cover,
-              child: SizedBox(
-                width: _controller.value.size.width,
-                height: _controller.value.size.height,
-                child: VideoPlayer(_controller),
-              ),
+              child: SizedBox(width: _controller.value.size.width, height: _controller.value.size.height, child: VideoPlayer(_controller)),
             )
           else
-            Image.asset(
-              'assets/images/about_background.webp',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            ),
+            Image.asset('assets/images/about_background.webp', fit: BoxFit.cover, width: double.infinity, height: double.infinity),
           Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   'OURORA',
-                  style: GoogleFonts.montserrat(fontSize: 60, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 8),
+                  style: GoogleFonts.montserrat(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white, letterSpacing: 8),
                 ),
-                const SizedBox(height: 8),
                 Text(
                   '=',
-                  style: GoogleFonts.montserrat(fontSize: 48, fontWeight: FontWeight.w900, color: Colors.white),
+                  style: GoogleFonts.montserrat(fontSize: 34, fontWeight: FontWeight.w900, color: Colors.white),
                 ),
-                const SizedBox(height: 8),
                 Text(
                   'OUR+AURORA',
-                  style: GoogleFonts.montserrat(fontSize: 40, fontWeight: FontWeight.w900, color: AppTheme.black, letterSpacing: 4),
+                  style: GoogleFonts.montserrat(fontSize: 34, fontWeight: FontWeight.w900, color: AppTheme.black, letterSpacing: 4),
                 ),
               ],
             ),
@@ -131,17 +120,17 @@ class _RightPanel extends StatelessWidget {
           children: [
             Text(
               "오로라공방의 'OURORA'는",
-              style: GoogleFonts.notoSansKr(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white, height: 2.0),
+              style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white, height: 2.0),
               textAlign: TextAlign.center,
             ),
             Text(
               "'우리의(OUR)'와 '오로라(AURORA)'를",
-              style: GoogleFonts.notoSansKr(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white, height: 2.0),
+              style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white, height: 2.0),
               textAlign: TextAlign.center,
             ),
             Text(
               '합친 이름입니다.',
-              style: GoogleFonts.notoSansKr(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white, height: 2.0),
+              style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.white, height: 2.0),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 48),
@@ -150,7 +139,7 @@ class _RightPanel extends StatelessWidget {
               '오로라공방은 그 빛이 지구의 북극과 남극에서 나타나는 오로라처럼, 더욱 아름답고 신비롭게 빛나도록 다듬고 만드는 공간이 되고 싶습니다.\n'
               '모두가 자신의 작품을 통해 세상 속 또 하나의 빛을 비추고, 그 과정에서 당신의 우아한 삶을 추구합니다.',
               style: GoogleFonts.notoSansKr(fontSize: 15, color: Colors.white70, height: 2.0),
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.center,
             ),
           ],
         ),

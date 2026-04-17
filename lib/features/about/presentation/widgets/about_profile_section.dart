@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutProfileSection extends StatelessWidget {
@@ -17,11 +16,9 @@ class _ProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
-
     return Container(
       color: AppTheme.black,
-      padding: EdgeInsets.symmetric(vertical: 48, horizontal: isMobile ? 28 : 56),
+      padding: EdgeInsets.symmetric(vertical: 48, horizontal: 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,7 +26,6 @@ class _ProfileContent extends StatelessWidget {
             'CHIEF',
             style: TextStyle(fontFamily: 'sans-serif', fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 0.25 * 46, color: AppTheme.textGray),
           ),
-          const SizedBox(height: 4),
           const Text(
             '공방장 프로필',
             style: TextStyle(fontFamily: 'Noto Sans KR', fontSize: 17, fontWeight: FontWeight.normal, letterSpacing: 4, color: AppTheme.textGray),
