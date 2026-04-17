@@ -21,6 +21,11 @@ class HeroSlide {
 class AppConstants {
   //todo apikey 서버로 옮기고 정보 저장해놓는 식으로 바꾸기
   static const String youtubeApiKey = 'AIzaSyBxMKAcT5pecsy-2lYrFnjE47PMPWImPHE';
+
+  // Instagram Graph API long-lived access token (60일마다 갱신 필요)
+  // https://developers.facebook.com/docs/instagram-basic-display-api/guides/long-lived-access-tokens
+  //todo 실제 토큰으로 교체
+  static const String instagramAccessToken = 'YOUR_INSTAGRAM_ACCESS_TOKEN';
   static const List<String> youtubeVideoIds = ['3QSZ5ahBXkY', '08iU4uU0vZg', 'BaAVRvF6kEQ', 'bz4h65cJyWE'];
 
   // Hero 슬라이더 텍스트

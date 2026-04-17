@@ -3,6 +3,7 @@ import 'package:ourora/features/common/presentation/widgets/feature_cards_sectio
 import 'package:ourora/features/common/presentation/widgets/fid_section.dart';
 import 'package:ourora/features/common/presentation/widgets/footer_cta_section.dart';
 import 'package:ourora/features/common/presentation/widgets/hero_slider.dart';
+import 'package:ourora/features/common/presentation/widgets/instagram_grid_section.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_feed_section.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverPersistentHeader(delegate: NavBarDelegate(), pinned: true),
           const SliverToBoxAdapter(child: HeroSlider()),
           const SliverToBoxAdapter(child: FeatureCardsSection()),
-          // const SliverToBoxAdapter(child: InstagramGridSection()),
+          const SliverToBoxAdapter(child: InstagramGridSection()),
           const SliverToBoxAdapter(child: FidSection()),
           const SliverToBoxAdapter(child: YoutubeFeedSection()),
           SliverToBoxAdapter(child: FooterCtaSection(scrollController: _scrollController)),
