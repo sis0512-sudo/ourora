@@ -3,17 +3,18 @@ import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
 
 class BulletList extends StatelessWidget {
-  final String title;
-  final List<String> items;
+  final String? title;
+  final List<TextSpan> items;
+  final bool hideDivider;
 
-  const BulletList({super.key, required this.title, required this.items});
+  const BulletList({super.key, this.title, required this.items, this.hideDivider = false});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleWidget(title: title, isSubTitle: true),
+        if (title != null) TitleWidget(title: title!, isSubTitle: true, hideDivider: hideDivider),
         const SizedBox(height: 20),
         ...items.map(
           (item) => Padding(
@@ -21,8 +22,12 @@ class BulletList extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('• ', style: AppTheme.bodyKorean().copyWith(fontWeight: FontWeight.bold)),
-                Expanded(child: Text(item, style: AppTheme.bodyKorean())),
+                Text('• ', style: AppTheme.bodyKorean().copyWith(fontWeight: FontWeight.bold, height: 1.5)),
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(style: AppTheme.bodyKorean().copyWith(height: 1.5), children: [item]),
+                  ),
+                ),
               ],
             ),
           ),

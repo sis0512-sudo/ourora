@@ -14,7 +14,7 @@ class TitleDivider extends StatelessWidget {
       width: 36,
       height: isSubTitle ? 3 : 6,
       color: AppTheme.lineGray,
-      margin: EdgeInsets.only(top: isSubTitle ? 4 : 8),
+      margin: EdgeInsets.only(top: isSubTitle ? 4 : 6),
     );
   }
 }

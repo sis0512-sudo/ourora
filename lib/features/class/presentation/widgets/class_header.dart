@@ -47,7 +47,7 @@ class _ClassHeaderState extends State<ClassHeader> {
               children: [
                 const SizedBox(height: 16),
                 TitleWidget(title: widget.title, isSubTitle: false),
-                const SizedBox(height: 40),
+                const SizedBox(height: 60),
                 Text(widget.description, style: GoogleFonts.nanumMyeongjo(fontSize: 24, color: AppTheme.black)),
               ],
             ),

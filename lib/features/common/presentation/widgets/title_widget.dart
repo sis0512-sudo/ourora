@@ -5,8 +5,10 @@ import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
 class TitleWidget extends StatefulWidget {
   final String title;
   final bool isSubTitle;
+  final CrossAxisAlignment? alignment;
+  final bool hideDivider;
 
-  const TitleWidget({super.key, required this.title, required this.isSubTitle});
+  const TitleWidget({super.key, required this.title, required this.isSubTitle, this.alignment, this.hideDivider = false});
 
   @override
   State<TitleWidget> createState() => _TitleWidgetState();
@@ -16,10 +18,10 @@ class _TitleWidgetState extends State<TitleWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: widget.alignment ?? CrossAxisAlignment.start,
       children: [
         Text(widget.title, style: widget.isSubTitle ? AppTheme.pageSubTitle() : AppTheme.pageTitle()),
-        TitleDivider(isSubTitle: widget.isSubTitle),
+        if (!widget.hideDivider) TitleDivider(isSubTitle: widget.isSubTitle),
       ],
     );
   }
