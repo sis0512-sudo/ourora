@@ -11,7 +11,7 @@ class ImageViewerPopup extends StatefulWidget {
   static Future<void> show(BuildContext context, {required List<String> images, int initialIndex = 0}) {
     return showDialog(
       context: context,
-      barrierColor: Colors.black54,
+      barrierColor: AppTheme.black.withValues(alpha: 0.54),
       builder: (_) => ImageViewerPopup(images: images, initialIndex: initialIndex),
     );
   }
@@ -52,7 +52,7 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
       child: GestureDetector(
         onTap: () => Navigator.of(context).pop(),
         child: Material(
-          color: Colors.transparent,
+          color: AppTheme.transparent,
           child: Center(
             child: GestureDetector(
               onTap: () {}, // 이미지 영역 탭은 닫기 방지
@@ -87,7 +87,7 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                         child: Container(
                           width: 32,
                           height: 32,
-                          decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                          decoration: BoxDecoration(color: AppTheme.black.withValues(alpha: 0.54), shape: BoxShape.circle),
                           child: const Icon(Icons.close, color: AppTheme.white, size: 18),
                         ),
                       ),
@@ -104,7 +104,7 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                               width: i == _current ? 20 : 8,
                               height: 8,
                               margin: const EdgeInsets.symmetric(horizontal: 3),
-                              decoration: BoxDecoration(color: i == _current ? AppTheme.white : Colors.white54, borderRadius: BorderRadius.circular(4)),
+                              decoration: BoxDecoration(color: i == _current ? AppTheme.white : AppTheme.white.withValues(alpha: 0.54), borderRadius: BorderRadius.circular(4)),
                             );
                           }),
                         ),
@@ -133,8 +133,8 @@ class _NavButton extends StatelessWidget {
       child: Container(
         width: 40,
         height: 40,
-        decoration: BoxDecoration(color: onTap != null ? Colors.black54 : Colors.black26, shape: BoxShape.circle),
-        child: Icon(icon, color: onTap != null ? Colors.white : Colors.white38, size: 24),
+        decoration: BoxDecoration(color: onTap != null ? AppTheme.black.withValues(alpha: 0.54) : AppTheme.black.withValues(alpha: 0.26), shape: BoxShape.circle),
+        child: Icon(icon, color: onTap != null ? AppTheme.white : AppTheme.white.withValues(alpha: 0.38), size: 24),
       ),
     );
   }

@@ -61,13 +61,13 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                     child: OutlinedButton(
                       onPressed: widget.onTap,
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.transparent),
+                        side: BorderSide(color: AppTheme.transparent),
                         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 19),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                        backgroundColor: _hovered ? Color(0xFFFF6161) : AppTheme.black,
+                        backgroundColor: _hovered ? AppTheme.coral : AppTheme.black,
                         foregroundColor: AppTheme.white,
-                        surfaceTintColor: Colors.transparent,
-                        overlayColor: Colors.transparent,
+                        surfaceTintColor: AppTheme.transparent,
+                        overlayColor: AppTheme.transparent,
                       ),
                       child: SizedBox(
                         width: double.maxFinite,

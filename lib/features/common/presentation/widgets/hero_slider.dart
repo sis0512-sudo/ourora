@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 
 class HeroSlider extends StatefulWidget {
@@ -94,7 +95,7 @@ class _HeroSliderState extends State<HeroSlider> {
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _currentIndex == entry.key ? Colors.white : Colors.white38,
+                    color: _currentIndex == entry.key ? AppTheme.white : AppTheme.white.withValues(alpha: 0.38),
                   ),
                 );
               }).toList(),
@@ -132,9 +133,9 @@ class _HeroSlide extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               const SizedBox(height: 96),
-              Text(subtitle, style: const TextStyle(fontFamily: 'Playfair', fontSize: 26, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, color: Colors.white), textAlign: TextAlign.center),
+              Text(subtitle, style: const TextStyle(fontFamily: 'Playfair', fontSize: 26, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, color: AppTheme.white), textAlign: TextAlign.center),
               const SizedBox(height: 12),
-              Text(title, style: const TextStyle(fontFamily: 'Raleway', fontSize: 60, fontWeight: FontWeight.w700, color: Colors.white, height: 1.1), textAlign: TextAlign.center),
+              Text(title, style: const TextStyle(fontFamily: 'Raleway', fontSize: 60, fontWeight: FontWeight.w700, color: AppTheme.white, height: 1.1), textAlign: TextAlign.center),
               const SizedBox(height: 96),
             ],
           ),
@@ -154,7 +155,7 @@ class _ArrowButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: SizedBox(width: 48, height: 48, child: Icon(icon, color: Colors.white, size: 48)),
+      child: SizedBox(width: 48, height: 48, child: Icon(icon, color: AppTheme.white, size: 48)),
     );
   }
 }

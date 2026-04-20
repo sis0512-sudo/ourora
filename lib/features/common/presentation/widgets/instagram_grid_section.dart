@@ -59,7 +59,7 @@ class InstagramGridSection extends ConsumerWidget {
           side: const BorderSide(color: AppTheme.accentOrange),
           padding: EdgeInsets.zero,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-          overlayColor: Colors.transparent,
+          overlayColor: AppTheme.transparent,
         ),
         onPressed: () => ref.read(instagramControllerProvider.notifier).loadMore(),
         child: const Text(

@@ -44,11 +44,11 @@ class FidSection extends StatelessWidget {
               const SizedBox(height: 48),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.black),
+                  side: const BorderSide(color: AppTheme.black),
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  overlayColor: Colors.transparent,
-                  surfaceTintColor: Colors.transparent,
+                  overlayColor: AppTheme.transparent,
+                  surfaceTintColor: AppTheme.transparent,
                 ),
                 onPressed: () => context.go(FIDPScreen.route),
                 child: Text('Read More >>', style: AppTheme.navItem()),

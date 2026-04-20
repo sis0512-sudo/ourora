@@ -20,10 +20,10 @@ class YoutubeArrowButton extends StatelessWidget {
       width: kYoutubeArrowWidth,
       height: kYoutubeThumbnailHeight,
       child: Material(
-        color: Colors.transparent,
+        color: AppTheme.transparent,
         child: InkWell(
           onTap: disabled ? null : onTap,
-          child: Center(child: Icon(isPrev ? Icons.chevron_left : Icons.chevron_right, size: 30, color: disabled ? Colors.black26 : AppTheme.black)),
+          child: Center(child: Icon(isPrev ? Icons.chevron_left : Icons.chevron_right, size: 30, color: disabled ? AppTheme.black.withValues(alpha: 0.26) : AppTheme.black)),
         ),
       ),
     );

@@ -77,13 +77,13 @@ class _RegularCardState extends State<RegularCard> {
                         child: OutlinedButton(
                           onPressed: () => ImageViewerPopup.show(context, images: widget.curriculumImages!),
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.transparent),
+                            side: BorderSide(color: AppTheme.transparent),
                             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                            backgroundColor: _hovered ? Color(0xFFFF6161) : AppTheme.black,
+                            backgroundColor: _hovered ? AppTheme.coral : AppTheme.black,
                             foregroundColor: AppTheme.white,
-                            surfaceTintColor: Colors.transparent,
-                            overlayColor: Colors.transparent,
+                            surfaceTintColor: AppTheme.transparent,
+                            overlayColor: AppTheme.transparent,
                           ),
                           child: SizedBox(
                             width: 200,

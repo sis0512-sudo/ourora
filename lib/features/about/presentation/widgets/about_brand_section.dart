@@ -88,7 +88,7 @@ class _AboutBrandSectionState extends State<AboutBrandSection> {
                       '우리는 저마다 자신만의 빛을 가지고 있습니다.\n'
                       '오로라공방은 그 빛이 지구의 북극과 남극에서 나타나는 오로라처럼, 더욱 아름답고 신비롭게 빛나도록 다듬고 만드는 공간이 되고 싶습니다.\n'
                       '모두가 자신의 작품을 통해 세상 속 또 하나의 빛을 비추고, 그 과정에서 당신의 우아한 삶을 추구합니다.',
-                      style: AppTheme.brandBodyText().copyWith(fontSize: 15, color: Colors.white70),
+                      style: AppTheme.brandBodyText().copyWith(fontSize: 15, color: AppTheme.white.withValues(alpha: 0.70)),
                       textAlign: TextAlign.center,
                     ),
                   ],

@@ -72,7 +72,7 @@ class _FeatureCardWidget extends StatelessWidget {
             width: 158,
             height: 35,
             child: TextButton(
-              style: TextButton.styleFrom(backgroundColor: Colors.transparent, padding: EdgeInsets.zero),
+              style: TextButton.styleFrom(backgroundColor: AppTheme.transparent, padding: EdgeInsets.zero),
               onPressed: () => context.go(card.route),
               child: Text('Read More >', style: AppTheme.navItem().copyWith(fontSize: 14)),
             ),

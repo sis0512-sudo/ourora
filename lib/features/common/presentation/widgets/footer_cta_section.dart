@@ -88,8 +88,8 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
                   OutlinedButton(
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      side: const BorderSide(color: Colors.white, width: 1.5),
+                      foregroundColor: AppTheme.white,
+                      side: const BorderSide(color: AppTheme.white, width: 1.5),
                       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                     ),
                     child: Text('Read More >>', style: const TextStyle(fontSize: 16, letterSpacing: 0.5)),

@@ -21,7 +21,7 @@ class MembershipShareSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               MembershipCard(
-                bgColor: Color(0xFFFF6161),
+                bgColor: AppTheme.coral,
                 title: '자유반',
                 subtitle: 'FREE PASS MEMBERSHIP',
                 description:
@@ -31,7 +31,7 @@ class MembershipShareSection extends StatelessWidget {
                     '(주문제작, 판매상품 제작 등 ​상업적 목적의 이용은 불가능합니다)',
               ),
               MembershipCard(
-                bgColor: Color(0xFFB08484),
+                bgColor: AppTheme.rosewood,
                 title: '연구반',
                 subtitle: 'RESEARCH & TRAINING MEMBERSHIP',
                 description:
