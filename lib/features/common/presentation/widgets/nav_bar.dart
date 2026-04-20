@@ -90,7 +90,7 @@ class _NavItemState extends State<_NavItem> {
         child: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 150),
           style: AppTheme.navItem().copyWith(color: _hovered ? AppTheme.red : AppTheme.textGray),
-          child: Text(widget.label),
+          child: SelectionContainer.disabled(child: Text(widget.label)),
         ),
       ),
     );
@@ -179,7 +179,7 @@ class _ClassNavItemState extends State<_ClassNavItem> {
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 150),
             style: AppTheme.navItem().copyWith(color: _hovered ? AppTheme.red : AppTheme.textGray),
-            child: const Text('CLASS'),
+            child: const SelectionContainer.disabled(child: Text('CLASS')),
           ),
         ),
       ),
@@ -234,7 +234,7 @@ class _DropdownItemState extends State<_DropdownItem> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           color: _hovered ? AppTheme.lightGray : AppTheme.white,
-          child: Text(widget.label, style: AppTheme.navItem().copyWith(fontSize: 12)),
+          child: SelectionContainer.disabled(child: Text(widget.label, style: AppTheme.navItem().copyWith(fontSize: 12))),
         ),
       ),
     );

@@ -22,7 +22,9 @@ class ContactScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(delegate: NavBarDelegate(), pinned: true),
-          SliverToBoxAdapter(child: const SizedBox(height: 450, child: ContactMapView())),
+          SliverToBoxAdapter(
+            child: Container(color: AppTheme.white, height: 450, child: ContactMapView()),
+          ),
           SliverToBoxAdapter(
             child: Container(
               color: AppTheme.white,

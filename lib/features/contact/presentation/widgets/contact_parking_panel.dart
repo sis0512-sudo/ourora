@@ -16,9 +16,10 @@ class ContactParkingPanel extends StatelessWidget {
     return Container(
       color: AppTheme.white,
       padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 60),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      child: SelectionArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           TitleWidget(title: '주차 안내', isSubTitle: false),
           const SizedBox(height: 32),
           Text('공영주차장', style: bs),
@@ -39,6 +40,7 @@ class ContactParkingPanel extends StatelessWidget {
             items: [TextSpan(text: '보성팰리스(바로 뒷건물) : 서울 양천구 오목로 232')],
           ),
         ],
+        ),
       ),
     );
   }

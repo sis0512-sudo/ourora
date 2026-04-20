@@ -30,8 +30,8 @@ class BulletList extends StatelessWidget {
               children: [
                 Text('• ', style: itemBaseStyle.copyWith(fontWeight: FontWeight.bold, height: 1.5)),
                 Expanded(
-                  child: RichText(
-                    text: TextSpan(
+                  child: SelectableText.rich(
+                    TextSpan(
                       style: itemBaseStyle.copyWith(height: 1.5, fontWeight: isLast && boldLast ? FontWeight.bold : FontWeight.normal),
                       children: [item],
                     ),
