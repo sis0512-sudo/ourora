@@ -42,7 +42,7 @@ class _YoutubeCardState extends State<YoutubeCard> {
                   Positioned.fill(
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      color: _hovered ? Colors.black.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.25),
+                      color: _hovered ? AppTheme.black.withValues(alpha: 0.5) : AppTheme.black.withValues(alpha: 0.25),
                     ),
                   ),
                   Positioned.fill(
@@ -55,20 +55,33 @@ class _YoutubeCardState extends State<YoutubeCard> {
                     right: 8,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                      color: Colors.black.withValues(alpha: 0.75),
-                      child: Text(widget.video.duration, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500)),
+                      color: AppTheme.black.withValues(alpha: 0.75),
+                      child: Text(
+                        widget.video.duration,
+                        style: const TextStyle(color: AppTheme.white, fontSize: 12, fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
-                child: Text(widget.video.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.black, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis),
+                child: Text(
+                  widget.video.title,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.black, height: 1.4),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               if (widget.video.description.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-                  child: Text(widget.video.description.replaceAll('\n', ' '), style: TextStyle(fontSize: 12, color: AppTheme.textGray.withValues(alpha: 0.8), height: 1.6), maxLines: 2, overflow: TextOverflow.ellipsis),
+                  child: Text(
+                    widget.video.description.replaceAll('\n', ' '),
+                    style: TextStyle(fontSize: 12, color: AppTheme.textGray.withValues(alpha: 0.8), height: 1.6),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
             ],
           ),
@@ -91,12 +104,12 @@ class _PlayIconPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final circlePaint = Paint()
-      ..color = Colors.white
+      ..color = AppTheme.white
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
     final trianglePaint = Paint()
-      ..color = Colors.white
+      ..color = AppTheme.white
       ..style = PaintingStyle.fill;
 
     final center = Offset(size.width / 2, size.height / 2);

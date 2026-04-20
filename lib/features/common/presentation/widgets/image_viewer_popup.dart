@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ourora/config/theme.dart';
 
 class ImageViewerPopup extends StatefulWidget {
   final List<String> images;
   final int initialIndex;
 
-  const ImageViewerPopup({
-    super.key,
-    required this.images,
-    this.initialIndex = 0,
-  });
+  const ImageViewerPopup({super.key, required this.images, this.initialIndex = 0});
 
-  static Future<void> show(
-    BuildContext context, {
-    required List<String> images,
-    int initialIndex = 0,
-  }) {
+  static Future<void> show(BuildContext context, {required List<String> images, int initialIndex = 0}) {
     return showDialog(
       context: context,
       barrierColor: Colors.black54,
@@ -64,37 +57,25 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
             child: GestureDetector(
               onTap: () {}, // 이미지 영역 탭은 닫기 방지
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.9,
-                  maxHeight: MediaQuery.of(context).size.height * 0.85,
-                ),
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.9, maxHeight: MediaQuery.of(context).size.height * 0.85),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     // 이미지
-                    Image.asset(
-                      widget.images[_current],
-                      fit: BoxFit.contain,
-                    ),
+                    Image.asset(widget.images[_current], fit: BoxFit.contain),
 
                     // 좌측 버튼
                     if (widget.images.length > 1)
                       Positioned(
                         left: 8,
-                        child: _NavButton(
-                          icon: Icons.chevron_left,
-                          onTap: _current > 0 ? _prev : null,
-                        ),
+                        child: _NavButton(icon: Icons.chevron_left, onTap: _current > 0 ? _prev : null),
                       ),
 
                     // 우측 버튼
                     if (widget.images.length > 1)
                       Positioned(
                         right: 8,
-                        child: _NavButton(
-                          icon: Icons.chevron_right,
-                          onTap: _current < widget.images.length - 1 ? _next : null,
-                        ),
+                        child: _NavButton(icon: Icons.chevron_right, onTap: _current < widget.images.length - 1 ? _next : null),
                       ),
 
                     // 닫기 버튼
@@ -106,11 +87,8 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                         child: Container(
                           width: 32,
                           height: 32,
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.close, color: Colors.white, size: 18),
+                          decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                          child: const Icon(Icons.close, color: AppTheme.white, size: 18),
                         ),
                       ),
                     ),
@@ -126,10 +104,7 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                               width: i == _current ? 20 : 8,
                               height: 8,
                               margin: const EdgeInsets.symmetric(horizontal: 3),
-                              decoration: BoxDecoration(
-                                color: i == _current ? Colors.white : Colors.white54,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
+                              decoration: BoxDecoration(color: i == _current ? AppTheme.white : Colors.white54, borderRadius: BorderRadius.circular(4)),
                             );
                           }),
                         ),
@@ -158,10 +133,7 @@ class _NavButton extends StatelessWidget {
       child: Container(
         width: 40,
         height: 40,
-        decoration: BoxDecoration(
-          color: onTap != null ? Colors.black54 : Colors.black26,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: onTap != null ? Colors.black54 : Colors.black26, shape: BoxShape.circle),
         child: Icon(icon, color: onTap != null ? Colors.white : Colors.white38, size: 24),
       ),
     );

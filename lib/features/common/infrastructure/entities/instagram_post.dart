@@ -5,6 +5,7 @@ class InstagramPost {
   final String? thumbnailUrl;
   final String permalink;
   final DateTime timestamp;
+  final String? caption;
 
   const InstagramPost({
     required this.id,
@@ -13,6 +14,7 @@ class InstagramPost {
     this.thumbnailUrl,
     required this.permalink,
     required this.timestamp,
+    this.caption,
   });
 
   String get displayUrl =>

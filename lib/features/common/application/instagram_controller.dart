@@ -11,13 +11,7 @@ class InstagramFeedState {
   final String? nextCursor;
   final String? error;
 
-  const InstagramFeedState({
-    this.posts = const [],
-    this.isLoading = false,
-    this.hasMore = true,
-    this.nextCursor,
-    this.error,
-  });
+  const InstagramFeedState({this.posts = const [], this.isLoading = false, this.hasMore = true, this.nextCursor, this.error});
 
   InstagramFeedState copyWith({
     List<InstagramPost>? posts,
