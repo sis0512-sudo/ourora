@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
 
 class TitleWidget extends StatefulWidget {
   final String title;
@@ -20,8 +19,17 @@ class _TitleWidgetState extends State<TitleWidget> {
     return Column(
       crossAxisAlignment: widget.alignment ?? CrossAxisAlignment.start,
       children: [
-        Text(widget.title, style: widget.isSubTitle ? const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black) : AppTheme.pageTitle()),
-        if (!widget.hideDivider) TitleDivider(isSubTitle: widget.isSubTitle),
+        Text(
+          widget.title,
+          style: widget.isSubTitle ? const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black) : AppTheme.pageTitle(),
+        ),
+        if (!widget.hideDivider)
+          Container(
+            width: 36,
+            height: widget.isSubTitle ? 3 : 6,
+            color: AppTheme.lineGray,
+            margin: EdgeInsets.only(top: widget.isSubTitle ? 4 : 6),
+          ),
       ],
     );
   }

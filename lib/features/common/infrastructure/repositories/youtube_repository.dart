@@ -1,28 +1,37 @@
 import 'dart:convert';
 
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
-import 'package:ourora/features/common/domain/youtube_video.dart';
-import 'package:ourora/features/common/utils/constants.dart';
+import 'package:ourora/features/common/domain/failures/failure.dart';
+import 'package:ourora/features/common/infrastructure/entities/youtube_video.dart';
+import 'package:ourora/features/common/utils/utils.dart';
 
 class YoutubeRepository {
+  //todo apikey 서버로 옮기고 정보 저장해놓는 식으로 바꾸기
+
+  static const String youtubeApiKey = 'AIzaSyBxMKAcT5pecsy-2lYrFnjE47PMPWImPHE';
   static const _baseUrl = 'https://www.googleapis.com/youtube/v3/videos';
 
-  Future<List<YoutubeVideo>> fetchVideos(List<String> videoIds) async {
-    final ids = videoIds.join(',');
-    final uri = Uri.parse('$_baseUrl?id=$ids&part=snippet,contentDetails&key=${AppConstants.youtubeApiKey}');
+  Future<Either<Failure, List<YoutubeVideo>>> fetchVideos(List<String> videoIds) async {
+    try {
+      final ids = videoIds.join(',');
+      final uri = Uri.parse('$_baseUrl?id=$ids&part=snippet,contentDetails&key=${youtubeApiKey}');
 
-    final response = await http.get(uri);
-    if (response.statusCode != 200) {
-      throw Exception('YouTube API error: ${response.statusCode}');
+      final response = await http.get(uri);
+      if (response.statusCode != 200) {
+        throw Exception('YouTube API error: ${response.statusCode}');
+      }
+
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final items = data['items'] as List<dynamic>;
+
+      // API는 요청 순서를 보장하지 않으므로 ID 순으로 정렬
+      final Map<String, YoutubeVideo> byId = {for (final item in items) item['id'] as String: _parseItem(item)};
+
+      return right(videoIds.where(byId.containsKey).map((id) => byId[id]!).toList());
+    } catch (e) {
+      return Utils.debugLeft(e);
     }
-
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    final items = data['items'] as List<dynamic>;
-
-    // API는 요청 순서를 보장하지 않으므로 ID 순으로 정렬
-    final Map<String, YoutubeVideo> byId = {for (final item in items) item['id'] as String: _parseItem(item)};
-
-    return videoIds.where(byId.containsKey).map((id) => byId[id]!).toList();
   }
 
   YoutubeVideo _parseItem(Map<String, dynamic> item) {

@@ -15,7 +15,6 @@ class InstagramPost {
     required this.timestamp,
   });
 
-  // 그리드에 표시할 URL: 영상은 썸네일, 이미지는 원본
   String get displayUrl =>
       mediaType == 'VIDEO' ? (thumbnailUrl ?? mediaUrl) : mediaUrl;
 }
