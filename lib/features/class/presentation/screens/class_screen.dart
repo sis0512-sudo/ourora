@@ -22,10 +22,11 @@ class ClassScreen extends StatelessWidget {
               color: AppTheme.white,
               width: double.infinity,
               padding: AppConstants.horizontalPadding,
-              child: const Column(children: [ClassHeaderSection(), ClassCourseCardsSection(), ClassCommonGuidelinesSection(), ClassEnvironmentSection()]),
+              child: const Column(
+                children: [ClassHeaderSection(), ClassCourseCardsSection(), ClassCommonGuidelinesSection(), ClassEnvironmentSection(), SizedBox(height: 80)],
+              ),
             ),
           ),
-
           const SliverToBoxAdapter(child: SiteFooter()),
         ],
       ),
