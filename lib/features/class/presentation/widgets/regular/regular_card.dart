@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/presentation/widgets/image_viewer_popup.dart';
 
 class RegularCard extends StatefulWidget {
   final String title;
@@ -30,6 +31,8 @@ class RegularCard extends StatefulWidget {
 }
 
 class _RegularCardState extends State<RegularCard> {
+  bool _hovered = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -75,23 +78,28 @@ class _RegularCardState extends State<RegularCard> {
                   if (widget.curriculumImages != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 40, bottom: 20),
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.transparent),
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                          backgroundColor: AppTheme.black,
-                          foregroundColor: AppTheme.white,
-                          surfaceTintColor: Colors.transparent,
-                          overlayColor: Colors.transparent,
-                        ),
-                        child: SizedBox(
-                          width: 200,
-                          child: Center(
-                            child: Text(
-                              '커리큘럼 자세히 보기',
-                              style: GoogleFonts.notoSansKr(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        onEnter: (_) => setState(() => _hovered = true),
+                        onExit: (_) => setState(() => _hovered = false),
+                        child: OutlinedButton(
+                          onPressed: () => ImageViewerPopup.show(context, images: widget.curriculumImages!),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Colors.transparent),
+                            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
+                            backgroundColor: _hovered ? Color(0xFFFF6161) : AppTheme.black,
+                            foregroundColor: AppTheme.white,
+                            surfaceTintColor: Colors.transparent,
+                            overlayColor: Colors.transparent,
+                          ),
+                          child: SizedBox(
+                            width: 200,
+                            child: Center(
+                              child: Text(
+                                '커리큘럼 자세히 보기',
+                                style: GoogleFonts.notoSansKr(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
+                              ),
                             ),
                           ),
                         ),
