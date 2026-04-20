@@ -1,7 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/presentation/widgets/bullet_list.dart';
 import 'package:ourora/features/common/presentation/widgets/image_viewer_popup.dart';
 
 class RegularCard extends StatefulWidget {
@@ -62,18 +62,10 @@ class _RegularCardState extends State<RegularCard> {
                   if (widget.image != null) Padding(padding: const EdgeInsets.only(bottom: 16), child: widget.image),
                   Text('${widget.description}\n\n', style: widget.descriptionStyle),
                   if (widget.bullets != null)
-                    ...widget.bullets!.mapIndexed((index, text) {
-                      bool isLast = index == widget.bullets!.length - 1;
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('• ', style: widget.descriptionStyle.copyWith(fontWeight: FontWeight.bold)),
-                          Expanded(
-                            child: Text(text, style: widget.descriptionStyle.copyWith(fontWeight: isLast ? FontWeight.bold : FontWeight.normal)),
-                          ),
-                        ],
-                      );
-                    }),
+                    BulletList(
+                      items: widget.bullets!.map((text) => TextSpan(text: text)).toList(),
+                      itemStyle: widget.descriptionStyle,
+                    ),
                   if (widget.note != null) Text('\n\n${widget.note!}', style: widget.descriptionStyle),
                   if (widget.curriculumImages != null)
                     Padding(
