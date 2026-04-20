@@ -85,3 +85,6 @@ flutter:
     - family: BMHanna
       fonts:
         - asset: assets/fonts/BMHanna.otf
+    - family: ArialBlack
+      fonts:
+        - asset: assets/fonts/arial_black.ttf

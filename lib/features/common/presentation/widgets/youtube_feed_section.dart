@@ -175,7 +175,7 @@ class _YoutubeCardState extends State<_YoutubeCard> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                       color: Colors.black.withValues(alpha: 0.75),
-                      child: Text(widget.video.duration, style: AppTheme.videoDuration()),
+                      child: Text(widget.video.duration, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500)),
                     ),
                   ),
                 ],
@@ -183,12 +183,12 @@ class _YoutubeCardState extends State<_YoutubeCard> {
               // 제목 + 설명
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
-                child: Text(widget.video.title, style: AppTheme.videoCardTitle(), maxLines: 2, overflow: TextOverflow.ellipsis),
+                child: Text(widget.video.title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.black, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis),
               ),
               if (widget.video.description.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-                  child: Text(widget.video.description.replaceAll('\n', ' '), style: AppTheme.videoCardDesc(), maxLines: 2, overflow: TextOverflow.ellipsis),
+                  child: Text(widget.video.description.replaceAll('\n', ' '), style: TextStyle(fontSize: 12, color: AppTheme.textGray.withValues(alpha: 0.8), height: 1.6), maxLines: 2, overflow: TextOverflow.ellipsis),
                 ),
             ],
           ),

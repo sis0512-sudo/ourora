@@ -20,7 +20,7 @@ class _TitleWidgetState extends State<TitleWidget> {
     return Column(
       crossAxisAlignment: widget.alignment ?? CrossAxisAlignment.start,
       children: [
-        Text(widget.title, style: widget.isSubTitle ? AppTheme.pageSubTitle() : AppTheme.pageTitle()),
+        Text(widget.title, style: widget.isSubTitle ? const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black) : AppTheme.pageTitle()),
         if (!widget.hideDivider) TitleDivider(isSubTitle: widget.isSubTitle),
       ],
     );

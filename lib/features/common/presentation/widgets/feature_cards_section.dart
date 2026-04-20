@@ -66,7 +66,7 @@ class _FeatureCardWidget extends StatelessWidget {
           const SizedBox(height: 24),
           Text(card.subtitle, style: AppTheme.bodyKorean()),
           const SizedBox(height: 24),
-          Text(card.desc, style: AppTheme.bodyKoreanSmall(), textAlign: TextAlign.center),
+          Text(card.desc, style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 14, color: AppTheme.black), textAlign: TextAlign.center),
           const SizedBox(height: 16),
           SizedBox(
             width: 158,

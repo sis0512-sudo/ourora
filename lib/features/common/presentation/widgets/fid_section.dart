@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 
@@ -17,7 +18,7 @@ class FidSection extends StatelessWidget {
             children: [
               Text(
                 '오로라 공방은?',
-                style: AppTheme.fidSectionHeader(),
+                style: const TextStyle(fontFamily: 'BMHanna', fontSize: 20, fontWeight: FontWeight.w700, letterSpacing: 4, color: AppTheme.darkBg),
               ),
               const SizedBox(height: 12),
               Container(
@@ -28,17 +29,15 @@ class FidSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 48),
-              SizedBox(
-                height: 240,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: AppConstants.fidItems.map((item) {
-                    return SizedBox(
-                      width: 245,
-                      child: _FidItem(letter: item['letter']!, title: item['title']!, desc: item['desc']!),
-                    );
-                  }).toList(),
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: AppConstants.fidItems.map((item) {
+                  return SizedBox(
+                    width: 245,
+                    child: _FidItem(letter: item['letter']!, title: item['title']!, desc: item['desc']!),
+                  );
+                }).toList(),
               ),
               const SizedBox(height: 48),
               OutlinedButton(
@@ -70,13 +69,16 @@ class _FidItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(letter, style: AppTheme.fidLetter()),
-          const SizedBox(height: 8),
-          Text(title, style: AppTheme.fidItemTitle()),
+          Text(
+            letter,
+            style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 70, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 12),
-          Text(desc, style: AppTheme.bodyKoreanSmall(), textAlign: TextAlign.center),
+          Text(title, style: GoogleFonts.nanumGothic(fontSize: 16, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 16),
+          Text(desc, style: GoogleFonts.nanumGothic(fontSize: 14), textAlign: TextAlign.center),
         ],
       ),
     );

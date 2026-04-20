@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:ourora/features/about/presentation/screens/fidp_screen.dart';
 
 class AboutFidpSection extends StatelessWidget {
   const AboutFidpSection({super.key});
@@ -16,7 +18,7 @@ class AboutFidpSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('F+I+D+P', style: AppTheme.aboutFidpTitle(), textAlign: TextAlign.center),
+              Text('F+I+D+P', style: const TextStyle(fontFamily: 'sans-serif', fontSize: 36, fontWeight: FontWeight.w300, letterSpacing: 3, color: AppTheme.black), textAlign: TextAlign.center),
               const SizedBox(height: 20),
               Container(width: double.infinity, height: 1, color: AppTheme.borderGray),
               const SizedBox(height: 28),
@@ -27,7 +29,7 @@ class AboutFidpSection extends StatelessWidget {
               ),
               const SizedBox(height: 36),
               OutlinedButton(
-                onPressed: () => launchUrl(Uri.parse('https://www.ourorastudio.com/fidp'), mode: LaunchMode.externalApplication),
+                onPressed: () => context.go(FIDPScreen.route),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
@@ -36,7 +38,7 @@ class AboutFidpSection extends StatelessWidget {
                   surfaceTintColor: Colors.transparent,
                   overlayColor: Colors.transparent,
                 ),
-                child: Text('더 읽어보기 >>', style: AppTheme.fidpButton()),
+                child: Text('더 읽어보기 >>', style: GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: 1.5)),
               ),
             ],
           ),

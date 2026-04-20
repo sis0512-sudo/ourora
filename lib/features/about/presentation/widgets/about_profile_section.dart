@@ -22,8 +22,8 @@ class _ProfileContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('CHIEF', style: AppTheme.chiefHeading()),
-          Text('공방장 프로필', style: AppTheme.profileSubheading()),
+          Text('CHIEF', style: const TextStyle(fontFamily: 'sans-serif', fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 11.5, color: AppTheme.textGray)),
+          Text('공방장 프로필', style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 17, fontWeight: FontWeight.normal, letterSpacing: 4, color: AppTheme.textGray)),
           const SizedBox(height: 32),
           _Section(
             title: 'EDUCATION',
@@ -103,7 +103,7 @@ class _LinkItem extends _ProfileItem {
         Text('$label - ', style: AppTheme.profileText()),
         GestureDetector(
           onTap: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
-          child: Text(url, style: AppTheme.profileLink()),
+          child: Text(url, style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 10, height: 2.5, color: AppTheme.textGray, decoration: TextDecoration.underline)),
         ),
       ],
     );
@@ -123,7 +123,7 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppTheme.profileSectionTitle()),
+          Text(title, style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 18, fontWeight: FontWeight.bold, height: 2.5, letterSpacing: 0.14, color: AppTheme.textGray)),
           ...items.map((item) => item.build(context)),
           const SizedBox(height: 8),
         ],

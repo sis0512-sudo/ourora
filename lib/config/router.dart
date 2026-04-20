@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ourora/features/about/presentation/screens/about_screen.dart';
+import 'package:ourora/features/about/presentation/screens/fidp_screen.dart';
 import 'package:ourora/features/class/presentation/screens/class_screen.dart';
 import 'package:ourora/features/class/presentation/screens/ourora8_screen.dart';
 import 'package:ourora/features/class/presentation/screens/regular_course_screen.dart';
@@ -24,6 +25,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: HomeScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const HomeScreen())),
       GoRoute(path: AboutScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const AboutScreen())),
+      GoRoute(path: FIDPScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const FIDPScreen())),
       GoRoute(path: WorksScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const WorksScreen())),
       GoRoute(path: ClassScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const ClassScreen())),
       GoRoute(path: RegularCourseScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const RegularCourseScreen())),

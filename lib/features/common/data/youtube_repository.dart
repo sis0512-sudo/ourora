@@ -9,9 +9,7 @@ class YoutubeRepository {
 
   Future<List<YoutubeVideo>> fetchVideos(List<String> videoIds) async {
     final ids = videoIds.join(',');
-    final uri = Uri.parse(
-      '$_baseUrl?id=$ids&part=snippet,contentDetails&key=${AppConstants.youtubeApiKey}',
-    );
+    final uri = Uri.parse('$_baseUrl?id=$ids&part=snippet,contentDetails&key=${AppConstants.youtubeApiKey}');
 
     final response = await http.get(uri);
     if (response.statusCode != 200) {
@@ -22,9 +20,7 @@ class YoutubeRepository {
     final items = data['items'] as List<dynamic>;
 
     // API는 요청 순서를 보장하지 않으므로 ID 순으로 정렬
-    final Map<String, YoutubeVideo> byId = {
-      for (final item in items) item['id'] as String: _parseItem(item),
-    };
+    final Map<String, YoutubeVideo> byId = {for (final item in items) item['id'] as String: _parseItem(item)};
 
     return videoIds.where(byId.containsKey).map((id) => byId[id]!).toList();
   }
@@ -33,9 +29,7 @@ class YoutubeRepository {
     final snippet = item['snippet'] as Map<String, dynamic>;
     final contentDetails = item['contentDetails'] as Map<String, dynamic>;
     final thumbnails = snippet['thumbnails'] as Map<String, dynamic>;
-    final thumbnail =
-        (thumbnails['high'] ?? thumbnails['medium'] ?? thumbnails['default'])
-            as Map<String, dynamic>;
+    final thumbnail = (thumbnails['high'] ?? thumbnails['medium'] ?? thumbnails['default']) as Map<String, dynamic>;
 
     return YoutubeVideo(
       videoId: item['id'] as String,
@@ -46,7 +40,6 @@ class YoutubeRepository {
     );
   }
 
-  // ISO 8601 duration (PT8M17S) → "08:17"
   String _parseDuration(String iso) {
     final match = RegExp(r'PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?').firstMatch(iso);
     if (match == null) return '00:00';

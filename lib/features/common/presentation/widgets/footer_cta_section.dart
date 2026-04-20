@@ -75,13 +75,13 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
                 children: [
                   Text(
                     'YOUR OWN LIGHT',
-                    style: AppTheme.footerCtaTitle().copyWith(height: 1.2),
+                    style: TextStyle(fontFamily: 'ArialBlack', fontSize: 70, fontWeight: FontWeight.w900, color: AppTheme.white, letterSpacing: 4, height: 1.2),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'MAKE YOU SHINE IN THE WORLD',
-                    style: AppTheme.footerCtaSubtitle().copyWith(letterSpacing: 0.05 * 24),
+                    style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 24, fontWeight: FontWeight.w400, color: AppTheme.white, letterSpacing: 1.2),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
@@ -92,7 +92,7 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
                       side: const BorderSide(color: Colors.white, width: 1.5),
                       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                     ),
-                    child: Text('Read More >>', style: AppTheme.ctaButton()),
+                    child: Text('Read More >>', style: const TextStyle(fontSize: 16, letterSpacing: 0.5)),
                   ),
                 ],
               ),
