@@ -9,6 +9,8 @@ import 'package:ourora/features/membership/presentation/widgets/membership_partn
 import 'package:ourora/features/membership/presentation/widgets/membership_share_section.dart';
 
 class MembershipScreen extends StatelessWidget {
+  static const String route = '/membership';
+
   const MembershipScreen({super.key});
 
   @override

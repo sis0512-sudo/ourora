@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/class/presentation/widgets/class_common_guidelines_section.dart';
-import 'package:ourora/features/class/presentation/widgets/class_course_cards_section.dart';
-import 'package:ourora/features/class/presentation/widgets/class_environment_section.dart';
-import 'package:ourora/features/class/presentation/widgets/class_header_section.dart';
+import 'package:ourora/features/class/presentation/widgets/class/class_common_guidelines_section.dart';
+import 'package:ourora/features/class/presentation/widgets/class/class_course_cards_section.dart';
+import 'package:ourora/features/class/presentation/widgets/class/class_environment_section.dart';
+import 'package:ourora/features/class/presentation/widgets/class/class_header_section.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 
 class ClassScreen extends StatelessWidget {
+  static const String route = '/class';
+
   const ClassScreen({super.key});
 
   @override

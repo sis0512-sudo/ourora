@@ -8,8 +8,17 @@ class ClassCourseCard extends StatefulWidget {
   final String description;
   final String imagePath;
   final bool showLogo;
+  final VoidCallback? onTap;
 
-  const ClassCourseCard({super.key, required this.title, required this.subTitle, required this.description, required this.imagePath, this.showLogo = false});
+  const ClassCourseCard({
+    super.key,
+    required this.title,
+    required this.subTitle,
+    required this.description,
+    required this.imagePath,
+    required this.onTap,
+    this.showLogo = false,
+  });
 
   @override
   State<ClassCourseCard> createState() => _ClassCourseCardState();
@@ -50,7 +59,7 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                     onEnter: (_) => setState(() => _hovered = true),
                     onExit: (_) => setState(() => _hovered = false),
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: widget.onTap,
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: Colors.transparent),
                         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 19),

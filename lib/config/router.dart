@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ourora/features/about/presentation/screens/about_screen.dart';
 import 'package:ourora/features/class/presentation/screens/class_screen.dart';
+import 'package:ourora/features/class/presentation/screens/ourora8_screen.dart';
+import 'package:ourora/features/class/presentation/screens/regular_course_screen.dart';
 import 'package:ourora/features/common/presentation/screens/home_screen.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
@@ -20,30 +22,14 @@ CustomTransitionPage<void> _noTransitionPage(GoRouterState state, Widget child) 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     routes: [
-      GoRoute(
-        path: '/',
-        pageBuilder: (context, state) => _noTransitionPage(state, const HomeScreen()),
-      ),
-      GoRoute(
-        path: '/about',
-        pageBuilder: (context, state) => _noTransitionPage(state, const AboutScreen()),
-      ),
-      GoRoute(
-        path: '/works',
-        pageBuilder: (context, state) => _noTransitionPage(state, const WorksScreen()),
-      ),
-      GoRoute(
-        path: '/class',
-        pageBuilder: (context, state) => _noTransitionPage(state, const ClassScreen()),
-      ),
-      GoRoute(
-        path: '/membership',
-        pageBuilder: (context, state) => _noTransitionPage(state, const MembershipScreen()),
-      ),
-      GoRoute(
-        path: '/contact',
-        pageBuilder: (context, state) => _noTransitionPage(state, const ContactScreen()),
-      ),
+      GoRoute(path: HomeScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const HomeScreen())),
+      GoRoute(path: AboutScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const AboutScreen())),
+      GoRoute(path: WorksScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const WorksScreen())),
+      GoRoute(path: ClassScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const ClassScreen())),
+      GoRoute(path: RegularCourseScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const RegularCourseScreen())),
+      GoRoute(path: Ourora8Screen.route, pageBuilder: (context, state) => _noTransitionPage(state, const Ourora8Screen())),
+      GoRoute(path: MembershipScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const MembershipScreen())),
+      GoRoute(path: ContactScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const ContactScreen())),
     ],
   );
 });

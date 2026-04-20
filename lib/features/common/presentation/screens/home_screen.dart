@@ -8,6 +8,8 @@ import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_feed_section.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const String route = '/';
+
   const HomeScreen({super.key});
 
   @override

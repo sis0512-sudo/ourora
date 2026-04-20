@@ -3,6 +3,8 @@ import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 
 class WorksScreen extends StatelessWidget {
+  static const String route = '/works';
+
   const WorksScreen({super.key});
 
   @override
@@ -10,15 +12,8 @@ class WorksScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverPersistentHeader(
-            delegate: NavBarDelegate(),
-            pinned: true,
-          ),
-          const SliverFillRemaining(
-            child: Center(
-              child: Text('WORKS — 작품과 작업들'),
-            ),
-          ),
+          SliverPersistentHeader(delegate: NavBarDelegate(), pinned: true),
+          const SliverFillRemaining(child: Center(child: Text('WORKS — 작품과 작업들'))),
           const SliverToBoxAdapter(child: SiteFooter()),
         ],
       ),

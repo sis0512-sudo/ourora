@@ -10,10 +10,7 @@ class ClassEnvironmentSection extends StatelessWidget {
       child: Column(
         children: [
           BulletList(title: '수업 환경', items: ['작업대 : 작업실 2인용 3대, 기계실 2인용 1대, 1인용 2대, (필요시)확장테이블 1대', '기계실 장비 리스트']),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Image.asset('assets/images/machine_list.webp', width: double.maxFinite, fit: BoxFit.cover),
-          ),
+          Image.asset('assets/images/machine_list.webp', fit: BoxFit.cover, height: 780),
         ],
       ),
     );

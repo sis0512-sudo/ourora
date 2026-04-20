@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/about/presentation/screens/about_screen.dart';
+import 'package:ourora/features/class/presentation/screens/class_screen.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
+import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
+import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
+import 'package:ourora/features/works/presentation/screens/works_screen.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -37,12 +42,11 @@ class _DesktopMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const items = [
-      ('ABOUT', '/about'),
-      ('WORKS', '/works'),
-      ('CLASS', '/class'),
-      ('MEMBERSHIP', '/membership'),
-      // ('BOARD', '/board'),
-      ('CONTACT', '/contact'),
+      ('ABOUT', AboutScreen.route),
+      ('WORKS', WorksScreen.route),
+      ('CLASS', ClassScreen.route),
+      ('MEMBERSHIP', MembershipScreen.route),
+      ('CONTACT', ContactScreen.route),
     ];
 
     return Row(

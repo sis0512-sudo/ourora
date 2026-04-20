@@ -8,6 +8,8 @@ import 'package:ourora/features/contact/presentation/widgets/contact_map_view.da
 import 'package:ourora/features/contact/presentation/widgets/contact_parking_panel.dart';
 
 class ContactScreen extends StatelessWidget {
+  static const String route = '/contact';
+
   const ContactScreen({super.key, this.titleStyle, this.bodyStyle});
 
   final TextStyle? titleStyle;

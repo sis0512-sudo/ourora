@@ -6,6 +6,8 @@ import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 
 class AboutScreen extends StatelessWidget {
+  static const String route = '/about';
+
   const AboutScreen({super.key});
 
   @override
@@ -13,10 +15,7 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverPersistentHeader(
-            delegate: NavBarDelegate(),
-            pinned: true,
-          ),
+          SliverPersistentHeader(delegate: NavBarDelegate(), pinned: true),
           const SliverToBoxAdapter(child: AboutBrandSection()),
           const SliverToBoxAdapter(child: AboutFidpSection()),
           const SliverToBoxAdapter(child: AboutProfileSection()),

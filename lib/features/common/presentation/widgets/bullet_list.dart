@@ -21,7 +21,7 @@ class BulletList extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('• ', style: TextStyle(fontSize: 14, color: AppTheme.black, height: 1.8)),
+                Text('• ', style: AppTheme.bodyKorean().copyWith(fontWeight: FontWeight.bold)),
                 Expanded(child: Text(item, style: AppTheme.bodyKorean())),
               ],
             ),

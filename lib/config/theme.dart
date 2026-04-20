@@ -27,6 +27,7 @@ class AppTheme {
 
   static TextStyle bodyKoreanSmall() => const TextStyle(fontFamily: 'NanumGothic', fontSize: 14, color: black);
 
+  static TextStyle pageTitleCaption() => const TextStyle(fontFamily: 'NanumGothic', fontSize: 15, color: black);
   static TextStyle pageTitle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 28, color: black, letterSpacing: 4);
   static TextStyle pageSubTitle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: black);
 
