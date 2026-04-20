@@ -7,7 +7,6 @@ import 'package:ourora/features/about/presentation/screens/about_screen.dart';
 import 'package:ourora/features/class/presentation/screens/class_screen.dart';
 import 'package:ourora/features/class/presentation/screens/ourora8_screen.dart';
 import 'package:ourora/features/class/presentation/screens/regular_course_screen.dart';
-import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
 import 'package:ourora/features/works/presentation/screens/works_screen.dart';
@@ -19,8 +18,6 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isMobile = Responsive.isMobile(context);
-
     return Container(
       height: height,
       color: AppTheme.white,
@@ -35,7 +32,7 @@ class NavBar extends StatelessWidget {
               child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
             ),
           ),
-          if (isMobile) _MobileMenu() else _DesktopMenu(),
+          _DesktopMenu(),
         ],
       ),
     );
@@ -239,45 +236,6 @@ class _DropdownItemState extends State<_DropdownItem> {
           color: _hovered ? AppTheme.lightGray : AppTheme.white,
           child: Text(widget.label, style: AppTheme.navItem().copyWith(fontSize: 12)),
         ),
-      ),
-    );
-  }
-}
-
-class _MobileMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: IconButton(
-        icon: const Icon(Icons.menu, color: AppTheme.black),
-        onPressed: () {
-          showModalBottomSheet(context: context, builder: (_) => const _MobileDrawer());
-        },
-      ),
-    );
-  }
-}
-
-class _MobileDrawer extends StatelessWidget {
-  const _MobileDrawer();
-
-  @override
-  Widget build(BuildContext context) {
-    const items = [('ABOUT', '/about'), ('WORKS', '/works'), ('CLASS', '/class'), ('MEMBERSHIP', '/membership'), ('BOARD', '/board'), ('CONTACT', '/contact')];
-
-    return SafeArea(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: items.map((item) {
-          return ListTile(
-            title: Text(item.$1, style: AppTheme.navItem()),
-            onTap: () {
-              Navigator.pop(context);
-              context.go(item.$2);
-            },
-          );
-        }).toList(),
       ),
     );
   }

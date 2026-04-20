@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/about/presentation/screens/fidp_screen.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 
 class FidSection extends StatelessWidget {
@@ -45,8 +47,10 @@ class FidSection extends StatelessWidget {
                   side: const BorderSide(color: Colors.black),
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  overlayColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
                 ),
-                onPressed: () {},
+                onPressed: () => context.go(FIDPScreen.route),
                 child: Text('Read More >>', style: AppTheme.navItem()),
               ),
             ],
