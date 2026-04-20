@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
+import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
 
 class MembershipCommonTermsSection extends StatelessWidget {
   const MembershipCommonTermsSection({super.key});
@@ -18,11 +18,7 @@ class MembershipCommonTermsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          '공통 이용사항',
-          style: TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black),
-        ),
-        TitleDivider(isSubTitle: true),
+        TitleWidget(title: '공통 이용사항', isSubTitle: true),
         const SizedBox(height: 20),
         ..._items.map(
           (item) => Padding(
@@ -30,10 +26,7 @@ class MembershipCommonTermsSection extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '• ',
-                  style: TextStyle(fontSize: 14, color: AppTheme.black, height: 1.8),
-                ),
+                const Text('• ', style: TextStyle(fontSize: 14, color: AppTheme.black, height: 1.8)),
                 Expanded(child: Text(item, style: AppTheme.bodyKorean())),
               ],
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
+import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
 
 class ContactParkingPanel extends StatelessWidget {
   const ContactParkingPanel({super.key, this.titleStyle, this.bodyStyle});
@@ -10,7 +10,6 @@ class ContactParkingPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ts = titleStyle ?? AppTheme.contactTitle();
     final bs = bodyStyle ?? AppTheme.contactBody();
 
     Widget bullet(String text) => Padding(
@@ -30,8 +29,7 @@ class ContactParkingPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('주차 안내', style: ts),
-          const TitleDivider(),
+          TitleWidget(title: '주차 안내', isSubTitle: false),
           const SizedBox(height: 32),
           Text('공영주차장', style: bs),
           bullet('바로 앞 사거리 공유주차(약 50m) (평상시 약 1~2대 비어있음)'),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
+import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/membership/presentation/widgets/membership_common_terms_section.dart';
 import 'package:ourora/features/membership/presentation/widgets/membership_header_section.dart';
 import 'package:ourora/features/membership/presentation/widgets/membership_partnership_section.dart';
@@ -21,7 +22,7 @@ class MembershipScreen extends StatelessWidget {
             child: Container(
               color: AppTheme.white,
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 120),
+              padding: AppConstants.horizontalPadding,
               child: const Column(
                 children: [
                   MembershipHeaderSection(),

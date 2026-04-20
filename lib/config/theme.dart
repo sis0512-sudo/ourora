@@ -21,11 +21,14 @@ class AppTheme {
 
   static TextStyle heroTitle() => const TextStyle(fontFamily: 'Raleway', fontSize: 60, fontWeight: FontWeight.w700, color: white, height: 1.1);
 
-  static TextStyle sectionTitle() => GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: 3, color: black);
+  static TextStyle mainSectionTitle() => GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: 3, color: black);
 
   static TextStyle bodyKorean() => const TextStyle(fontFamily: 'NanumGothic', fontSize: 16, color: black);
 
   static TextStyle bodyKoreanSmall() => const TextStyle(fontFamily: 'NanumGothic', fontSize: 14, color: black);
+
+  static TextStyle pageTitle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 28, color: black, letterSpacing: 4);
+  static TextStyle pageSubTitle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: black);
 
   // Footer CTA
   static TextStyle footerCtaTitle() => const TextStyle(fontFamily: 'Arial Black', fontSize: 70, fontWeight: FontWeight.w900, color: white, letterSpacing: 4);
@@ -79,8 +82,6 @@ class AppTheme {
   static TextStyle fidpButton() => GoogleFonts.montserrat(fontSize: 13, fontWeight: FontWeight.w600, letterSpacing: 1.5);
 
   // Contact
-  static TextStyle contactTitle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 28, color: black);
-
   static TextStyle contactBody() => GoogleFonts.nanumMyeongjo(fontSize: 20, fontWeight: FontWeight.w400, height: 1.5, color: black);
 
   static ThemeData get themeData => ThemeData(

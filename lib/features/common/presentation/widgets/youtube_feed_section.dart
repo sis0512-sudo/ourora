@@ -65,7 +65,7 @@ class _YoutubeFeedSectionState extends ConsumerState<YoutubeFeedSection> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: _arrowWidth + 32),
-            child: Text('⠿  Youtube Feed', style: AppTheme.sectionTitle()),
+            child: Text('⠿  Youtube Feed', style: AppTheme.mainSectionTitle()),
           ),
           const SizedBox(height: 24),
           SizedBox(
@@ -175,10 +175,7 @@ class _YoutubeCardState extends State<_YoutubeCard> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                       color: Colors.black.withValues(alpha: 0.75),
-                      child: Text(
-                        widget.video.duration,
-                        style: AppTheme.videoDuration(),
-                      ),
+                      child: Text(widget.video.duration, style: AppTheme.videoDuration()),
                     ),
                   ),
                 ],
@@ -186,22 +183,12 @@ class _YoutubeCardState extends State<_YoutubeCard> {
               // 제목 + 설명
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
-                child: Text(
-                  widget.video.title,
-                  style: AppTheme.videoCardTitle(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: Text(widget.video.title, style: AppTheme.videoCardTitle(), maxLines: 2, overflow: TextOverflow.ellipsis),
               ),
               if (widget.video.description.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-                  child: Text(
-                    widget.video.description.replaceAll('\n', ' '),
-                    style: AppTheme.videoCardDesc(),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  child: Text(widget.video.description.replaceAll('\n', ' '), style: AppTheme.videoCardDesc(), maxLines: 2, overflow: TextOverflow.ellipsis),
                 ),
             ],
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
+import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,7 +12,6 @@ class ContactInfoPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ts = titleStyle ?? AppTheme.contactTitle();
     final bs = bodyStyle ?? AppTheme.contactBody();
 
     return Container(
@@ -22,8 +21,7 @@ class ContactInfoPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('주소 / 연락처', style: ts),
-          const TitleDivider(),
+          TitleWidget(title: '주소 / 연락처', isSubTitle: false),
           const SizedBox(height: 32),
           Text('주소 : 서울특별시 양천구 목동로21길 6', style: bs),
           Text('        지하1층 (우: 08022)', style: bs),

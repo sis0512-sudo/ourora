@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/presentation/widgets/title_divider.dart';
+import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
 import 'package:ourora/features/membership/presentation/widgets/membership_card.dart';
 
 class MembershipPartnershipSection extends StatelessWidget {
@@ -13,16 +13,9 @@ class MembershipPartnershipSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '협력 파트너십',
-            style: TextStyle(fontFamily: 'BMHanna', fontSize: 24, color: AppTheme.black),
-          ),
-          TitleDivider(isSubTitle: true),
+          TitleWidget(title: '협력 파트너십', isSubTitle: true),
           const SizedBox(height: 20),
-          Text(
-            '개인 / 팀 단위의 작품 활동, 또는 공방 창업 및 사업준비를 위한 협력 파트너십입니다.',
-            style: AppTheme.bodyKorean(),
-          ),
+          Text('개인 / 팀 단위의 작품 활동, 또는 공방 창업 및 사업준비를 위한 협력 파트너십입니다.', style: AppTheme.bodyKorean()),
           const SizedBox(height: 20),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,

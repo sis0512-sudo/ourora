@@ -22,6 +22,8 @@ void registerContactMapView() {
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.allowFullscreen = true;
+    iframe.setAttribute('loading', 'eager');
+    iframe.setAttribute('fetchpriority', 'high');
     return iframe;
   });
 }

@@ -4,27 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:ourora/config/theme.dart';
 
 enum FeatureCard {
-  workshop(
-    assetPath: 'assets/svgs/icon_workshop.svg',
-    title: 'WORKSHOP',
-    subtitle: '공방 소개',
-    desc: '공방에 대한 소개와 문화, 그리고 추구하는 목표와 방향을 이야기합니다.',
-    route: '/about',
-  ),
-  works(
-    assetPath: 'assets/svgs/icon_works.svg',
-    title: 'WORKS',
-    subtitle: '작품과 작업들',
-    desc: '오로라공방 구성원분들이 제작한 작품들과 작업들을 소개합니다.',
-    route: '/works',
-  ),
-  cls(
-    assetPath: 'assets/svgs/icon_class.svg',
-    title: 'CLASS',
-    subtitle: '다양한 목공 수업',
-    desc: '가구 디자인 및 목공 기술을 배울 수 있는 전문적인 수업에 참여하실 수 있습니다.',
-    route: '/class',
-  ),
+  workshop(assetPath: 'assets/svgs/icon_workshop.svg', title: 'WORKSHOP', subtitle: '공방 소개', desc: '공방에 대한 소개와 문화, 그리고 추구하는 목표와 방향을 이야기합니다.', route: '/about'),
+  works(assetPath: 'assets/svgs/icon_works.svg', title: 'WORKS', subtitle: '작품과 작업들', desc: '오로라공방 구성원분들이 제작한 작품들과 작업들을 소개합니다.', route: '/works'),
+  cls(assetPath: 'assets/svgs/icon_class.svg', title: 'CLASS', subtitle: '다양한 목공 수업', desc: '가구 디자인 및 목공 기술을 배울 수 있는 전문적인 수업에 참여하실 수 있습니다.', route: '/class'),
   membership(
     assetPath: 'assets/svgs/icon_membership.svg',
     title: 'MEMBERSHIP',
@@ -80,7 +62,7 @@ class _FeatureCardWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(card.assetPath, height: 90, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
           const SizedBox(height: 36),
-          Text(card.title, style: AppTheme.sectionTitle()),
+          Text(card.title, style: AppTheme.mainSectionTitle()),
           const SizedBox(height: 24),
           Text(card.subtitle, style: AppTheme.bodyKorean()),
           const SizedBox(height: 24),

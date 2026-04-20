@@ -33,6 +33,8 @@ class AboutFidpSection extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
                   foregroundColor: AppTheme.white,
                   backgroundColor: AppTheme.textGray,
+                  surfaceTintColor: Colors.transparent,
+                  overlayColor: Colors.transparent,
                 ),
                 child: Text('더 읽어보기 >>', style: AppTheme.fidpButton()),
               ),

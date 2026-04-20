@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ourora/features/about/presentation/screens/about_screen.dart';
-import 'package:ourora/features/common/presentation/screens/class_screen.dart';
+import 'package:ourora/features/class/presentation/screens/class_screen.dart';
 import 'package:ourora/features/common/presentation/screens/home_screen.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
-import 'package:ourora/features/common/presentation/screens/works_screen.dart';
+import 'package:ourora/features/works/presentation/screens/works_screen.dart';
 
 CustomTransitionPage<void> _noTransitionPage(GoRouterState state, Widget child) {
   return CustomTransitionPage<void>(
