@@ -50,6 +50,7 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                         '​가구 마감(샌딩 및 오일, 셀락 등 페인팅) 기법',
                         '주 1회 월 20만원 (총 4회) (주 2회 월 38만원)',
                       ],
+                      curriculumImages: ['assets/images/course_1_1.png'],
                     ),
                     RegularCard(
                       descriptionStyle: descriptionStyle,
@@ -67,6 +68,7 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                         '사방탁자 제작 실습 (재료비 별도)\n: 지정작품 - 본인의 스타일 및 용도에 따라 사이즈 등 일부 디자인 변경 가능',
                         '주 1회 월 20만원 (총 4회) (주 2회 월 38만원)',
                       ],
+                      curriculumImages: ['assets/images/course_2_1.png', 'assets/images/course_2_2.png'],
                     ),
                     RegularCard(
                       descriptionStyle: descriptionStyle,
@@ -82,6 +84,7 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                         '주 1회 월 20만원 (총 4회) (주 2회 월 38만원)',
                       ],
                       note: '*고급 과정은 디자인 발표 및 기획, 제작계획 수업에서 디스커션 과정이 있으므로, 지원자 수가 일정 인원 이상시 비정기적으로 개설됩니다. (별도 공지 예정)',
+                      curriculumImages: ['assets/images/course_3_1.png'],
                     ),
                     RegularCard(
                       title: '수업시간표',
