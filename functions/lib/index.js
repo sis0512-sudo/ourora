@@ -11,6 +11,7 @@ const instagramAccessToken = (0, params_1.defineSecret)("INSTAGRAM_ACCESS_TOKEN"
 const instagramUserId = "17841407845566676";
 const instagramFields = "id,media_type,media_url,thumbnail_url,permalink,timestamp,caption";
 const instagramPageSize = 9;
+const instagramCacheTtlMs = 60 * 60 * 1000;
 (0, app_1.initializeApp)();
 const db = (0, firestore_1.getFirestore)("ourora");
 exports.fetchYoutubeVideosCallable = (0, https_1.onCall)({ region: "asia-northeast3", secrets: [youtubeApiKey] }, async (request) => {
@@ -28,7 +29,7 @@ exports.fetchYoutubeVideosCallable = (0, https_1.onCall)({ region: "asia-northea
             throw new https_1.HttpsError("failed-precondition", "YouTube API key is not configured");
         }
         const ids = videoIds.join(",");
-        const url = `https://www.googleapis.com/youtube/v3/videos` +
+        const url = "https://www.googleapis.com/youtube/v3/videos" +
             `?id=${ids}&part=snippet,contentDetails&key=${apiKey}`;
         const res = await fetch(url);
         const responseBody = await res.text();
@@ -90,6 +91,24 @@ function truncate(value, max) {
 exports.fetchInstagramPage = (0, https_1.onCall)({ region: "asia-northeast3", secrets: [instagramAccessToken] }, async (request) => {
     const rawAfterCursor = request.data?.afterCursor;
     const afterCursor = typeof rawAfterCursor === "string" ? rawAfterCursor : undefined;
+    const cacheDocId = getInstagramCacheDocId(afterCursor);
+    const cacheDocRef = db.collection("instagram_page_cache").doc(cacheDocId);
+    const cachedSnap = await cacheDocRef.get();
+    if (cachedSnap.exists) {
+        const cachedData = cachedSnap.data();
+        const fetchedAt = cachedData?.fetchedAt?.toDate?.();
+        if (fetchedAt && Date.now() - fetchedAt.getTime() <= instagramCacheTtlMs) {
+            logger.info("Returning cached Instagram page", {
+                cacheDocId,
+                afterCursor: afterCursor ?? null,
+                fetchedAt: fetchedAt.toISOString(),
+            });
+            return {
+                posts: cachedData?.posts ?? [],
+                nextCursor: cachedData?.nextCursor ?? null,
+            };
+        }
+    }
     const accessToken = instagramAccessToken.value();
     if (!accessToken) {
         logger.error("Missing INSTAGRAM_ACCESS_TOKEN");
@@ -133,9 +152,21 @@ exports.fetchInstagramPage = (0, https_1.onCall)({ region: "asia-northeast3", se
         timestamp: item.timestamp ?? "",
         caption: item.caption ?? null,
     }));
+    await cacheDocRef.set({
+        cacheDocId,
+        afterCursor: afterCursor ?? null,
+        posts,
+        nextCursor: cursor ?? null,
+        fetchedAt: firestore_1.FieldValue.serverTimestamp(),
+    }, { merge: true });
     return {
         posts,
         nextCursor: cursor ?? null,
     };
 });
+function getInstagramCacheDocId(afterCursor) {
+    if (!afterCursor)
+        return "first_page";
+    return `after_${Buffer.from(afterCursor).toString("base64url")}`;
+}
 //# sourceMappingURL=index.js.map

@@ -9,6 +9,7 @@ const instagramAccessToken = defineSecret("INSTAGRAM_ACCESS_TOKEN");
 const instagramUserId = "17841407845566676";
 const instagramFields = "id,media_type,media_url,thumbnail_url,permalink,timestamp,caption";
 const instagramPageSize = 9;
+const instagramCacheTtlMs = 60 * 60 * 1000;
 
 initializeApp();
 const db = getFirestore("ourora");
@@ -74,7 +75,7 @@ export const fetchYoutubeVideosCallable = onCall(
 
       const ids = videoIds.join(",");
       const url =
-        `https://www.googleapis.com/youtube/v3/videos` +
+        "https://www.googleapis.com/youtube/v3/videos" +
         `?id=${ids}&part=snippet,contentDetails&key=${apiKey}`;
 
       const res = await fetch(url);
@@ -148,6 +149,26 @@ export const fetchInstagramPage = onCall(
   async (request) => {
     const rawAfterCursor = request.data?.afterCursor;
     const afterCursor = typeof rawAfterCursor === "string" ? rawAfterCursor : undefined;
+    const cacheDocId = getInstagramCacheDocId(afterCursor);
+    const cacheDocRef = db.collection("instagram_page_cache").doc(cacheDocId);
+
+    const cachedSnap = await cacheDocRef.get();
+    if (cachedSnap.exists) {
+      const cachedData = cachedSnap.data();
+      const fetchedAt = cachedData?.fetchedAt?.toDate?.() as Date | undefined;
+      if (fetchedAt && Date.now() - fetchedAt.getTime() <= instagramCacheTtlMs) {
+        logger.info("Returning cached Instagram page", {
+          cacheDocId,
+          afterCursor: afterCursor ?? null,
+          fetchedAt: fetchedAt.toISOString(),
+        });
+
+        return {
+          posts: (cachedData?.posts as unknown[] | undefined) ?? [],
+          nextCursor: (cachedData?.nextCursor as string | null | undefined) ?? null,
+        };
+      }
+    }
 
     const accessToken = instagramAccessToken.value();
     if (!accessToken) {
@@ -198,9 +219,25 @@ export const fetchInstagramPage = onCall(
       caption: item.caption ?? null,
     }));
 
+    await cacheDocRef.set(
+      {
+        cacheDocId,
+        afterCursor: afterCursor ?? null,
+        posts,
+        nextCursor: cursor ?? null,
+        fetchedAt: FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+
     return {
       posts,
       nextCursor: cursor ?? null,
     };
   }
 );
+
+function getInstagramCacheDocId(afterCursor?: string): string {
+  if (!afterCursor) return "first_page";
+  return `after_${Buffer.from(afterCursor).toString("base64url")}`;
+}
