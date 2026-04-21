@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ourora/features/common/presentation/widgets/feature_cards_section.dart';
 import 'package:ourora/features/common/presentation/widgets/fid_section.dart';
@@ -33,9 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
     _imagesPrecached = true;
 
     for (final slide in AppConstants.heroSlides) {
-      precacheImage(CachedNetworkImageProvider(slide.imageUrl), context);
+      precacheImage(NetworkImage(slide.imageUrl), context);
     }
-    precacheImage(const CachedNetworkImageProvider(_footerCtaUrl), context);
+    for (final url in [
+      _footerCtaUrl,
+      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background.webp?alt=media&token=cbe81dfb-ddc0-437c-821b-73bbfd0518bf',
+      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fmachine_list.webp?alt=media&token=b7a3113e-619b-4bf5-abd0-26365484f931',
+      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fregular_course_timetable.webp?alt=media&token=2cdffe85-f2d4-450e-afac-f071e2427388',
+    ]) {
+      precacheImage(NetworkImage(url), context);
+    }
   }
 
   @override

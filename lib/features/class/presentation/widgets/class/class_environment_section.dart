@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/bullet_list.dart';
 
 class ClassEnvironmentSection extends StatelessWidget {
@@ -17,10 +17,19 @@ class ClassEnvironmentSection extends StatelessWidget {
               TextSpan(text: '기계실 장비 리스트'),
             ],
           ),
-          CachedNetworkImage(
-            imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fmachine_list.webp?alt=media&token=b7a3113e-619b-4bf5-abd0-26365484f931',
+          Image.network(
+            'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fmachine_list.webp?alt=media&token=b7a3113e-619b-4bf5-abd0-26365484f931',
             fit: BoxFit.cover,
             height: 780,
+            cacheHeight: 780,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                height: 780,
+                color: AppTheme.lightGray,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+              );
+            },
           ),
         ],
       ),

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ourora/config/theme.dart';
@@ -63,7 +62,18 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                   alignment: Alignment.center,
                   children: [
                     // 이미지
-                    CachedNetworkImage(imageUrl: widget.imageUrls[_current], fit: BoxFit.contain),
+                    Image.network(
+                      widget.imageUrls[_current],
+                      fit: BoxFit.contain,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.white, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+                        );
+                      },
+                    ),
 
                     // 좌측 버튼
                     if (widget.imageUrls.length > 1)

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,7 +49,23 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
               height: 389,
               child: Stack(
                 children: [
-                  CachedNetworkImage(imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background.webp?alt=media&token=cbe81dfb-ddc0-437c-821b-73bbfd0518bf', fit: BoxFit.cover, width: double.infinity, height: 389, alignment: Alignment.bottomCenter),
+                  Image.network(
+                    'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background.webp?alt=media&token=cbe81dfb-ddc0-437c-821b-73bbfd0518bf',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 389,
+                    alignment: Alignment.bottomCenter,
+                    cacheHeight: 389,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        width: double.infinity,
+                        height: 389,
+                        color: AppTheme.lightGray,
+                        child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+                      );
+                    },
+                  ),
                   Positioned.fill(
                     child: FadeTransition(
                       opacity: _fadeAnimation,

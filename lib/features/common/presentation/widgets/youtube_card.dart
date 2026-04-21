@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/infrastructure/entities/youtube_video.dart';
@@ -38,7 +37,22 @@ class _YoutubeCardState extends State<YoutubeCard> {
             children: [
               Stack(
                 children: [
-                  CachedNetworkImage(imageUrl: widget.video.thumbnailUrl, width: kYoutubeCardWidth, height: kYoutubeThumbnailHeight, fit: BoxFit.cover),
+                  Image.network(
+                    widget.video.thumbnailUrl,
+                    width: kYoutubeCardWidth,
+                    height: kYoutubeThumbnailHeight,
+                    fit: BoxFit.cover,
+                    cacheWidth: kYoutubeCardWidth.toInt(),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        width: kYoutubeCardWidth,
+                        height: kYoutubeThumbnailHeight,
+                        color: AppTheme.lightGray,
+                        child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+                      );
+                    },
+                  ),
                   Positioned.fill(
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),

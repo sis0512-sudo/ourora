@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ourora/config/theme.dart';
@@ -94,7 +93,17 @@ class _GridItemState extends State<_GridItem> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            CachedNetworkImage(imageUrl: widget.post.displayUrl, fit: BoxFit.cover),
+            Image.network(
+              widget.post.displayUrl,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  color: AppTheme.lightGray,
+                  child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+                );
+              },
+            ),
             if (widget.post.mediaType == 'VIDEO') const Center(child: Icon(Icons.play_circle_outline, color: AppTheme.white, size: 40)),
             AnimatedOpacity(
               duration: const Duration(milliseconds: 200),

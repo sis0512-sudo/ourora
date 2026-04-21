@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
@@ -36,7 +35,19 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
       child: Stack(
         alignment: Alignment.topLeft,
         children: [
-          CachedNetworkImage(imageUrl: widget.imageUrl, width: double.infinity, height: double.infinity, fit: BoxFit.cover),
+          Image.network(
+            widget.imageUrl,
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                color: AppTheme.lightGray,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+              );
+            },
+          ),
           if (widget.showLogo) Positioned(top: 16, left: 16, child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
           Positioned(
             right: 60,

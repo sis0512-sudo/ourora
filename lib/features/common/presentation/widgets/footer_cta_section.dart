@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 
@@ -66,10 +65,8 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
               left: 0,
               right: 0,
               height: _visibleHeight + _extraHeight,
-              child: Image(
-                image: const CachedNetworkImageProvider(
-                  'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffooter_cta_background.webp?alt=media&token=372ab332-88c0-4348-aa3f-679c2daa8c7b',
-                ),
+              child: Image.network(
+                'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffooter_cta_background.webp?alt=media&token=372ab332-88c0-4348-aa3f-679c2daa8c7b',
                 fit: BoxFit.cover,
                 alignment: Alignment.center,
                 width: double.infinity,
