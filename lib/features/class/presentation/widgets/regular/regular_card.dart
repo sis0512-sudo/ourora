@@ -47,11 +47,7 @@ class _RegularCardState extends State<RegularCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.titleCaption != null)
-                    Text(
-                      widget.titleCaption!,
-                      style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 15, color: AppTheme.black),
-                    ),
+                  if (widget.titleCaption != null) Text(widget.titleCaption!, style: GoogleFonts.nanumGothic(fontSize: 15, color: AppTheme.black)),
                   Text(widget.title, style: AppTheme.pageTitle()),
                   const SizedBox(height: 8),
                 ],

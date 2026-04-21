@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 
 enum FeatureCard {
@@ -66,7 +67,11 @@ class _FeatureCardWidget extends StatelessWidget {
           const SizedBox(height: 24),
           Text(card.subtitle, style: AppTheme.bodyKorean()),
           const SizedBox(height: 24),
-          Text(card.desc, style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 14, color: AppTheme.black), textAlign: TextAlign.center),
+          Text(
+            card.desc,
+            style: GoogleFonts.nanumGothic(fontSize: 14, color: AppTheme.black),
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 16),
           SizedBox(
             width: 158,

@@ -80,9 +80,6 @@ flutter:
     - assets/svgs/
 
   fonts:
-    - family: NanumGothic
-      fonts:
-        - asset: assets/fonts/NanumGothic.otf
     - family: BMHanna
       fonts:
         - asset: assets/fonts/BMHanna.otf

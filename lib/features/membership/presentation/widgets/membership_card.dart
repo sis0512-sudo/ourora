@@ -3,13 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 
 class MembershipCard extends StatelessWidget {
-  const MembershipCard({
-    super.key,
-    required this.bgColor,
-    required this.title,
-    required this.subtitle,
-    required this.description,
-  });
+  const MembershipCard({super.key, required this.bgColor, required this.title, required this.subtitle, required this.description});
 
   final Color bgColor;
   final String title;
@@ -27,11 +21,7 @@ class MembershipCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontFamily: 'BMHanna',
-              fontSize: 35,
-              color: AppTheme.white,
-            ),
+            style: const TextStyle(fontFamily: 'BMHanna', fontSize: 35, color: AppTheme.white),
           ),
           const SizedBox(height: 40),
           Row(
@@ -41,28 +31,12 @@ class MembershipCard extends StatelessWidget {
                 width: 150,
                 child: Text(
                   subtitle,
-                  style: GoogleFonts.openSans(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.white,
-                  ),
+                  style: GoogleFonts.openSans(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.white),
                 ),
               ),
-              Container(
-                width: 1,
-                height: 100,
-                color: AppTheme.white,
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-              ),
+              Container(width: 1, height: 100, color: AppTheme.white, margin: const EdgeInsets.symmetric(horizontal: 30)),
               Expanded(
-                child: Text(
-                  description,
-                  style: const TextStyle(
-                    fontFamily: 'NanumGothic',
-                    fontSize: 16,
-                    color: AppTheme.white,
-                  ),
-                ),
+                child: Text(description, style: GoogleFonts.nanumGothic(fontSize: 16, color: AppTheme.white)),
               ),
             ],
           ),
