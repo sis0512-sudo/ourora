@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 
@@ -15,7 +16,7 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
   double _parallaxOffset = 0;
 
   static const double _visibleHeight = 510;
-  static const double _extraHeight = 400;
+  static const double _extraHeight = 1500;
 
   @override
   void initState() {
@@ -66,9 +67,8 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
               right: 0,
               height: _visibleHeight + _extraHeight,
               child: Image(
-                image: const NetworkImage(
+                image: const CachedNetworkImageProvider(
                   'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffooter_cta_background.webp?alt=media&token=372ab332-88c0-4348-aa3f-679c2daa8c7b',
-                  webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
                 ),
                 fit: BoxFit.cover,
                 alignment: Alignment.center,

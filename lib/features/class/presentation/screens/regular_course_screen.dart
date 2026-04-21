@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,7 +51,9 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                         '​가구 마감(샌딩 및 오일, 셀락 등 페인팅) 기법',
                         '주 1회 월 20만원 (총 4회) (주 2회 월 38만원)',
                       ],
-                      curriculumImages: ['assets/images/course_1_1.png'],
+                      curriculumImageUrls: [
+                        'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fcourse_1_1.webp?alt=media&token=c70afd14-64cc-4a7a-8293-c17240dfc69b',
+                      ],
                     ),
                     RegularCard(
                       descriptionStyle: descriptionStyle,
@@ -68,7 +71,10 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                         '사방탁자 제작 실습 (재료비 별도)\n: 지정작품 - 본인의 스타일 및 용도에 따라 사이즈 등 일부 디자인 변경 가능',
                         '주 1회 월 20만원 (총 4회) (주 2회 월 38만원)',
                       ],
-                      curriculumImages: ['assets/images/course_2_1.png', 'assets/images/course_2_2.png'],
+                      curriculumImageUrls: [
+                        'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fcourse_2_1.webp?alt=media&token=58aab477-21b2-4114-aed9-224fee6f5360',
+                        'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fcourse_2_2.webp?alt=media&token=49d3218d-46a5-4b94-934e-127b33568884',
+                      ],
                     ),
                     RegularCard(
                       descriptionStyle: descriptionStyle,
@@ -84,14 +90,16 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                         '주 1회 월 20만원 (총 4회) (주 2회 월 38만원)',
                       ],
                       note: '*고급 과정은 디자인 발표 및 기획, 제작계획 수업에서 디스커션 과정이 있으므로, 지원자 수가 일정 인원 이상시 비정기적으로 개설됩니다. (별도 공지 예정)',
-                      curriculumImages: ['assets/images/course_3_1.png'],
+                      curriculumImageUrls: [
+                        'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fcourse_3_1.webp?alt=media&token=a7296d05-bba4-43f7-9cc8-ae0a9ef58298',
+                      ],
                     ),
                     RegularCard(
                       title: '수업시간표',
                       description:
                           '※ 개인별 진도로 진행하므로, 주 1~2회 원하시는 시간에 수업을 들으실 수 있습니다.\n※ 원활한 수업진행을 위해 각 시간별 최대 인원은 5명입니다. 수업 등록시 희망 시간에 배정된 인원 수를 사전에 문의 후 등록하여 주시기 바랍니다.',
                       descriptionStyle: descriptionStyle,
-                      image: Image.asset('assets/images/regular_course_timetable.png', width: 600, fit: BoxFit.contain),
+                      image: CachedNetworkImage(imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fregular_course_timetable.webp?alt=media&token=2cdffe85-f2d4-450e-afac-f071e2427388', width: 600, fit: BoxFit.contain),
                     ),
                   ],
                 ),

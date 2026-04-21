@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,7 +50,7 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
               height: 389,
               child: Stack(
                 children: [
-                  Image.asset('assets/images/fidp_background.webp', fit: BoxFit.cover, width: double.infinity, height: 389, alignment: Alignment.bottomCenter),
+                  CachedNetworkImage(imageUrl: 'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background.webp?alt=media&token=cbe81dfb-ddc0-437c-821b-73bbfd0518bf', fit: BoxFit.cover, width: double.infinity, height: 389, alignment: Alignment.bottomCenter),
                   Positioned.fill(
                     child: FadeTransition(
                       opacity: _fadeAnimation,

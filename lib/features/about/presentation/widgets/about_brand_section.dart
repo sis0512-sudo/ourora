@@ -17,7 +17,7 @@ class _AboutBrandSectionState extends State<AboutBrandSection> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset('assets/videos/about_background.mp4')
+    _controller = VideoPlayerController.networkUrl(Uri.parse('https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fabout_background.mp4?alt=media&token=c12c6165-90c4-4d44-9427-e98a0243da8a'))
       ..setLooping(true)
       ..setVolume(0)
       ..initialize().then((_) {

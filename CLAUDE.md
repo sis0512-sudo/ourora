@@ -157,7 +157,7 @@ horizontalPadding = EdgeInsets.symmetric(horizontal: 120)
 assets/images/   hero_1~4.webp, logo.png, about_background.webp,
                  footer_cta_background.webp, fidp_background.webp,
                  regular_course_background.webp, expert_course_background.webp,
-                 machine_list.webp, ourora8_course.png, ourora8_logo.webp,
+                 machine_list.webp, ourora8_course.png, ourora8_logo.png,
                  regular_course_timetable.png, course_1_1~3_1.png
 assets/svgs/     icon_workshop/works/class/membership.svg,
                  ourora_membership_logo.svg, regular_course.svg

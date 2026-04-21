@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
@@ -6,7 +7,7 @@ class ClassCourseCard extends StatefulWidget {
   final String title;
   final String subTitle;
   final String description;
-  final String imagePath;
+  final String imageUrl;
   final bool showLogo;
   final VoidCallback? onTap;
 
@@ -15,7 +16,7 @@ class ClassCourseCard extends StatefulWidget {
     required this.title,
     required this.subTitle,
     required this.description,
-    required this.imagePath,
+    required this.imageUrl,
     required this.onTap,
     this.showLogo = false,
   });
@@ -35,8 +36,8 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
       child: Stack(
         alignment: Alignment.topLeft,
         children: [
-          Image.asset(widget.imagePath, width: double.infinity, height: double.infinity, fit: BoxFit.cover),
-          if (widget.showLogo) Positioned(top: 16, left: 16, child: Image.asset('assets/images/ourora8_logo.webp', width: 385, height: 108)),
+          CachedNetworkImage(imageUrl: widget.imageUrl, width: double.infinity, height: double.infinity, fit: BoxFit.cover),
+          if (widget.showLogo) Positioned(top: 16, left: 16, child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
           Positioned(
             right: 60,
             top: 40,

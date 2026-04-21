@@ -39,7 +39,7 @@ class _Ourora8ScreenState extends State<Ourora8Screen> {
                     ClassHeader(
                       title: 'OURORA8\n오로라에잇 전문가반 클래스',
                       description: '최고 수준의 목공 기술을 기반으로 다양한 디자인 실험 및 자유로운 작품 창작이 가능한\n가구 디자이너 또는 공예 작가로서의 성장을 추구합니다.\n초보자를 대상으로 합니다.',
-                      image: Image.asset('assets/images/ourora8_logo.webp', height: 134, fit: BoxFit.contain),
+                      image: Image.asset('assets/images/ourora8_logo.png', height: 134, fit: BoxFit.contain),
                     ),
                     Padding(padding: const EdgeInsets.only(top: 16), child: Divider()),
                     Padding(
@@ -80,7 +80,12 @@ class _Ourora8ScreenState extends State<Ourora8Screen> {
                               onEnter: (_) => setState(() => _hovered = true),
                               onExit: (_) => setState(() => _hovered = false),
                               child: OutlinedButton(
-                                onPressed: () => ImageViewerPopup.show(context, images: ['assets/images/ourora8_course.png']),
+                                onPressed: () => ImageViewerPopup.show(
+                                  context,
+                                  imageUrls: [
+                                    'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fourora8_course.webp?alt=media&token=03a78f78-038b-4cc4-9cc9-d45cd1649144',
+                                  ],
+                                ),
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: AppTheme.transparent),
                                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),

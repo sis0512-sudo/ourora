@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
@@ -133,7 +134,7 @@ class _HeroSlide extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image(
-          image: NetworkImage(imageUrl, webHtmlElementStrategy: WebHtmlElementStrategy.fallback),
+          image: CachedNetworkImageProvider(imageUrl),
           fit: BoxFit.cover,
           alignment: Alignment.center,
           width: double.infinity,

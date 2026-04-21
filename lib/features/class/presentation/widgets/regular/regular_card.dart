@@ -11,7 +11,7 @@ class RegularCard extends StatefulWidget {
   final TextStyle descriptionStyle;
   final List<String>? bullets;
   final Widget? image;
-  final List<String>? curriculumImages;
+  final List<String>? curriculumImageUrls;
   final String? titleCaption;
 
   const RegularCard({
@@ -21,7 +21,7 @@ class RegularCard extends StatefulWidget {
     required this.descriptionStyle,
     this.bullets,
     this.image,
-    this.curriculumImages,
+    this.curriculumImageUrls,
     this.titleCaption,
     this.note,
   });
@@ -47,7 +47,11 @@ class _RegularCardState extends State<RegularCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.titleCaption != null) Text(widget.titleCaption!, style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 15, color: AppTheme.black)),
+                  if (widget.titleCaption != null)
+                    Text(
+                      widget.titleCaption!,
+                      style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 15, color: AppTheme.black),
+                    ),
                   Text(widget.title, style: AppTheme.pageTitle()),
                   const SizedBox(height: 8),
                 ],
@@ -67,7 +71,7 @@ class _RegularCardState extends State<RegularCard> {
                       itemStyle: widget.descriptionStyle,
                     ),
                   if (widget.note != null) Text('\n\n${widget.note!}', style: widget.descriptionStyle),
-                  if (widget.curriculumImages != null)
+                  if (widget.curriculumImageUrls != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 40, bottom: 20),
                       child: MouseRegion(
@@ -75,7 +79,7 @@ class _RegularCardState extends State<RegularCard> {
                         onEnter: (_) => setState(() => _hovered = true),
                         onExit: (_) => setState(() => _hovered = false),
                         child: OutlinedButton(
-                          onPressed: () => ImageViewerPopup.show(context, images: widget.curriculumImages!),
+                          onPressed: () => ImageViewerPopup.show(context, imageUrls: widget.curriculumImageUrls!),
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(color: AppTheme.transparent),
                             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),

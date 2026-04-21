@@ -1,18 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ourora/config/theme.dart';
 
 class ImageViewerPopup extends StatefulWidget {
-  final List<String> images;
+  final List<String> imageUrls;
   final int initialIndex;
 
-  const ImageViewerPopup({super.key, required this.images, this.initialIndex = 0});
+  const ImageViewerPopup({super.key, required this.imageUrls, this.initialIndex = 0});
 
-  static Future<void> show(BuildContext context, {required List<String> images, int initialIndex = 0}) {
+  static Future<void> show(BuildContext context, {required List<String> imageUrls, int initialIndex = 0}) {
     return showDialog(
       context: context,
       barrierColor: AppTheme.black.withValues(alpha: 0.54),
-      builder: (_) => ImageViewerPopup(images: images, initialIndex: initialIndex),
+      builder: (_) => ImageViewerPopup(imageUrls: imageUrls, initialIndex: initialIndex),
     );
   }
 
@@ -34,7 +35,7 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
   }
 
   void _next() {
-    if (_current < widget.images.length - 1) setState(() => _current++);
+    if (_current < widget.imageUrls.length - 1) setState(() => _current++);
   }
 
   @override
@@ -62,20 +63,20 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                   alignment: Alignment.center,
                   children: [
                     // 이미지
-                    Image.asset(widget.images[_current], fit: BoxFit.contain),
+                    CachedNetworkImage(imageUrl: widget.imageUrls[_current], fit: BoxFit.contain),
 
                     // 좌측 버튼
-                    if (widget.images.length > 1)
+                    if (widget.imageUrls.length > 1)
                       Positioned(
                         left: 8,
                         child: _NavButton(icon: Icons.chevron_left, onTap: _current > 0 ? _prev : null),
                       ),
 
                     // 우측 버튼
-                    if (widget.images.length > 1)
+                    if (widget.imageUrls.length > 1)
                       Positioned(
                         right: 8,
-                        child: _NavButton(icon: Icons.chevron_right, onTap: _current < widget.images.length - 1 ? _next : null),
+                        child: _NavButton(icon: Icons.chevron_right, onTap: _current < widget.imageUrls.length - 1 ? _next : null),
                       ),
 
                     // 닫기 버튼
@@ -94,17 +95,20 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                     ),
 
                     // 페이지 인디케이터
-                    if (widget.images.length > 1)
+                    if (widget.imageUrls.length > 1)
                       Positioned(
                         bottom: 12,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: List.generate(widget.images.length, (i) {
+                          children: List.generate(widget.imageUrls.length, (i) {
                             return Container(
                               width: i == _current ? 20 : 8,
                               height: 8,
                               margin: const EdgeInsets.symmetric(horizontal: 3),
-                              decoration: BoxDecoration(color: i == _current ? AppTheme.white : AppTheme.white.withValues(alpha: 0.54), borderRadius: BorderRadius.circular(4)),
+                              decoration: BoxDecoration(
+                                color: i == _current ? AppTheme.white : AppTheme.white.withValues(alpha: 0.54),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                             );
                           }),
                         ),
@@ -133,7 +137,10 @@ class _NavButton extends StatelessWidget {
       child: Container(
         width: 40,
         height: 40,
-        decoration: BoxDecoration(color: onTap != null ? AppTheme.black.withValues(alpha: 0.54) : AppTheme.black.withValues(alpha: 0.26), shape: BoxShape.circle),
+        decoration: BoxDecoration(
+          color: onTap != null ? AppTheme.black.withValues(alpha: 0.54) : AppTheme.black.withValues(alpha: 0.26),
+          shape: BoxShape.circle,
+        ),
         child: Icon(icon, color: onTap != null ? AppTheme.white : AppTheme.white.withValues(alpha: 0.38), size: 24),
       ),
     );
