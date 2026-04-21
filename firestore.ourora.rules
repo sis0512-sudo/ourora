@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public read for rendered YouTube cards.
+    match /youtube_videos/{videoId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Client can only enqueue a fetch job and poll status.
+    match /youtube_fetch_requests/{requestId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,4 +1,10 @@
 {
+  "firestore": [
+    {
+      "database": "ourora",
+      "rules": "firestore.ourora.rules"
+    }
+  ],
   "functions": [
     {
       "source": "functions",
