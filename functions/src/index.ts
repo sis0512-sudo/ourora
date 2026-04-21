@@ -1,8 +1,13 @@
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
+import { HttpsError, onCall } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import { defineSecret } from "firebase-functions/params";
 
 const youtubeApiKey = defineSecret("YOUTUBE_API_KEY");
+const instagramAccessToken = defineSecret("INSTAGRAM_ACCESS_TOKEN");
+const instagramUserId = "17841407845566676";
+const instagramFields = "id,media_type,media_url,thumbnail_url,permalink,timestamp,caption";
+const instagramPageSize = 9;
 
 interface YoutubeApiResponse {
   items: YoutubeApiItem[];
@@ -13,6 +18,26 @@ interface YoutubeApiItem {
   snippet: {
     title: string;
   };
+}
+
+interface InstagramApiResponse {
+  data: InstagramApiItem[];
+  paging?: {
+    next?: string;
+    cursors?: {
+      after?: string;
+    };
+  };
+}
+
+interface InstagramApiItem {
+  id: string;
+  media_type: string;
+  media_url?: string;
+  thumbnail_url?: string;
+  permalink?: string;
+  timestamp?: string;
+  caption?: string;
 }
 
 export const fetchYoutubeVideos = onDocumentCreated(
@@ -86,3 +111,65 @@ function truncate(value: string, max: number): string {
   if (value.length <= max) return value;
   return `${value.slice(0, max)}...`;
 }
+
+export const fetchInstagramPage = onCall(
+  { region: "asia-northeast3", secrets: [instagramAccessToken] },
+  async (request) => {
+    const rawAfterCursor = request.data?.afterCursor;
+    const afterCursor = typeof rawAfterCursor === "string" ? rawAfterCursor : undefined;
+
+    const accessToken = instagramAccessToken.value();
+    if (!accessToken) {
+      logger.error("Missing INSTAGRAM_ACCESS_TOKEN");
+      throw new HttpsError("failed-precondition", "Instagram access token is not configured");
+    }
+
+    const collected: InstagramApiItem[] = [];
+    let cursor: string | undefined = afterCursor;
+    let hasMore = true;
+
+    while (collected.length < instagramPageSize && hasMore) {
+      const params = new URLSearchParams({
+        fields: instagramFields,
+        access_token: accessToken,
+        limit: `${instagramPageSize}`,
+      });
+      if (cursor) params.set("after", cursor);
+
+      const url = `https://graph.instagram.com/${instagramUserId}/media?${params.toString()}`;
+      const response = await fetch(url);
+      const responseBody = await response.text();
+      if (!response.ok) {
+        logger.error("Instagram API request failed", {
+          status: response.status,
+          statusText: response.statusText,
+          responseBody: truncate(responseBody, 1000),
+        });
+        throw new HttpsError("internal", "Instagram API request failed");
+      }
+
+      const data = JSON.parse(responseBody) as InstagramApiResponse;
+      const items = data.data ?? [];
+      const filtered = items.filter((item) => item.media_url && item.media_type !== "VIDEO");
+      collected.push(...filtered);
+
+      hasMore = Boolean(data.paging?.next);
+      cursor = hasMore ? data.paging?.cursors?.after : undefined;
+    }
+
+    const posts = collected.slice(0, instagramPageSize).map((item) => ({
+      id: item.id,
+      mediaType: item.media_type,
+      mediaUrl: item.media_url ?? "",
+      thumbnailUrl: item.thumbnail_url ?? null,
+      permalink: item.permalink ?? "",
+      timestamp: item.timestamp ?? "",
+      caption: item.caption ?? null,
+    }));
+
+    return {
+      posts,
+      nextCursor: cursor ?? null,
+    };
+  }
+);

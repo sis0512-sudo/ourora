@@ -1,10 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchYoutubeVideos = void 0;
+exports.fetchInstagramPage = exports.fetchYoutubeVideos = void 0;
 const firestore_1 = require("firebase-functions/v2/firestore");
+const https_1 = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const params_1 = require("firebase-functions/params");
 const youtubeApiKey = (0, params_1.defineSecret)("YOUTUBE_API_KEY");
+const instagramAccessToken = (0, params_1.defineSecret)("INSTAGRAM_ACCESS_TOKEN");
+const instagramUserId = "17841407845566676";
+const instagramFields = "id,media_type,media_url,thumbnail_url,permalink,timestamp,caption";
+const instagramPageSize = 9;
 exports.fetchYoutubeVideos = (0, firestore_1.onDocumentCreated)({
     document: "youtube_fetch_requests/{requestId}",
     database: "ourora",
@@ -68,4 +73,55 @@ function truncate(value, max) {
         return value;
     return `${value.slice(0, max)}...`;
 }
+exports.fetchInstagramPage = (0, https_1.onCall)({ region: "asia-northeast3", secrets: [instagramAccessToken] }, async (request) => {
+    const rawAfterCursor = request.data?.afterCursor;
+    const afterCursor = typeof rawAfterCursor === "string" ? rawAfterCursor : undefined;
+    const accessToken = instagramAccessToken.value();
+    if (!accessToken) {
+        logger.error("Missing INSTAGRAM_ACCESS_TOKEN");
+        throw new https_1.HttpsError("failed-precondition", "Instagram access token is not configured");
+    }
+    const collected = [];
+    let cursor = afterCursor;
+    let hasMore = true;
+    while (collected.length < instagramPageSize && hasMore) {
+        const params = new URLSearchParams({
+            fields: instagramFields,
+            access_token: accessToken,
+            limit: `${instagramPageSize}`,
+        });
+        if (cursor)
+            params.set("after", cursor);
+        const url = `https://graph.instagram.com/${instagramUserId}/media?${params.toString()}`;
+        const response = await fetch(url);
+        const responseBody = await response.text();
+        if (!response.ok) {
+            logger.error("Instagram API request failed", {
+                status: response.status,
+                statusText: response.statusText,
+                responseBody: truncate(responseBody, 1000),
+            });
+            throw new https_1.HttpsError("internal", "Instagram API request failed");
+        }
+        const data = JSON.parse(responseBody);
+        const items = data.data ?? [];
+        const filtered = items.filter((item) => item.media_url && item.media_type !== "VIDEO");
+        collected.push(...filtered);
+        hasMore = Boolean(data.paging?.next);
+        cursor = hasMore ? data.paging?.cursors?.after : undefined;
+    }
+    const posts = collected.slice(0, instagramPageSize).map((item) => ({
+        id: item.id,
+        mediaType: item.media_type,
+        mediaUrl: item.media_url ?? "",
+        thumbnailUrl: item.thumbnail_url ?? null,
+        permalink: item.permalink ?? "",
+        timestamp: item.timestamp ?? "",
+        caption: item.caption ?? null,
+    }));
+    return {
+        posts,
+        nextCursor: cursor ?? null,
+    };
+});
 //# sourceMappingURL=index.js.map
