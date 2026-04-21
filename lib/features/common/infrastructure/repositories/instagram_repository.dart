@@ -9,8 +9,8 @@ import 'package:ourora/features/common/utils/utils.dart';
 class InstagramRepository {
   //todo 토큰이랑 userid 바꿔끼우기
   static const String _accessToken =
-      'IGAA25DeH3cQpBZAFpiUW4wVFJtbmtwbFVvSjJGYXlmRW5mUHpuOWFhZAk0zZAkFKc2JhN2U2clJjNExKWHFhWUt4TUhCSjlpS1VQQkpNY3Q3ZAlhTWTJnc0w4Ti02ZAHREN0xMdkRFOTNsN19kdVNmNmFTUnVOTWN6RE00S19KbTFkQQZDZD';
-  static const _userId = '17841460854096384';
+      'IGAAVhbtjp2aNBZAFltQ0Fwd2piRFB2UWhtdnJMQW9NMXo0dHp4T0RuQ04yUlF3RGtaaVEwa0ZAobWxKTFE5Smk3ZAVBMYkVWd1JuNHBuQXp0MWU1SWZAsUlc0LTNJZAFdZAZAnVYbXpEMkJFaVRPT3l3bEpGVFZAsMHN3aExUa2xlN3p3RQZDZD';
+  static const _userId = '17841407845566676';
   static const _baseUrl = 'https://graph.instagram.com/$_userId/media';
   static const _fields = 'id,media_type,media_url,thumbnail_url,permalink,timestamp,caption';
   static const int _pageSize = 9;

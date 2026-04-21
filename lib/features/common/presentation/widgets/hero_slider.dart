@@ -58,7 +58,7 @@ class _HeroSliderState extends State<HeroSlider> {
             transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
             child: _HeroSlide(
               key: ValueKey(_currentIndex),
-              image: slide.image,
+              imageUrl: slide.imageUrl,
               subtitle: slide.subtitle,
               title: slide.title,
               mainAxisAlignment: slide.mainAxisAlignment,
@@ -70,7 +70,13 @@ class _HeroSliderState extends State<HeroSlider> {
             top: 0,
             bottom: 0,
             child: Center(
-              child: _ArrowButton(icon: Icons.chevron_left, onTap: () { _prev(); _resetTimer(); }),
+              child: _ArrowButton(
+                icon: Icons.chevron_left,
+                onTap: () {
+                  _prev();
+                  _resetTimer();
+                },
+              ),
             ),
           ),
           Positioned(
@@ -78,7 +84,13 @@ class _HeroSliderState extends State<HeroSlider> {
             top: 0,
             bottom: 0,
             child: Center(
-              child: _ArrowButton(icon: Icons.chevron_right, onTap: () { _next(); _resetTimer(); }),
+              child: _ArrowButton(
+                icon: Icons.chevron_right,
+                onTap: () {
+                  _next();
+                  _resetTimer();
+                },
+              ),
             ),
           ),
           // 하단 도트 인디케이터
@@ -108,34 +120,42 @@ class _HeroSliderState extends State<HeroSlider> {
 }
 
 class _HeroSlide extends StatelessWidget {
-  final String image;
+  final String imageUrl;
   final String subtitle;
   final String title;
   final MainAxisAlignment mainAxisAlignment;
 
-  const _HeroSlide({
-    super.key,
-    required this.image,
-    required this.subtitle,
-    required this.title,
-    this.mainAxisAlignment = MainAxisAlignment.end,
-  });
+  const _HeroSlide({super.key, required this.imageUrl, required this.subtitle, required this.title, this.mainAxisAlignment = MainAxisAlignment.end});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(image, fit: BoxFit.cover),
+        Image(
+          image: NetworkImage(imageUrl, webHtmlElementStrategy: WebHtmlElementStrategy.fallback),
+          fit: BoxFit.cover,
+          alignment: Alignment.center,
+          width: double.infinity,
+          height: double.infinity,
+        ),
         Center(
           child: Column(
             mainAxisAlignment: mainAxisAlignment,
             mainAxisSize: MainAxisSize.max,
             children: [
               const SizedBox(height: 96),
-              Text(subtitle, style: const TextStyle(fontFamily: 'Playfair', fontSize: 26, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, color: AppTheme.white), textAlign: TextAlign.center),
+              Text(
+                subtitle,
+                style: const TextStyle(fontFamily: 'Playfair', fontSize: 26, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, color: AppTheme.white),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 12),
-              Text(title, style: const TextStyle(fontFamily: 'Raleway', fontSize: 60, fontWeight: FontWeight.w700, color: AppTheme.white, height: 1.1), textAlign: TextAlign.center),
+              Text(
+                title,
+                style: const TextStyle(fontFamily: 'Raleway', fontSize: 60, fontWeight: FontWeight.w700, color: AppTheme.white, height: 1.1),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 96),
             ],
           ),

@@ -12,10 +12,10 @@ class FeatureCardData {
 class HeroSlide {
   final String subtitle;
   final String title;
-  final String image;
+  final String imageUrl;
   final MainAxisAlignment mainAxisAlignment;
 
-  const HeroSlide({required this.subtitle, required this.title, required this.image, this.mainAxisAlignment = MainAxisAlignment.end});
+  const HeroSlide({required this.subtitle, required this.title, required this.imageUrl, this.mainAxisAlignment = MainAxisAlignment.end});
 }
 
 class AppConstants {
@@ -24,12 +24,31 @@ class AppConstants {
     HeroSlide(
       subtitle: 'All good things which exist are',
       title: 'THE FRUITS OF\nORIGINALITY',
-      image: 'assets/images/hero_1.webp',
+      imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_1.webp?alt=media&token=fdd07a8b-0257-42e4-a552-27c77b43fbed',
       mainAxisAlignment: MainAxisAlignment.end,
     ),
-    HeroSlide(subtitle: 'Make', title: 'IT HAPPEN', image: 'assets/images/hero_2.webp', mainAxisAlignment: MainAxisAlignment.start),
-    HeroSlide(subtitle: 'Show me', title: 'YOUR STORY', image: 'assets/images/hero_3.webp', mainAxisAlignment: MainAxisAlignment.start),
-    HeroSlide(subtitle: 'It\'s', title: 'YOUR PLACE', image: 'assets/images/hero_4.webp', mainAxisAlignment: MainAxisAlignment.center),
+    HeroSlide(
+      subtitle: 'Make',
+      title: 'IT HAPPEN',
+      imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_2.webp?alt=media&token=90ba36bd-62eb-4c34-8bd2-3d8bad21b24b',
+      mainAxisAlignment: MainAxisAlignment.start,
+    ),
+    HeroSlide(
+      subtitle: 'Show me',
+      title: 'YOUR STORY',
+      imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_3.webp?alt=media&token=a759f2da-51d7-4adf-b29b-90957221c8d6',
+      mainAxisAlignment: MainAxisAlignment.start,
+    ),
+    HeroSlide(
+      subtitle: 'It\'s',
+      title: 'YOUR PLACE',
+      imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_4.webp?alt=media&token=847795f9-f7a1-4212-a075-3e454ac8a86e',
+      mainAxisAlignment: MainAxisAlignment.center,
+    ),
   ];
 
   // FID 섹션 데이터
