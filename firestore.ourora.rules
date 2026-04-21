@@ -14,6 +14,12 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // Temporary: allow client reads for key collection test.
+    match /key/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
