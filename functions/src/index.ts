@@ -1,13 +1,17 @@
-import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 import { defineSecret } from "firebase-functions/params";
+import { initializeApp } from "firebase-admin/app";
+import { FieldValue, getFirestore } from "firebase-admin/firestore";
 
 const youtubeApiKey = defineSecret("YOUTUBE_API_KEY");
 const instagramAccessToken = defineSecret("INSTAGRAM_ACCESS_TOKEN");
 const instagramUserId = "17841407845566676";
 const instagramFields = "id,media_type,media_url,thumbnail_url,permalink,timestamp,caption";
 const instagramPageSize = 9;
+
+initializeApp();
+const db = getFirestore("ourora");
 
 interface YoutubeApiResponse {
   items: YoutubeApiItem[];
@@ -17,6 +21,15 @@ interface YoutubeApiItem {
   id: string;
   snippet: {
     title: string;
+    description?: string;
+    thumbnails?: {
+      high?: { url?: string };
+      medium?: { url?: string };
+      default?: { url?: string };
+    };
+  };
+  contentDetails?: {
+    duration?: string;
   };
 }
 
@@ -40,31 +53,23 @@ interface InstagramApiItem {
   caption?: string;
 }
 
-export const fetchYoutubeVideos = onDocumentCreated(
-  {
-    document: "youtube_fetch_requests/{requestId}",
-    database: "ourora",
-    region: "asia-northeast3",
-    secrets: [youtubeApiKey],
-  },
-  async (event) => {
-    const snapshot = event.data;
-    if (!snapshot) return;
-
-    const requestId = event.params.requestId;
-    const videoIds: string[] = snapshot.data()?.videoIds ?? [];
-    logger.info("fetchYoutubeVideos triggered", { requestId, videoCount: videoIds.length, videoIds });
+export const fetchYoutubeVideosCallable = onCall(
+  { region: "asia-northeast3", secrets: [youtubeApiKey] },
+  async (request) => {
+    const rawVideoIds = request.data?.videoIds;
+    const videoIds = Array.isArray(rawVideoIds)
+      ? rawVideoIds.filter((id): id is string => typeof id === "string" && id.trim().length > 0)
+      : [];
 
     if (videoIds.length === 0) {
-      logger.warn("Empty videoIds; skipping YouTube fetch", { requestId });
-      return;
+      throw new HttpsError("invalid-argument", "videoIds must be a non-empty string array");
     }
 
     try {
       const apiKey = youtubeApiKey.value();
       if (!apiKey) {
-        logger.error("Missing YOUTUBE_API_KEY", { requestId });
-        return;
+        logger.error("Missing YOUTUBE_API_KEY");
+        throw new HttpsError("failed-precondition", "YouTube API key is not configured");
       }
 
       const ids = videoIds.join(",");
@@ -76,28 +81,54 @@ export const fetchYoutubeVideos = onDocumentCreated(
       const responseBody = await res.text();
       if (!res.ok) {
         logger.error("YouTube API request failed", {
-          requestId,
           status: res.status,
           statusText: res.statusText,
           responseBody: truncate(responseBody, 1000),
         });
-        throw new Error(`YouTube API 오류: ${res.status} ${res.statusText}`);
+        throw new HttpsError("internal", `YouTube API 오류: ${res.status} ${res.statusText}`);
       }
 
       const data = JSON.parse(responseBody) as YoutubeApiResponse;
-      const fetchedIds = (data.items ?? []).map((item) => item.id);
-      const missingVideoIds = videoIds.filter((id) => !fetchedIds.includes(id));
-      logger.info("YouTube API fetch completed (no DB write mode)", {
-        requestId,
+      const videos = (data.items ?? []).map((item) => ({
+        videoId: item.id,
+        title: item.snippet?.title ?? "",
+        description: item.snippet?.description ?? "",
+        thumbnailUrl:
+          item.snippet?.thumbnails?.high?.url ??
+          item.snippet?.thumbnails?.medium?.url ??
+          item.snippet?.thumbnails?.default?.url ??
+          "",
+        duration: item.contentDetails?.duration ?? "00:00",
+      }));
+
+      const batch = db.batch();
+      for (const video of videos) {
+        const ref = db.collection("youtube_videos").doc(video.videoId);
+        batch.set(
+          ref,
+          {
+            title: video.title,
+            description: video.description,
+            thumbnailUrl: video.thumbnailUrl,
+            duration: video.duration,
+            updatedAt: FieldValue.serverTimestamp(),
+          },
+          { merge: true }
+        );
+      }
+      await batch.commit();
+
+      logger.info("YouTube videos fetched and cached", {
         requestedCount: videoIds.length,
-        fetchedCount: fetchedIds.length,
-        fetchedIds,
-        missingVideoIds,
+        fetchedCount: videos.length,
       });
+
+      return { videos };
     } catch (e) {
       const message = getErrorMessage(e);
-      logger.error("Unhandled error in fetchYoutubeVideos", { requestId, error: message });
-      throw e;
+      logger.error("Unhandled error in fetchYoutubeVideosCallable", { error: message });
+      if (e instanceof HttpsError) throw e;
+      throw new HttpsError("internal", "Unexpected error while fetching YouTube videos");
     }
   }
 );
