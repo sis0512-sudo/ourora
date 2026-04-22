@@ -13,7 +13,9 @@ class ClassHeaderSection extends StatelessWidget {
 
     return Container(
       width: double.maxFinite,
-      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32) : const EdgeInsets.symmetric(vertical: 16),
+      padding: isMobile
+          ? const EdgeInsets.symmetric(horizontal: 32)
+          : const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -22,7 +24,7 @@ class ClassHeaderSection extends StatelessWidget {
           const SizedBox(height: 40),
           Text(
             '처음 목공을 배우러 여기저기 이곳 저곳을 힘들게 알아보았던 때를 기억합니다.\n그 어려움을 알기에, 오로라공방은 정말 필요로 하는 프로그램을 만들기로 했습니다.',
-            style: GoogleFonts.nanumMyeongjo(fontSize: 22, color: AppTheme.black),
+            style: GoogleFonts.notoSansKr(fontSize: 22, color: AppTheme.black),
           ),
         ],
       ),

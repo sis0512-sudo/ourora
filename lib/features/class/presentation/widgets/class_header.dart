@@ -10,7 +10,12 @@ class ClassHeader extends StatefulWidget {
   final String description;
   final Widget image;
 
-  const ClassHeader({super.key, required this.title, required this.description, required this.image});
+  const ClassHeader({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.image,
+  });
 
   @override
   State<ClassHeader> createState() => _ClassHeaderState();
@@ -34,8 +39,15 @@ class _ClassHeaderState extends State<ClassHeader> {
               onTap: () => context.go(ClassScreen.route),
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 150),
-                style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.w400, color: _hovered ? AppTheme.red : AppTheme.textGray),
-                child: Padding(padding: const EdgeInsets.all(8.0), child: Text('< CLASS 페이지로 돌아가기')),
+                style: GoogleFonts.notoSansKr(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: _hovered ? AppTheme.red : AppTheme.textGray,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('< CLASS 페이지로 돌아가기'),
+                ),
               ),
             ),
           ),
@@ -48,7 +60,13 @@ class _ClassHeaderState extends State<ClassHeader> {
                 const SizedBox(height: 16),
                 TitleWidget(title: widget.title, isSubTitle: false),
                 const SizedBox(height: 60),
-                Text(widget.description, style: GoogleFonts.nanumMyeongjo(fontSize: 24, color: AppTheme.black)),
+                Text(
+                  widget.description,
+                  style: GoogleFonts.notoSansKr(
+                    fontSize: 24,
+                    color: AppTheme.black,
+                  ),
+                ),
               ],
             ),
             Align(alignment: Alignment.topRight, child: widget.image),

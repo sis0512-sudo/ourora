@@ -19,7 +19,8 @@ class FIDPScreen extends StatefulWidget {
   State<FIDPScreen> createState() => _FIDPScreenState();
 }
 
-class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateMixin {
+class _FIDPScreenState extends State<FIDPScreen>
+    with SingleTickerProviderStateMixin {
   bool _hovered = false;
   late AnimationController _animController;
   late Animation<double> _fadeAnimation;
@@ -28,9 +29,18 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _animController = AnimationController(duration: const Duration(milliseconds: 1400), vsync: this);
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animController, curve: Curves.easeOut));
-    _slideAnimation = Tween<Offset>(begin: const Offset(-0.1, 0), end: Offset.zero).animate(CurvedAnimation(parent: _animController, curve: Curves.easeOut));
+    _animController = AnimationController(
+      duration: const Duration(milliseconds: 1400),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _animController, curve: Curves.easeOut));
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(-0.1, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _animController, curve: Curves.easeOut));
     _animController.forward();
   }
 
@@ -93,7 +103,9 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: isMobile ? EdgeInsets.symmetric(horizontal: 16) : const EdgeInsets.symmetric(vertical: 16),
+                  padding: isMobile
+                      ? EdgeInsets.symmetric(horizontal: 16)
+                      : const EdgeInsets.symmetric(vertical: 16),
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
                     onEnter: (_) => setState(() => _hovered = true),
@@ -102,23 +114,39 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
                       onTap: () => context.go(AboutScreen.route),
                       child: AnimatedDefaultTextStyle(
                         duration: const Duration(milliseconds: 150),
-                        style: GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.w400, color: _hovered ? AppTheme.red : AppTheme.textGray),
-                        child: Padding(padding: const EdgeInsets.all(8.0), child: Text('< ABOUT 페이지로 돌아가기')),
+                        style: GoogleFonts.notoSansKr(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: _hovered ? AppTheme.red : AppTheme.textGray,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('< ABOUT 페이지로 돌아가기'),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 40),
                 Padding(
-                  padding: isMobile ? EdgeInsets.symmetric(horizontal: 32) : EdgeInsets.zero,
+                  padding: isMobile
+                      ? EdgeInsets.symmetric(horizontal: 32)
+                      : EdgeInsets.zero,
                   child: Text(
-                    Utils.formatText('오로라공방은 가구(Furniture)와 IT(Information Technology), 그리고 디자인(Design)과 사람(People)이라는 4가지 주제들과 함께 합니다.'),
-                    style: GoogleFonts.nanumMyeongjo(fontSize: 18, color: AppTheme.black),
+                    Utils.formatText(
+                      '오로라공방은 가구(Furniture)와 IT(Information Technology), 그리고 디자인(Design)과 사람(People)이라는 4가지 주제들과 함께 합니다.',
+                    ),
+                    style: GoogleFonts.notoSansKr(
+                      fontSize: 18,
+                      color: AppTheme.black,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
                 Padding(
-                  padding: isMobile ? EdgeInsets.symmetric(horizontal: 32) : EdgeInsets.zero,
+                  padding: isMobile
+                      ? EdgeInsets.symmetric(horizontal: 32)
+                      : EdgeInsets.zero,
                   child: FidpCard(
                     initial: 'F',
                     title: '가구를 제작하는 목공방',
@@ -136,7 +164,9 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
                   ),
                 ),
                 Padding(
-                  padding: isMobile ? EdgeInsets.symmetric(horizontal: 32) : EdgeInsets.zero,
+                  padding: isMobile
+                      ? EdgeInsets.symmetric(horizontal: 32)
+                      : EdgeInsets.zero,
                   child: FidpCard(
                     initial: 'I',
                     title: '가구와 IT기술과의 융합',
@@ -146,7 +176,9 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
                   ),
                 ),
                 Padding(
-                  padding: isMobile ? EdgeInsets.symmetric(horizontal: 32) : EdgeInsets.zero,
+                  padding: isMobile
+                      ? EdgeInsets.symmetric(horizontal: 32)
+                      : EdgeInsets.zero,
                   child: FidpCard(
                     initial: 'D',
                     title: '디자인을 통해 다양한 문제들을 바라봅니다.',
@@ -154,16 +186,25 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
                         '오로라공방은 디자인에 대한 깊은 이해와 철학, 미술, 과학적 연구를 바탕으로 진정성있는 디자인을 추구합니다. 디자이너 개인의 관점과 스타일을 바탕으로 최종 소비자(User)의 라이프 스타일을 다각도로 바라보고 여러 개선점들을 다양한 디자인 방법론을 통해 분석하여 최적의 디자인 솔루션을 도출합니다. 이는 디자인의 보편적 가치 제공과 더불어, 제작된 제품이 보다 많은 분들에게 편리함과 나아가 윤택한 삶을 제공할 수 있는 기반을 만들어 줍니다.',
                     alignToLeft: true,
                     bullets: [
-                      TextSpan(text: 'Design Methodology - ​디자인을 위한 효과적인 방법론 연구'),
-                      TextSpan(text: 'Interaction Design - 제품과 사용자간의 상호작용 원리 연구'),
-                      TextSpan(text: 'Design Research through Phenomenology - 현상학적 디자인 연구'),
+                      TextSpan(
+                        text: 'Design Methodology - ​디자인을 위한 효과적인 방법론 연구',
+                      ),
+                      TextSpan(
+                        text: 'Interaction Design - 제품과 사용자간의 상호작용 원리 연구',
+                      ),
+                      TextSpan(
+                        text:
+                            'Design Research through Phenomenology - 현상학적 디자인 연구',
+                      ),
                       TextSpan(text: 'Usability - 사용성 연구'),
                       TextSpan(text: 'Service Design - 서비스 디자인 연구'),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: isMobile ? EdgeInsets.symmetric(horizontal: 32) : EdgeInsets.zero,
+                  padding: isMobile
+                      ? EdgeInsets.symmetric(horizontal: 32)
+                      : EdgeInsets.zero,
                   child: FidpCard(
                     initial: 'P',
                     title: '공장이 아닌 공방을 운영하여 누구나 참여할 수 있는 경험을 제공합니다.',

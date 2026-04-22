@@ -7,9 +7,27 @@ import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 
 enum FeatureCard {
-  workshop(assetPath: 'assets/svgs/icon_workshop.svg', title: 'WORKSHOP', subtitle: '공방 소개', desc: '공방에 대한 소개와 문화, 그리고 추구하는 목표와 방향을 이야기합니다.', route: '/about'),
-  works(assetPath: 'assets/svgs/icon_works.svg', title: 'WORKS', subtitle: '작품과 작업들', desc: '오로라공방 구성원분들이 제작한 작품들과 작업들을 소개합니다.', route: '/works'),
-  cls(assetPath: 'assets/svgs/icon_class.svg', title: 'CLASS', subtitle: '다양한 목공 수업', desc: '가구 디자인 및 목공 기술을 배울 수 있는 전문적인 수업에 참여하실 수 있습니다.', route: '/class'),
+  workshop(
+    assetPath: 'assets/svgs/icon_workshop.svg',
+    title: 'WORKSHOP',
+    subtitle: '공방 소개',
+    desc: '공방에 대한 소개와 문화, 그리고 추구하는 목표와 방향을 이야기합니다.',
+    route: '/about',
+  ),
+  works(
+    assetPath: 'assets/svgs/icon_works.svg',
+    title: 'WORKS',
+    subtitle: '작품과 작업들',
+    desc: '오로라공방 구성원분들이 제작한 작품들과 작업들을 소개합니다.',
+    route: '/works',
+  ),
+  cls(
+    assetPath: 'assets/svgs/icon_class.svg',
+    title: 'CLASS',
+    subtitle: '다양한 목공 수업',
+    desc: '가구 디자인 및 목공 기술을 배울 수 있는 전문적인 수업에 참여하실 수 있습니다.',
+    route: '/class',
+  ),
   membership(
     assetPath: 'assets/svgs/icon_membership.svg',
     title: 'MEMBERSHIP',
@@ -18,7 +36,13 @@ enum FeatureCard {
     route: '/membership',
   );
 
-  const FeatureCard({required this.assetPath, required this.title, required this.subtitle, required this.desc, required this.route});
+  const FeatureCard({
+    required this.assetPath,
+    required this.title,
+    required this.subtitle,
+    required this.desc,
+    required this.route,
+  });
 
   final String assetPath;
   final String title;
@@ -50,12 +74,17 @@ class FeatureCardsSection extends StatelessWidget {
             )
           : Center(
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
+                constraints: BoxConstraints(
+                  maxWidth: AppConstants.windowMaxWidth,
+                ),
                 child: SizedBox(
                   height: 450,
                   child: Row(
                     children: FeatureCard.values.map((card) {
-                      return SizedBox(width: 245, child: _FeatureCardWidget(card: card));
+                      return SizedBox(
+                        width: 245,
+                        child: _FeatureCardWidget(card: card),
+                      );
                     }).toList(),
                   ),
                 ),
@@ -75,11 +104,21 @@ class _FeatureCardWidget extends StatelessWidget {
     final isMobile = Responsive.isMobileDevice;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 32, vertical: isMobile ? 20 : 0),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 0 : 32,
+        vertical: isMobile ? 20 : 0,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(card.assetPath, height: isMobile ? 120 : 90, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
+          SvgPicture.asset(
+            card.assetPath,
+            height: isMobile ? 120 : 90,
+            colorFilter: const ColorFilter.mode(
+              AppTheme.black,
+              BlendMode.srcIn,
+            ),
+          ),
           const SizedBox(height: 36),
           Text(card.title, style: AppTheme.mainSectionTitle(isMobile)),
           const SizedBox(height: 24),
@@ -87,7 +126,10 @@ class _FeatureCardWidget extends StatelessWidget {
           const SizedBox(height: 24),
           Text(
             card.desc,
-            style: GoogleFonts.nanumGothic(fontSize: isMobile ? 18 : 14, color: AppTheme.black),
+            style: GoogleFonts.notoSansKr(
+              fontSize: isMobile ? 18 : 14,
+              color: AppTheme.black,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -95,7 +137,10 @@ class _FeatureCardWidget extends StatelessWidget {
             width: 158,
             height: 35,
             child: TextButton(
-              style: TextButton.styleFrom(backgroundColor: AppTheme.transparent, padding: EdgeInsets.zero),
+              style: TextButton.styleFrom(
+                backgroundColor: AppTheme.transparent,
+                padding: EdgeInsets.zero,
+              ),
               onPressed: () => context.go(card.route),
               child: Text('Read More >', style: AppTheme.navItem(isMobile)),
             ),

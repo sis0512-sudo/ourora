@@ -11,7 +11,14 @@ class FidpCard extends StatelessWidget {
   final bool alignToLeft;
   final List<TextSpan>? bullets;
 
-  const FidpCard({super.key, required this.initial, required this.title, required this.description, required this.alignToLeft, this.bullets});
+  const FidpCard({
+    super.key,
+    required this.initial,
+    required this.title,
+    required this.description,
+    required this.alignToLeft,
+    this.bullets,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +35,39 @@ class FidpCard extends StatelessWidget {
                   if (alignToLeft)
                     Text(
                       initial,
-                      style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 110, fontWeight: FontWeight.bold, height: 1),
+                      style: const TextStyle(
+                        fontFamily: 'ArialBlack',
+                        fontSize: 110,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                      ),
                     ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Align(
-                        alignment: alignToLeft ? Alignment.centerLeft : Alignment.centerRight,
-                        child: Text(title, style: GoogleFonts.nanumGothic(fontSize: 20, fontWeight: FontWeight.bold)),
+                        alignment: alignToLeft
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Text(
+                          title,
+                          style: GoogleFonts.notoSansKr(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   if (!alignToLeft)
                     Text(
                       initial,
-                      style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 110, fontWeight: FontWeight.bold, height: 1),
+                      style: const TextStyle(
+                        fontFamily: 'ArialBlack',
+                        fontSize: 110,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                      ),
                     ),
                 ]
               : [
@@ -51,15 +76,28 @@ class FidpCard extends StatelessWidget {
                     child: alignToLeft
                         ? Text(
                             initial,
-                            style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 110, fontWeight: FontWeight.bold, height: 1),
+                            style: const TextStyle(
+                              fontFamily: 'ArialBlack',
+                              fontSize: 110,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                            ),
                           )
                         : const SizedBox.shrink(),
                   ),
                   SizedBox(width: margin),
                   Expanded(
                     child: Align(
-                      alignment: alignToLeft ? Alignment.centerLeft : Alignment.centerRight,
-                      child: Text(title, style: GoogleFonts.nanumGothic(fontSize: 20, fontWeight: FontWeight.bold)),
+                      alignment: alignToLeft
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      child: Text(
+                        title,
+                        style: GoogleFonts.notoSansKr(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(width: margin),
@@ -69,7 +107,12 @@ class FidpCard extends StatelessWidget {
                         ? const SizedBox.shrink()
                         : Text(
                             initial,
-                            style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 110, fontWeight: FontWeight.bold, height: 1),
+                            style: const TextStyle(
+                              fontFamily: 'ArialBlack',
+                              fontSize: 110,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                            ),
                           ),
                   ),
                 ],
@@ -78,7 +121,10 @@ class FidpCard extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: initialPadding + margin),
           child: Column(
             children: [
-              Text(Utils.formatText(description), style: GoogleFonts.nanumGothic(fontSize: isMobile ? 20 : 18)),
+              Text(
+                Utils.formatText(description),
+                style: GoogleFonts.notoSansKr(fontSize: isMobile ? 20 : 18),
+              ),
               if (bullets != null) BulletList(items: bullets!),
             ],
           ),

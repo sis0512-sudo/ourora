@@ -46,17 +46,34 @@ class _RegularCardState extends State<RegularCard> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.titleCaption != null) Text(widget.titleCaption!, style: GoogleFonts.nanumGothic(fontSize: 15, color: AppTheme.black)),
+                  if (widget.titleCaption != null)
+                    Text(
+                      widget.titleCaption!,
+                      style: GoogleFonts.notoSansKr(
+                        fontSize: 15,
+                        color: AppTheme.black,
+                      ),
+                    ),
                   Text(widget.title, style: AppTheme.pageTitle(isMobile)),
                   const SizedBox(height: 8),
-                  if (widget.image != null) Padding(padding: const EdgeInsets.only(bottom: 16), child: widget.image),
-                  Text('${widget.description}\n', style: widget.descriptionStyle),
+                  if (widget.image != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: widget.image,
+                    ),
+                  Text(
+                    '${widget.description}\n',
+                    style: widget.descriptionStyle,
+                  ),
                   if (widget.bullets != null)
                     BulletList(
-                      items: widget.bullets!.map((text) => TextSpan(text: text)).toList(),
+                      items: widget.bullets!
+                          .map((text) => TextSpan(text: text))
+                          .toList(),
                       itemStyle: widget.descriptionStyle,
                     ),
-                  if (widget.note != null) Text('\n\n${widget.note!}', style: widget.descriptionStyle),
+                  if (widget.note != null)
+                    Text('\n\n${widget.note!}', style: widget.descriptionStyle),
                   if (widget.curriculumImageUrls != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 40, bottom: 20),
@@ -66,12 +83,22 @@ class _RegularCardState extends State<RegularCard> {
                           onEnter: (_) => setState(() => _hovered = true),
                           onExit: (_) => setState(() => _hovered = false),
                           child: OutlinedButton(
-                            onPressed: () => ImageViewerPopup.show(context, imageUrls: widget.curriculumImageUrls!),
+                            onPressed: () => ImageViewerPopup.show(
+                              context,
+                              imageUrls: widget.curriculumImageUrls!,
+                            ),
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: AppTheme.transparent),
-                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                              backgroundColor: _hovered ? AppTheme.coral : AppTheme.black,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 32,
+                                vertical: 18,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(99),
+                              ),
+                              backgroundColor: _hovered
+                                  ? AppTheme.coral
+                                  : AppTheme.black,
                               foregroundColor: AppTheme.white,
                               surfaceTintColor: AppTheme.transparent,
                               overlayColor: AppTheme.transparent,
@@ -81,7 +108,12 @@ class _RegularCardState extends State<RegularCard> {
                               child: Center(
                                 child: Text(
                                   '커리큘럼 자세히 보기',
-                                  style: GoogleFonts.notoSansKr(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
+                                  style: GoogleFonts.notoSansKr(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.white,
+                                    letterSpacing: 1,
+                                  ),
                                 ),
                               ),
                             ),
@@ -99,7 +131,14 @@ class _RegularCardState extends State<RegularCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (widget.titleCaption != null) Text(widget.titleCaption!, style: GoogleFonts.nanumGothic(fontSize: 15, color: AppTheme.black)),
+                        if (widget.titleCaption != null)
+                          Text(
+                            widget.titleCaption!,
+                            style: GoogleFonts.notoSansKr(
+                              fontSize: 15,
+                              color: AppTheme.black,
+                            ),
+                          ),
                         Text(widget.title, style: AppTheme.pageTitle(isMobile)),
                         const SizedBox(height: 8),
                       ],
@@ -111,14 +150,27 @@ class _RegularCardState extends State<RegularCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (widget.image != null) Padding(padding: const EdgeInsets.only(bottom: 16), child: widget.image),
-                        Text('${widget.description}\n\n', style: widget.descriptionStyle),
+                        if (widget.image != null)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: widget.image,
+                          ),
+                        Text(
+                          '${widget.description}\n\n',
+                          style: widget.descriptionStyle,
+                        ),
                         if (widget.bullets != null)
                           BulletList(
-                            items: widget.bullets!.map((text) => TextSpan(text: text)).toList(),
+                            items: widget.bullets!
+                                .map((text) => TextSpan(text: text))
+                                .toList(),
                             itemStyle: widget.descriptionStyle,
                           ),
-                        if (widget.note != null) Text('\n\n${widget.note!}', style: widget.descriptionStyle),
+                        if (widget.note != null)
+                          Text(
+                            '\n\n${widget.note!}',
+                            style: widget.descriptionStyle,
+                          ),
                         if (widget.curriculumImageUrls != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 40, bottom: 20),
@@ -127,12 +179,22 @@ class _RegularCardState extends State<RegularCard> {
                               onEnter: (_) => setState(() => _hovered = true),
                               onExit: (_) => setState(() => _hovered = false),
                               child: OutlinedButton(
-                                onPressed: () => ImageViewerPopup.show(context, imageUrls: widget.curriculumImageUrls!),
+                                onPressed: () => ImageViewerPopup.show(
+                                  context,
+                                  imageUrls: widget.curriculumImageUrls!,
+                                ),
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: AppTheme.transparent),
-                                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                                  backgroundColor: _hovered ? AppTheme.coral : AppTheme.black,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 32,
+                                    vertical: 18,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(99),
+                                  ),
+                                  backgroundColor: _hovered
+                                      ? AppTheme.coral
+                                      : AppTheme.black,
                                   foregroundColor: AppTheme.white,
                                   surfaceTintColor: AppTheme.transparent,
                                   overlayColor: AppTheme.transparent,
@@ -142,7 +204,12 @@ class _RegularCardState extends State<RegularCard> {
                                   child: Center(
                                     child: Text(
                                       '커리큘럼 자세히 보기',
-                                      style: GoogleFonts.notoSansKr(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
+                                      style: GoogleFonts.notoSansKr(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppTheme.white,
+                                        letterSpacing: 1,
+                                      ),
                                     ),
                                   ),
                                 ),

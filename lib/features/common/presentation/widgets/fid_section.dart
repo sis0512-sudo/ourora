@@ -23,14 +23,22 @@ class FidSection extends StatelessWidget {
             children: [
               Text(
                 '오로라 공방은?',
-                style: TextStyle(fontFamily: 'BMHanna', fontSize: isMobile ? 28 : 20, fontWeight: FontWeight.w700, letterSpacing: 4, color: AppTheme.darkBg),
+                style: TextStyle(
+                  fontFamily: 'BMHanna',
+                  fontSize: isMobile ? 28 : 20,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 4,
+                  color: AppTheme.darkBg,
+                ),
               ),
               const SizedBox(height: 12),
               Container(
                 width: isMobile ? 60 : 40,
                 height: 3,
                 decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: AppTheme.darkBg, width: 3)),
+                  border: Border(
+                    top: BorderSide(color: AppTheme.darkBg, width: 3),
+                  ),
                 ),
               ),
               const SizedBox(height: 48),
@@ -39,7 +47,11 @@ class FidSection extends StatelessWidget {
                       children: AppConstants.fidItems.map((item) {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 32),
-                          child: _FidItem(letter: item['letter']!, title: item['title']!, desc: item['desc']!),
+                          child: _FidItem(
+                            letter: item['letter']!,
+                            title: item['title']!,
+                            desc: item['desc']!,
+                          ),
                         );
                       }).toList(),
                     )
@@ -49,7 +61,11 @@ class FidSection extends StatelessWidget {
                       children: AppConstants.fidItems.map((item) {
                         return SizedBox(
                           width: 245,
-                          child: _FidItem(letter: item['letter']!, title: item['title']!, desc: item['desc']!),
+                          child: _FidItem(
+                            letter: item['letter']!,
+                            title: item['title']!,
+                            desc: item['desc']!,
+                          ),
                         );
                       }).toList(),
                     ),
@@ -57,8 +73,13 @@ class FidSection extends StatelessWidget {
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: AppTheme.black),
-                  padding: EdgeInsets.symmetric(horizontal: isMobile ? 50 : 40, vertical: isMobile ? 20 : 16),
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 50 : 40,
+                    vertical: isMobile ? 20 : 16,
+                  ),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
                   overlayColor: AppTheme.transparent,
                   surfaceTintColor: AppTheme.transparent,
                 ),
@@ -78,30 +99,43 @@ class _FidItem extends StatelessWidget {
   final String title;
   final String desc;
 
-  const _FidItem({required this.letter, required this.title, required this.desc});
+  const _FidItem({
+    required this.letter,
+    required this.title,
+    required this.desc,
+  });
 
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobileDevice;
 
     return Padding(
-      padding: isMobile ? EdgeInsets.symmetric(horizontal: 40) : EdgeInsets.all(16),
+      padding: isMobile
+          ? EdgeInsets.symmetric(horizontal: 40)
+          : EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             letter,
-            style: TextStyle(fontFamily: 'ArialBlack', fontSize: isMobile ? 80 : 70, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontFamily: 'ArialBlack',
+              fontSize: isMobile ? 80 : 70,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 12),
           Text(
             title,
-            style: GoogleFonts.nanumGothic(fontSize: isMobile ? 24 : 16, fontWeight: FontWeight.bold),
+            style: GoogleFonts.notoSansKr(
+              fontSize: isMobile ? 24 : 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 16),
           Text(
             desc,
-            style: GoogleFonts.nanumGothic(fontSize: isMobile ? 20 : 14),
+            style: GoogleFonts.notoSansKr(fontSize: isMobile ? 20 : 14),
             textAlign: TextAlign.center,
           ),
         ],

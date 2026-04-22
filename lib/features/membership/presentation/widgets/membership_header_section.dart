@@ -14,7 +14,9 @@ class MembershipHeaderSection extends StatelessWidget {
 
     return Container(
       width: double.maxFinite,
-      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32) : const EdgeInsets.symmetric(vertical: 16),
+      padding: isMobile
+          ? const EdgeInsets.symmetric(horizontal: 32)
+          : const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,10 +27,17 @@ class MembershipHeaderSection extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                SvgPicture.asset('assets/svgs/ourora_membership_logo.svg', height: isMobile ? 300 : 200),
+                SvgPicture.asset(
+                  'assets/svgs/ourora_membership_logo.svg',
+                  height: isMobile ? 300 : 200,
+                ),
                 Text(
                   'OURORA MEMBERSHIP',
-                  style: GoogleFonts.roboto(fontSize: 25, fontWeight: FontWeight.bold, color: AppTheme.black),
+                  style: GoogleFonts.notoSansKr(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: AppTheme.black,
+                  ),
                 ),
               ],
             ),

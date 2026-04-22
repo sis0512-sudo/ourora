@@ -52,7 +52,7 @@ class WorkPostScreen extends ConsumerWidget {
                   child: Text(
                     '불러올 수 없습니다.',
                     style: const TextStyle(
-                      fontFamily: 'NanumGothic',
+                      fontFamily: 'Noto Sans KR',
                       fontSize: 14,
                       color: AppTheme.textGray,
                     ),
@@ -70,7 +70,7 @@ class WorkPostScreen extends ConsumerWidget {
                           Text(
                             '존재하지 않는 작품입니다.',
                             style: const TextStyle(
-                              fontFamily: 'NanumGothic',
+                              fontFamily: 'Noto Sans KR',
                               fontSize: 16,
                               color: AppTheme.textGray,
                             ),

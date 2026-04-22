@@ -42,11 +42,16 @@ class WorkPostDetailBody extends StatelessWidget {
     final hasImages = imageUrls.isNotEmpty;
 
     return Padding(
-      padding: isMobile ? EdgeInsets.symmetric(horizontal: 32) : EdgeInsets.zero,
+      padding: isMobile
+          ? EdgeInsets.symmetric(horizontal: 32)
+          : EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(padding: EdgeInsets.symmetric(vertical: 40), child: WorkPostBackButton()),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 40),
+            child: WorkPostBackButton(),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 120),
             child: Column(
@@ -54,26 +59,56 @@ class WorkPostDetailBody extends StatelessWidget {
               children: [
                 Text(
                   work.title,
-                  style: GoogleFonts.montserrat(fontSize: 40, fontWeight: FontWeight.w700, color: AppTheme.black, letterSpacing: 1),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.black,
+                    letterSpacing: 1,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 if (hasImages) ...[
                   WorkPostImage(imageUrl: imageUrls.first),
                   if (work.description.isNotEmpty) ...[
                     const SizedBox(height: 16),
-                    Text(work.description, style: GoogleFonts.nanumGothic(fontSize: 18, color: AppTheme.textGray)),
+                    Text(
+                      work.description,
+                      style: GoogleFonts.notoSansKr(
+                        fontSize: 18,
+                        color: AppTheme.textGray,
+                      ),
+                    ),
                     const SizedBox(height: 16),
                   ],
                   const SizedBox(height: 16),
                   WorkPostImageColumn(imageUrls: imageUrls.skip(1).toList()),
                 ],
                 if (!hasImages && work.description.isNotEmpty) ...[
-                  Text(work.description, style: GoogleFonts.nanumGothic(fontSize: 18, color: AppTheme.textGray)),
+                  Text(
+                    work.description,
+                    style: GoogleFonts.notoSansKr(
+                      fontSize: 18,
+                      color: AppTheme.textGray,
+                    ),
+                  ),
                 ],
-                if (work.youtubeUrl != null && work.youtubeUrl!.isNotEmpty) ...[const SizedBox(height: 48), WorkPostYoutubeEmbed(url: work.youtubeUrl!)],
-                Padding(padding: const EdgeInsets.symmetric(vertical: 40), child: Divider()),
+                if (work.youtubeUrl != null && work.youtubeUrl!.isNotEmpty) ...[
+                  const SizedBox(height: 48),
+                  WorkPostYoutubeEmbed(url: work.youtubeUrl!),
+                ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  child: Divider(),
+                ),
                 Row(
-                  children: ShareType.values.map((e) => _ShareButton(type: e, onTap: () => Utils.shareUrl(currentUrl, e))).toList(),
+                  children: ShareType.values
+                      .map(
+                        (e) => _ShareButton(
+                          type: e,
+                          onTap: () => Utils.shareUrl(currentUrl, e),
+                        ),
+                      )
+                      .toList(),
                 ),
                 const SizedBox(height: 80),
               ],
@@ -127,7 +162,10 @@ class _ShareButtonState extends State<_ShareButton> {
                 widget.type.svgAsset,
                 width: 24,
                 height: 24,
-                colorFilter: ColorFilter.mode(_hovered ? AppTheme.coral : AppTheme.black, BlendMode.srcIn),
+                colorFilter: ColorFilter.mode(
+                  _hovered ? AppTheme.coral : AppTheme.black,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             if (widget.type == ShareType.copy)
@@ -137,11 +175,21 @@ class _ShareButtonState extends State<_ShareButton> {
                   opacity: _showCopied ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(color: AppTheme.black, borderRadius: BorderRadius.circular(4)),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppTheme.black,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                     child: Text(
                       '링크 복사 완료',
-                      style: TextStyle(color: AppTheme.white, fontSize: 12, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        color: AppTheme.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),

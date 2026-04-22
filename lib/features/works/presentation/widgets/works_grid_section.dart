@@ -20,13 +20,18 @@ class WorksGridSection extends ConsumerWidget {
 
     return Container(
       color: AppTheme.white,
-      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32) : const EdgeInsets.symmetric(vertical: 80),
+      padding: isMobile
+          ? const EdgeInsets.symmetric(horizontal: 32)
+          : const EdgeInsets.symmetric(vertical: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TitleWidget(title: 'WORKS', isSubTitle: false),
           SizedBox(height: isMobile ? 20 : 40),
-          _FilterBar(selectedType: state.selectedType, searchQuery: state.searchQuery),
+          _FilterBar(
+            selectedType: state.selectedType,
+            searchQuery: state.searchQuery,
+          ),
           const SizedBox(height: 32),
           _buildBody(context, state, columns),
         ],
@@ -39,7 +44,10 @@ class WorksGridSection extends ConsumerWidget {
       return const Center(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 60),
-          child: CircularProgressIndicator(color: AppTheme.accentOrange, strokeWidth: 2),
+          child: CircularProgressIndicator(
+            color: AppTheme.accentOrange,
+            strokeWidth: 2,
+          ),
         ),
       );
     }
@@ -50,7 +58,11 @@ class WorksGridSection extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 60),
           child: Text(
             '불러올 수 없습니다.',
-            style: const TextStyle(color: AppTheme.textGray, fontSize: 14, fontFamily: 'NanumGothic'),
+            style: const TextStyle(
+              color: AppTheme.textGray,
+              fontSize: 14,
+              fontFamily: 'Noto Sans KR',
+            ),
           ),
         ),
       );
@@ -64,7 +76,11 @@ class WorksGridSection extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 60),
           child: Text(
             '결과가 없습니다.',
-            style: const TextStyle(color: AppTheme.textGray, fontSize: 14, fontFamily: 'NanumGothic'),
+            style: const TextStyle(
+              color: AppTheme.textGray,
+              fontSize: 14,
+              fontFamily: 'Noto Sans KR',
+            ),
           ),
         ),
       );
@@ -75,14 +91,24 @@ class WorksGridSection extends ConsumerWidget {
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columns, crossAxisSpacing: 4, mainAxisSpacing: 4),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            crossAxisSpacing: 4,
+            mainAxisSpacing: 4,
+          ),
           itemCount: displayed.length,
-          itemBuilder: (context, index) => _WorkGridItem(work: displayed[index]),
+          itemBuilder: (context, index) =>
+              _WorkGridItem(work: displayed[index]),
         ),
         if (state.isLoadingMore)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 40),
-            child: Center(child: CircularProgressIndicator(color: AppTheme.accentOrange, strokeWidth: 2)),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: AppTheme.accentOrange,
+                strokeWidth: 2,
+              ),
+            ),
           ),
       ],
     );
@@ -111,7 +137,9 @@ class _FilterBarState extends ConsumerState<_FilterBar> {
   @override
   void didUpdateWidget(_FilterBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.searchQuery != oldWidget.searchQuery && widget.searchQuery.isEmpty && _searchController.text.isNotEmpty) {
+    if (widget.searchQuery != oldWidget.searchQuery &&
+        widget.searchQuery.isEmpty &&
+        _searchController.text.isNotEmpty) {
       _searchController.clear();
     }
   }
@@ -143,7 +171,11 @@ class _FilterBarState extends ConsumerState<_FilterBar> {
               if (showSearch)
                 SizedBox(
                   width: 240,
-                  child: _SearchField(controller: _searchController, onSubmit: _onSubmit, onClear: _onClear),
+                  child: _SearchField(
+                    controller: _searchController,
+                    onSubmit: _onSubmit,
+                    onClear: _onClear,
+                  ),
                 ),
             ],
           )
@@ -154,7 +186,11 @@ class _FilterBarState extends ConsumerState<_FilterBar> {
               if (showSearch)
                 SizedBox(
                   width: 240,
-                  child: _SearchField(controller: _searchController, onSubmit: _onSubmit, onClear: _onClear),
+                  child: _SearchField(
+                    controller: _searchController,
+                    onSubmit: _onSubmit,
+                    onClear: _onClear,
+                  ),
                 ),
             ],
           );
@@ -173,11 +209,23 @@ class _TypeButtons extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _FilterChip(label: 'ALL', selected: selectedType == null, onTap: () => notifier.setType(null)),
+        _FilterChip(
+          label: 'ALL',
+          selected: selectedType == null,
+          onTap: () => notifier.setType(null),
+        ),
         const SizedBox(width: 8),
-        _FilterChip(label: 'FURNITURE', selected: selectedType == WorkType.furniture, onTap: () => notifier.setType(WorkType.furniture)),
+        _FilterChip(
+          label: 'FURNITURE',
+          selected: selectedType == WorkType.furniture,
+          onTap: () => notifier.setType(WorkType.furniture),
+        ),
         const SizedBox(width: 8),
-        _FilterChip(label: 'ETC', selected: selectedType == WorkType.etc, onTap: () => notifier.setType(WorkType.etc)),
+        _FilterChip(
+          label: 'ETC',
+          selected: selectedType == WorkType.etc,
+          onTap: () => notifier.setType(WorkType.etc),
+        ),
       ],
     );
   }
@@ -188,7 +236,11 @@ class _FilterChip extends StatefulWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  const _FilterChip({required this.label, required this.selected, required this.onTap});
+  const _FilterChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
   State<_FilterChip> createState() => _FilterChipState();
@@ -215,7 +267,13 @@ class _FilterChipState extends State<_FilterChip> {
           child: SelectionContainer.disabled(
             child: Text(
               widget.label,
-              style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w600, color: (widget.selected || active) ? AppTheme.coral : AppTheme.textGray),
+              style: GoogleFonts.montserrat(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: (widget.selected || active)
+                    ? AppTheme.coral
+                    : AppTheme.textGray,
+              ),
             ),
           ),
         ),
@@ -229,7 +287,11 @@ class _SearchField extends StatefulWidget {
   final ValueChanged<String> onSubmit;
   final VoidCallback onClear;
 
-  const _SearchField({required this.controller, required this.onSubmit, required this.onClear});
+  const _SearchField({
+    required this.controller,
+    required this.onSubmit,
+    required this.onClear,
+  });
 
   @override
   State<_SearchField> createState() => _SearchFieldState();
@@ -256,18 +318,37 @@ class _SearchFieldState extends State<_SearchField> {
       controller: widget.controller,
       onSubmitted: widget.onSubmit,
       textInputAction: TextInputAction.search,
-      style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 13, color: AppTheme.black),
+      style: const TextStyle(
+        fontFamily: 'Noto Sans KR',
+        fontSize: 13,
+        color: AppTheme.black,
+      ),
       decoration: InputDecoration(
         hintText: 'Search...',
-        hintStyle: const TextStyle(fontFamily: 'NanumGothic', fontSize: 13, color: AppTheme.borderGray),
-        prefixIcon: const Icon(Icons.search, size: 18, color: AppTheme.borderGray),
+        hintStyle: const TextStyle(
+          fontFamily: 'Noto Sans KR',
+          fontSize: 13,
+          color: AppTheme.borderGray,
+        ),
+        prefixIcon: const Icon(
+          Icons.search,
+          size: 18,
+          color: AppTheme.borderGray,
+        ),
         suffixIcon: widget.controller.text.isNotEmpty
             ? GestureDetector(
                 onTap: widget.onClear,
-                child: const Icon(Icons.close, size: 16, color: AppTheme.borderGray),
+                child: const Icon(
+                  Icons.close,
+                  size: 16,
+                  color: AppTheme.borderGray,
+                ),
               )
             : null,
-        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: 12,
+        ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
           borderSide: BorderSide(color: AppTheme.borderGray),
@@ -295,7 +376,9 @@ class _WorkGridItemState extends State<_WorkGridItem> {
 
   @override
   Widget build(BuildContext context) {
-    final lightImageUrls = widget.work.lightImageUrls.isNotEmpty ? widget.work.lightImageUrls.first : null;
+    final lightImageUrls = widget.work.lightImageUrls.isNotEmpty
+        ? widget.work.lightImageUrls.first
+        : null;
     final isMobile = Responsive.isMobileDevice;
 
     return MouseRegion(
@@ -319,7 +402,10 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
                         color: AppTheme.coral,
-                        value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                            : null,
                       ),
                     ),
                   );
@@ -328,7 +414,10 @@ class _WorkGridItemState extends State<_WorkGridItem> {
             else
               Container(
                 color: AppTheme.lightGray,
-                child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray),
+                child: const Icon(
+                  Icons.image_not_supported_outlined,
+                  color: AppTheme.borderGray,
+                ),
               ),
             if (!isMobile)
               AnimatedOpacity(
@@ -342,7 +431,12 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                     children: [
                       Text(
                         widget.work.title,
-                        style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
+                        style: GoogleFonts.montserrat(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.white,
+                          letterSpacing: 1,
+                        ),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -351,7 +445,11 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                         const SizedBox(height: 8),
                         Text(
                           widget.work.description,
-                          style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 12, color: AppTheme.white),
+                          style: const TextStyle(
+                            fontFamily: 'Noto Sans KR',
+                            fontSize: 12,
+                            color: AppTheme.white,
+                          ),
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

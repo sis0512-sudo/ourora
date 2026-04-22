@@ -38,19 +38,43 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
       child: Stack(
         alignment: Alignment.topLeft,
         children: [
-          Image.asset(widget.assetPath, width: double.infinity, height: double.infinity, fit: BoxFit.cover),
+          Image.asset(
+            widget.assetPath,
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+          ),
           if (widget.showLogo)
             isMobile
                 ? Align(
                     alignment: Alignment.topCenter,
-                    child: Padding(padding: const EdgeInsets.all(16), child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Image.asset(
+                        'assets/images/ourora8_logo.png',
+                        width: 385,
+                        height: 108,
+                      ),
+                    ),
                   )
-                : Positioned(top: 16, left: 16, child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
+                : Positioned(
+                    top: 16,
+                    left: 16,
+                    child: Image.asset(
+                      'assets/images/ourora8_logo.png',
+                      width: 385,
+                      height: 108,
+                    ),
+                  ),
           isMobile
               ? Align(
-                  alignment: widget.showLogo ? Alignment.bottomCenter : Alignment.topRight,
+                  alignment: widget.showLogo
+                      ? Alignment.bottomCenter
+                      : Alignment.topRight,
                   child: Container(
-                    margin: widget.showLogo ? EdgeInsets.all(32) : EdgeInsets.only(top: 40, right: 32),
+                    margin: widget.showLogo
+                        ? EdgeInsets.all(32)
+                        : EdgeInsets.only(top: 40, right: 32),
                     width: widget.showLogo ? null : 250,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -58,11 +82,21 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                       children: [
                         Text(
                           widget.title,
-                          style: TextStyle(fontSize: 30, fontFamily: 'BMHanna', fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontFamily: 'BMHanna',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        Text(widget.subTitle, style: TextStyle(fontSize: 24, fontFamily: 'BMHanna')),
+                        Text(
+                          widget.subTitle,
+                          style: TextStyle(fontSize: 24, fontFamily: 'BMHanna'),
+                        ),
                         const SizedBox(height: 12),
-                        Text(widget.description, style: GoogleFonts.openSans(fontSize: 14)),
+                        Text(
+                          widget.description,
+                          style: GoogleFonts.notoSansKr(fontSize: 14),
+                        ),
                         const SizedBox(height: 20),
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
@@ -72,9 +106,16 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                             onPressed: widget.onTap,
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: AppTheme.transparent),
-                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 19),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                              backgroundColor: _hovered ? AppTheme.coral : AppTheme.black,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 32,
+                                vertical: 19,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(99),
+                              ),
+                              backgroundColor: _hovered
+                                  ? AppTheme.coral
+                                  : AppTheme.black,
                               foregroundColor: AppTheme.white,
                               surfaceTintColor: AppTheme.transparent,
                               overlayColor: AppTheme.transparent,
@@ -84,7 +125,12 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                               child: Center(
                                 child: Text(
                                   '자세히 알아보기',
-                                  style: GoogleFonts.notoSansKr(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
+                                  style: GoogleFonts.notoSansKr(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.white,
+                                    letterSpacing: 1,
+                                  ),
                                 ),
                               ),
                             ),
@@ -105,11 +151,21 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                       children: [
                         Text(
                           widget.title,
-                          style: TextStyle(fontSize: 30, fontFamily: 'BMHanna', fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontFamily: 'BMHanna',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        Text(widget.subTitle, style: TextStyle(fontSize: 24, fontFamily: 'BMHanna')),
+                        Text(
+                          widget.subTitle,
+                          style: TextStyle(fontSize: 24, fontFamily: 'BMHanna'),
+                        ),
                         const SizedBox(height: 12),
-                        Text(widget.description, style: GoogleFonts.openSans(fontSize: 14)),
+                        Text(
+                          widget.description,
+                          style: GoogleFonts.notoSansKr(fontSize: 14),
+                        ),
                         const SizedBox(height: 20),
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
@@ -119,9 +175,16 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                             onPressed: widget.onTap,
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: AppTheme.transparent),
-                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 19),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(99)),
-                              backgroundColor: _hovered ? AppTheme.coral : AppTheme.black,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 32,
+                                vertical: 19,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(99),
+                              ),
+                              backgroundColor: _hovered
+                                  ? AppTheme.coral
+                                  : AppTheme.black,
                               foregroundColor: AppTheme.white,
                               surfaceTintColor: AppTheme.transparent,
                               overlayColor: AppTheme.transparent,
@@ -131,7 +194,12 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
                               child: Center(
                                 child: Text(
                                   '자세히 알아보기',
-                                  style: GoogleFonts.notoSansKr(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
+                                  style: GoogleFonts.notoSansKr(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.white,
+                                    letterSpacing: 1,
+                                  ),
                                 ),
                               ),
                             ),

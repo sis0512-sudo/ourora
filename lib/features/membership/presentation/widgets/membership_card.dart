@@ -4,7 +4,13 @@ import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 
 class MembershipCard extends StatelessWidget {
-  const MembershipCard({super.key, required this.bgColor, required this.title, required this.subtitle, required this.description});
+  const MembershipCard({
+    super.key,
+    required this.bgColor,
+    required this.title,
+    required this.subtitle,
+    required this.description,
+  });
 
   final Color bgColor;
   final String title;
@@ -17,7 +23,10 @@ class MembershipCard extends StatelessWidget {
 
     return Container(
       color: bgColor,
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 32 : 60, vertical: 40),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 32 : 60,
+        vertical: 40,
+      ),
       margin: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,20 +34,38 @@ class MembershipCard extends StatelessWidget {
             ? [
                 Text(
                   title,
-                  style: const TextStyle(fontFamily: 'BMHanna', fontSize: 35, color: AppTheme.white),
+                  style: const TextStyle(
+                    fontFamily: 'BMHanna',
+                    fontSize: 35,
+                    color: AppTheme.white,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   subtitle,
-                  style: GoogleFonts.openSans(fontSize: isMobile ? 20 : 16, fontWeight: FontWeight.w600, color: AppTheme.white),
+                  style: GoogleFonts.notoSansKr(
+                    fontSize: isMobile ? 20 : 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.white,
+                  ),
                 ),
                 const SizedBox(height: 20),
-                Text(description, style: GoogleFonts.nanumGothic(fontSize: 16, color: AppTheme.white)),
+                Text(
+                  description,
+                  style: GoogleFonts.notoSansKr(
+                    fontSize: 16,
+                    color: AppTheme.white,
+                  ),
+                ),
               ]
             : [
                 Text(
                   title,
-                  style: const TextStyle(fontFamily: 'BMHanna', fontSize: 35, color: AppTheme.white),
+                  style: const TextStyle(
+                    fontFamily: 'BMHanna',
+                    fontSize: 35,
+                    color: AppTheme.white,
+                  ),
                 ),
                 const SizedBox(height: 40),
                 Row(
@@ -48,12 +75,27 @@ class MembershipCard extends StatelessWidget {
                       width: 150,
                       child: Text(
                         subtitle,
-                        style: GoogleFonts.openSans(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.white),
+                        style: GoogleFonts.notoSansKr(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.white,
+                        ),
                       ),
                     ),
-                    Container(width: 1, height: 100, color: AppTheme.white, margin: const EdgeInsets.symmetric(horizontal: 30)),
+                    Container(
+                      width: 1,
+                      height: 100,
+                      color: AppTheme.white,
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
+                    ),
                     Expanded(
-                      child: Text(description, style: GoogleFonts.nanumGothic(fontSize: 16, color: AppTheme.white)),
+                      child: Text(
+                        description,
+                        style: GoogleFonts.notoSansKr(
+                          fontSize: 16,
+                          color: AppTheme.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),
