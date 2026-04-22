@@ -1,15 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.migrateWorksToWebp = exports.fetchInstagramPage = exports.fetchYoutubeVideosCallable = void 0;
+exports.ogRender = exports.fetchInstagramPage = exports.fetchYoutubeVideosCallable = void 0;
 const https_1 = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const params_1 = require("firebase-functions/params");
 const app_1 = require("firebase-admin/app");
 const firestore_1 = require("firebase-admin/firestore");
-const storage_1 = require("firebase-admin/storage");
-const crypto_1 = require("crypto");
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const sharp = require("sharp");
 const youtubeApiKey = (0, params_1.defineSecret)("YOUTUBE_API_KEY");
 const instagramAccessToken = (0, params_1.defineSecret)("INSTAGRAM_ACCESS_TOKEN");
 const instagramUserId = "17841407845566676";
@@ -173,71 +169,135 @@ function getInstagramCacheDocId(afterCursor) {
         return "first_page";
     return `after_${Buffer.from(afterCursor).toString("base64url")}`;
 }
-// One-time migration: download existing works images, convert to WebP, re-upload to the same
-// folder, and update Firestore imageUrls. Original files are left untouched.
-// Trigger: POST https://.../migrateWorksToWebp
-exports.migrateWorksToWebp = (0, https_1.onRequest)({
-    region: "asia-northeast3",
-    timeoutSeconds: 540,
-    memory: "1GiB",
-}, async (req, res) => {
-    if (req.method !== "POST") {
-        res.status(405).json({ error: "Method not allowed" });
+// ─── OG Render ───────────────────────────────────────────────────────────────
+const HOSTING_URL = "https://www.ourorastudio.com";
+const DEFAULT_OG_IMAGE = "https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Flogo.png?alt=media&token=741d2b5e-5306-410f-bec4-d63f70786e46";
+const CRAWLER_UA_PATTERN = /bot|crawl|spider|facebookexternalhit|twitterbot|kakaotalk|discordbot|linkedinbot|whatsapp|slackbot|telegrambot|line\//i;
+function getOgMetaForPath(path) {
+    const base = path.split("?")[0];
+    const common = { image: DEFAULT_OG_IMAGE, type: "website" };
+    if (base === "/about")
+        return { ...common, title: "공방 소개 | OURORA STUDIO", description: "목동의 가구공방 오로라공방을 소개합니다. 손으로 가구를 만드는 즐거움, 오로라공방에서 시작하세요.", url: `${HOSTING_URL}/about` };
+    if (base === "/fidp")
+        return { ...common, title: "F·I·D·P | OURORA STUDIO", description: "Form, Innovation, Design, Philosophy. 오로라공방이 추구하는 네 가지 핵심 가치입니다.", url: `${HOSTING_URL}/fidp` };
+    if (base === "/works" || base.startsWith("/works/"))
+        return { ...common, title: "작품 갤러리 | OURORA STUDIO", description: "오로라공방에서 만든 가구 작품들을 감상하세요. 원목 가구, 목공예 작품 갤러리입니다.", url: `${HOSTING_URL}/works` };
+    if (base === "/class")
+        return { ...common, title: "목공 수업 | OURORA STUDIO", description: "오로라공방의 목공 수업을 소개합니다. 정규 과정, OURORA 8 등 체계적인 목공 프로그램으로 가구 제작을 배워보세요.", url: `${HOSTING_URL}/class` };
+    if (base === "/class/regular")
+        return { ...common, title: "정규 과정 | OURORA STUDIO", description: "목공의 기초부터 심화까지, 체계적인 커리큘럼으로 진행되는 오로라공방 정규 목공 과정입니다.", url: `${HOSTING_URL}/class/regular` };
+    if (base === "/class/ourora8")
+        return { ...common, title: "OURORA 8 | OURORA STUDIO", description: "8주 완성 집중 프로그램 OURORA 8. 짧은 기간에 가구 제작의 핵심을 익힐 수 있습니다.", url: `${HOSTING_URL}/class/ourora8` };
+    if (base === "/membership")
+        return { ...common, title: "멤버십 | OURORA STUDIO", description: "오로라공방 멤버십으로 공방을 자유롭게 이용하세요. 자유반, 연구반 등 다양한 멤버십 혜택을 안내합니다.", url: `${HOSTING_URL}/membership` };
+    if (base === "/contact")
+        return { ...common, title: "문의하기 | OURORA STUDIO", description: "오로라공방에 목공 수업, 가구 제작, 공방 이용에 관해 문의하세요. 서울 목동 위치.", url: `${HOSTING_URL}/contact` };
+    return {
+        ...common,
+        title: "가구공방 오로라공방 | OURORA STUDIO",
+        description: "서울 목동에서 가구 제작 및 목공예를 하는 가구공방 오로라공방(OURORA STUDIO)입니다. 가구를 디자인하고 만듭니다. 그리고 목공의 즐거움을 배울 수 있는 다양한 목공수업도 진행하고 있습니다.",
+        url: HOSTING_URL,
+    };
+}
+function postIdFromPath(path) {
+    const base = path.split("?")[0];
+    const match = base.match(/^\/post\/([^/]+)$/);
+    return match?.[1] ?? null;
+}
+function parseString(value) {
+    return typeof value === "string" && value.trim().length > 0 ? value : null;
+}
+function pickFirstString(values) {
+    if (!Array.isArray(values))
+        return null;
+    for (const value of values) {
+        const str = parseString(value);
+        if (str)
+            return str;
+    }
+    return null;
+}
+async function getOgMetaForRequest(path) {
+    const postId = postIdFromPath(path);
+    if (!postId)
+        return getOgMetaForPath(path);
+    try {
+        const snap = await db.collection("works").doc(postId).get();
+        if (!snap.exists)
+            return getOgMetaForPath(path);
+        const data = snap.data() ?? {};
+        const title = parseString(data.title) ?? "OURORA STUDIO";
+        const description = parseString(data.description) ?? "OURORA STUDIO";
+        const image = pickFirstString(data.lightImageUrls) ??
+            pickFirstString(data.imageUrls) ??
+            DEFAULT_OG_IMAGE;
+        return {
+            title,
+            description,
+            image,
+            url: `${HOSTING_URL}/post/${postId}`,
+            type: "article",
+        };
+    }
+    catch (error) {
+        logger.error("Failed to resolve OG metadata for post", { postId, error: getErrorMessage(error) });
+        return getOgMetaForPath(path);
+    }
+}
+function buildCrawlerHtml(meta) {
+    const e = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>${e(meta.title)}</title>
+  <meta name="description" content="${e(meta.description)}" />
+  <meta property="og:locale" content="ko" />
+  <meta property="og:type" content="${e(meta.type)}" />
+  <meta property="og:url" content="${e(meta.url)}" />
+  <meta property="og:title" content="${e(meta.title)}" />
+  <meta property="og:description" content="${e(meta.description)}" />
+  <meta property="og:image" content="${e(meta.image)}" />
+</head>
+<body><p>${e(meta.description)}</p></body>
+</html>`;
+}
+let cachedIndexHtml = null;
+let indexHtmlCachedAt = 0;
+const INDEX_HTML_TTL_MS = 5 * 60 * 1000;
+async function getIndexHtml() {
+    if (cachedIndexHtml && Date.now() - indexHtmlCachedAt < INDEX_HTML_TTL_MS) {
+        return cachedIndexHtml;
+    }
+    const res = await fetch(`${HOSTING_URL}/index.html`);
+    if (!res.ok) {
+        throw new Error(`Failed to fetch index.html: ${res.status} ${res.statusText}`);
+    }
+    cachedIndexHtml = await res.text();
+    indexHtmlCachedAt = Date.now();
+    return cachedIndexHtml;
+}
+exports.ogRender = (0, https_1.onRequest)({ region: "asia-northeast3" }, async (req, res) => {
+    const ua = req.headers["user-agent"] ?? "";
+    const isCrawler = CRAWLER_UA_PATTERN.test(ua) || /opengraph|preview|validator|inspector/i.test(ua);
+    const meta = await getOgMetaForRequest(req.path);
+    if (isCrawler) {
+        res.set("Content-Type", "text/html; charset=utf-8");
+        res.set("Cache-Control", "public, max-age=3600");
+        res.send(buildCrawlerHtml(meta));
         return;
     }
-    const bucket = (0, storage_1.getStorage)().bucket();
-    const worksSnapshot = await db.collection("works").get();
-    const results = [];
-    for (const doc of worksSnapshot.docs) {
-        const data = doc.data();
-        const originalUrls = Array.isArray(data.imageUrls) ? data.imageUrls : [];
-        const newUrls = [];
-        let converted = 0;
-        let skipped = 0;
-        const errors = [];
-        for (const url of originalUrls) {
-            try {
-                const storagePath = extractStoragePath(url);
-                if (storagePath.toLowerCase().endsWith(".webp")) {
-                    newUrls.push(url);
-                    skipped++;
-                    continue;
-                }
-                const webpPath = storagePath.replace(/\.[^.]+$/, ".webp");
-                const response = await fetch(url);
-                if (!response.ok)
-                    throw new Error(`Download failed: ${response.status}`);
-                const buffer = Buffer.from(await response.arrayBuffer());
-                const webpBuffer = await sharp(buffer).webp({ quality: 85 }).toBuffer();
-                const downloadToken = (0, crypto_1.randomUUID)();
-                const file = bucket.file(webpPath);
-                await file.save(webpBuffer, {
-                    contentType: "image/webp",
-                    metadata: { firebaseStorageDownloadTokens: downloadToken },
-                });
-                const webpUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/` +
-                    `${encodeURIComponent(webpPath)}?alt=media&token=${downloadToken}`;
-                newUrls.push(webpUrl);
-                converted++;
-            }
-            catch (e) {
-                errors.push(`${url}: ${getErrorMessage(e)}`);
-                newUrls.push(url);
-            }
-        }
-        if (converted > 0) {
-            await doc.ref.update({ lightImageUrls: newUrls });
-        }
-        results.push({ id: doc.id, converted, skipped, errors });
-        logger.info("migrateWorksToWebp: processed doc", { id: doc.id, converted, skipped });
+    try {
+        const html = await getIndexHtml();
+        res.set("Content-Type", "text/html; charset=utf-8");
+        res.set("Cache-Control", "no-store");
+        res.send(html);
     }
-    res.json({ success: true, processedDocs: results.length, results });
+    catch (err) {
+        logger.error("Failed to fetch index.html", { err });
+        res.set("Content-Type", "text/html; charset=utf-8");
+        res.set("Cache-Control", "no-store");
+        res.status(200).send(buildCrawlerHtml(meta));
+    }
 });
-function extractStoragePath(downloadUrl) {
-    const url = new URL(downloadUrl);
-    const match = url.pathname.match(/\/o\/(.+)$/);
-    if (!match)
-        throw new Error(`Cannot parse storage path from URL: ${downloadUrl}`);
-    return decodeURIComponent(match[1]);
-}
 //# sourceMappingURL=index.js.map

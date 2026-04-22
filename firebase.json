@@ -40,7 +40,10 @@
 "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "function": {
+          "functionId": "ogRender",
+          "region": "asia-northeast3"
+        }
       }
     ]
   }

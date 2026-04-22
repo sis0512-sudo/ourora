@@ -7,6 +7,7 @@ import 'package:ourora/features/class/presentation/screens/class_screen.dart';
 import 'package:ourora/features/class/presentation/screens/ourora8_screen.dart';
 import 'package:ourora/features/class/presentation/screens/regular_course_screen.dart';
 import 'package:ourora/features/common/presentation/screens/home_screen.dart';
+import 'package:ourora/features/common/utils/og_updater.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
 import 'package:ourora/features/works/presentation/screens/work_post_screen.dart';
@@ -23,6 +24,10 @@ CustomTransitionPage<void> _noTransitionPage(GoRouterState state, Widget child) 
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
+    redirect: (context, state) {
+      updateOgMeta(state.uri.path);
+      return null;
+    },
     routes: [
       ShellRoute(
         builder: (context, state, child) => SelectionArea(child: child),
