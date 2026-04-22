@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/features/common/presentation/widgets/bullet_list.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class ClassCommonGuidelinesSection extends StatelessWidget {
   const ClassCommonGuidelinesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Padding(
-      padding: const EdgeInsets.only(top: 80),
+      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32, vertical: 40) : const EdgeInsets.only(top: 80),
       child: BulletList(
         title: '공통 안내',
         items: const [

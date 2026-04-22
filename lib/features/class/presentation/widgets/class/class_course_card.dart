@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class ClassCourseCard extends StatefulWidget {
   final String title;
@@ -29,22 +30,25 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return SizedBox(
       height: 500,
       width: double.maxFinite,
       child: Stack(
         alignment: Alignment.topLeft,
         children: [
-          Image.asset(
-            widget.assetPath,
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          if (widget.showLogo) Positioned(top: 16, left: 16, child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
+          Image.asset(widget.assetPath, width: double.infinity, height: double.infinity, fit: BoxFit.cover),
+          if (widget.showLogo)
+            isMobile
+                ? Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(padding: const EdgeInsets.all(16), child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
+                  )
+                : Positioned(top: 16, left: 16, child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
           Positioned(
             right: 60,
-            top: 40,
+            top: isMobile ? 150 : 40,
             child: SizedBox(
               width: 342,
               child: Column(

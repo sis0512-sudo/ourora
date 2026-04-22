@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class ClassHeaderSection extends StatelessWidget {
   const ClassHeaderSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Container(
       width: double.maxFinite,
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32) : const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
