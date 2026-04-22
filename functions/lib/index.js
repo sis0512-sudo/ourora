@@ -1,11 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchInstagramPage = exports.fetchYoutubeVideosCallable = void 0;
+exports.migrateWorksToWebp = exports.fetchInstagramPage = exports.fetchYoutubeVideosCallable = void 0;
 const https_1 = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const params_1 = require("firebase-functions/params");
 const app_1 = require("firebase-admin/app");
 const firestore_1 = require("firebase-admin/firestore");
+const storage_1 = require("firebase-admin/storage");
+const crypto_1 = require("crypto");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const sharp = require("sharp");
 const youtubeApiKey = (0, params_1.defineSecret)("YOUTUBE_API_KEY");
 const instagramAccessToken = (0, params_1.defineSecret)("INSTAGRAM_ACCESS_TOKEN");
 const instagramUserId = "17841407845566676";
@@ -168,5 +172,72 @@ function getInstagramCacheDocId(afterCursor) {
     if (!afterCursor)
         return "first_page";
     return `after_${Buffer.from(afterCursor).toString("base64url")}`;
+}
+// One-time migration: download existing works images, convert to WebP, re-upload to the same
+// folder, and update Firestore imageUrls. Original files are left untouched.
+// Trigger: POST https://.../migrateWorksToWebp
+exports.migrateWorksToWebp = (0, https_1.onRequest)({
+    region: "asia-northeast3",
+    timeoutSeconds: 540,
+    memory: "1GiB",
+}, async (req, res) => {
+    if (req.method !== "POST") {
+        res.status(405).json({ error: "Method not allowed" });
+        return;
+    }
+    const bucket = (0, storage_1.getStorage)().bucket();
+    const worksSnapshot = await db.collection("works").get();
+    const results = [];
+    for (const doc of worksSnapshot.docs) {
+        const data = doc.data();
+        const originalUrls = Array.isArray(data.imageUrls) ? data.imageUrls : [];
+        const newUrls = [];
+        let converted = 0;
+        let skipped = 0;
+        const errors = [];
+        for (const url of originalUrls) {
+            try {
+                const storagePath = extractStoragePath(url);
+                if (storagePath.toLowerCase().endsWith(".webp")) {
+                    newUrls.push(url);
+                    skipped++;
+                    continue;
+                }
+                const webpPath = storagePath.replace(/\.[^.]+$/, ".webp");
+                const response = await fetch(url);
+                if (!response.ok)
+                    throw new Error(`Download failed: ${response.status}`);
+                const buffer = Buffer.from(await response.arrayBuffer());
+                const webpBuffer = await sharp(buffer).webp({ quality: 85 }).toBuffer();
+                const downloadToken = (0, crypto_1.randomUUID)();
+                const file = bucket.file(webpPath);
+                await file.save(webpBuffer, {
+                    contentType: "image/webp",
+                    metadata: { firebaseStorageDownloadTokens: downloadToken },
+                });
+                const webpUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/` +
+                    `${encodeURIComponent(webpPath)}?alt=media&token=${downloadToken}`;
+                newUrls.push(webpUrl);
+                converted++;
+            }
+            catch (e) {
+                errors.push(`${url}: ${getErrorMessage(e)}`);
+                newUrls.push(url);
+            }
+        }
+        if (converted > 0) {
+            await doc.ref.update({ lightImageUrls: newUrls });
+        }
+        results.push({ id: doc.id, converted, skipped, errors });
+        logger.info("migrateWorksToWebp: processed doc", { id: doc.id, converted, skipped });
+    }
+    res.json({ success: true, processedDocs: results.length, results });
+});
+function extractStoragePath(downloadUrl) {
+    const url = new URL(downloadUrl);
+    const match = url.pathname.match(/\/o\/(.+)$/);
+    if (!match)
+        throw new Error(`Cannot parse storage path from URL: ${downloadUrl}`);
+    return decodeURIComponent(match[1]);
 }
 //# sourceMappingURL=index.js.map

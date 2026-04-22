@@ -8,9 +8,16 @@ import 'package:ourora/features/works/domain/datasources/works_datasource.dart';
 import 'package:ourora/features/works/domain/work_item.dart';
 
 class WorksRemoteDatasource implements WorksDatasource {
-  WorksRemoteDatasource({FirebaseFirestore? firestore, FirebaseStorage? storage})
-    : _firestore = firestore ?? FirebaseFirestore.instanceFor(app: Firebase.app(), databaseId: AppConstants.firestoreDatabaseId),
-      _storage = storage ?? FirebaseStorage.instance;
+  WorksRemoteDatasource({
+    FirebaseFirestore? firestore,
+    FirebaseStorage? storage,
+  }) : _firestore =
+           firestore ??
+           FirebaseFirestore.instanceFor(
+             app: Firebase.app(),
+             databaseId: AppConstants.firestoreDatabaseId,
+           ),
+       _storage = storage ?? FirebaseStorage.instance;
 
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
@@ -25,19 +32,31 @@ class WorksRemoteDatasource implements WorksDatasource {
     required WorkType type,
     void Function(double progress)? onProgress,
   }) async {
-    final docRef = _firestore.collection('works').doc(customId != null && customId.isNotEmpty ? customId : null);
+    final docRef = _firestore
+        .collection('works')
+        .doc(customId != null && customId.isNotEmpty ? customId : null);
     final id = docRef.id;
 
-    final imageUrls = <String>[];
-    for (var i = 0; i < images.length; i++) {
-      final image = images[i];
-      final ext = image.name.contains('.') ? image.name.split('.').last.toLowerCase() : 'jpg';
-      final ref = _storage.ref('works/$id/image_$i.$ext');
-      await ref.putData(image.bytes, SettableMetadata(contentType: 'image/$ext'));
+    onProgress?.call(0);
+
+    var completedCount = 0;
+    final uploadTasks = images.asMap().entries.map((entry) async {
+      final index = entry.key;
+      final image = entry.value;
+      final ext = _extractExtension(image.name);
+      final ref = _storage.ref('works/$id/image_$index.$ext');
+      final metadata = SettableMetadata(
+        contentType: _contentTypeForExtension(ext),
+      );
+      await ref.putData(image.bytes, metadata);
       final url = await ref.getDownloadURL();
-      imageUrls.add(url);
-      onProgress?.call((i + 1) / images.length);
-    }
+      completedCount += 1;
+      onProgress?.call(completedCount / images.length);
+      return url;
+    }).toList();
+
+    // Future.wait keeps result ordering the same as the input task list.
+    final imageUrls = await Future.wait(uploadTasks);
 
     final item = WorkItem(
       id: id,
@@ -52,9 +71,41 @@ class WorksRemoteDatasource implements WorksDatasource {
     await docRef.set(item.toFirestore());
   }
 
+  String _extractExtension(String fileName) {
+    if (!fileName.contains('.')) return 'jpg';
+    final ext = fileName.split('.').last.toLowerCase();
+    return ext == 'jpeg' ? 'jpg' : ext;
+  }
+
+  String _contentTypeForExtension(String ext) {
+    switch (ext) {
+      case 'jpg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'webp':
+        return 'image/webp';
+      case 'gif':
+        return 'image/gif';
+      case 'bmp':
+        return 'image/bmp';
+      case 'heic':
+        return 'image/heic';
+      case 'heif':
+        return 'image/heif';
+      default:
+        return 'application/octet-stream';
+    }
+  }
+
   @override
   Future<List<WorkItem>> fetchWorks() async {
-    final snapshot = await _firestore.collection('works').orderBy('createdAt', descending: true).get();
-    return snapshot.docs.map((doc) => WorkItem.fromFirestore(doc.data())).toList();
+    final snapshot = await _firestore
+        .collection('works')
+        .orderBy('createdAt', descending: true)
+        .get();
+    return snapshot.docs
+        .map((doc) => WorkItem.fromFirestore(doc.data()))
+        .toList();
   }
 }
