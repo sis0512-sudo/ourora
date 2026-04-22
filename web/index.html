@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <!--
+  <head>
+    <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
 
@@ -14,44 +14,67 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="$FLUTTER_BASE_HREF">
+    <base href="$FLUTTER_BASE_HREF" />
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="A new Flutter project." />
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ourora">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <!-- iOS meta tags & icons -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="ourora" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
 
-  <title>ourora</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,800;0,900;1,400&family=Noto+Sans+KR:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <title>ourora</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,800;0,900;1,400&family=Noto+Sans+KR:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400;1,700&family=Raleway:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Firebase Storage 연결 미리 열기 -->
-  <link rel="preconnect" href="https://firebasestorage.googleapis.com">
+    <!-- Firebase Storage 연결 미리 열기 -->
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
 
-  <!-- 히어로 슬라이더 + footer CTA 이미지 선행 다운로드 (Flutter 초기화 전에 시작) -->
-  <link rel="preload" as="image" fetchpriority="high"
-    href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_1.webp?alt=media&token=fdd07a8b-0257-42e4-a552-27c77b43fbed">
-  <link rel="preload" as="image" fetchpriority="low"
-    href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_2.webp?alt=media&token=90ba36bd-62eb-4c34-8bd2-3d8bad21b24b">
-  <link rel="preload" as="image" fetchpriority="low"
-    href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_3.webp?alt=media&token=a759f2da-51d7-4adf-b29b-90957221c8d6">
-  <link rel="preload" as="image" fetchpriority="low"
-    href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_4.webp?alt=media&token=847795f9-f7a1-4212-a075-3e454ac8a86e">
-  <link rel="preload" as="image" fetchpriority="low"
-    href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffooter_cta_background.webp?alt=media&token=372ab332-88c0-4348-aa3f-679c2daa8c7b">
-</head>
-<body>
-  <!--
+    <!-- 히어로 슬라이더 + footer CTA 이미지 선행 다운로드 (Flutter 초기화 전에 시작) -->
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="high"
+      href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_1_compressed.webp?alt=media&token=70293302-e1ab-4e56-8b51-481461b58d72"
+    />
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="low"
+      href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_2_compressed.webp?alt=media&token=7bf73550-09ae-4af8-af10-ffcea4e915a4"
+    />
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="low"
+      href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_3_compressed.webp?alt=media&token=ccecd443-0e14-41cd-8346-d674ff01bf59"
+    />
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="low"
+      href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_4_compressed.webp?alt=media&token=1613e704-57f5-458f-868c-7e16cfd6edc9"
+    />
+    <link
+      rel="preload"
+      as="image"
+      fetchpriority="low"
+      href="https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffooter_cta_background.webp?alt=media&token=372ab332-88c0-4348-aa3f-679c2daa8c7b"
+    />
+  </head>
+  <body>
+    <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
     or to give the user feedback during the initialization process.
@@ -59,6 +82,6 @@
     For more details:
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
-  <script src="flutter_bootstrap.js" async></script>
-</body>
+    <script src="flutter_bootstrap.js" async></script>
+  </body>
 </html>

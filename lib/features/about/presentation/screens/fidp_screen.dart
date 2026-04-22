@@ -51,7 +51,7 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
               child: Stack(
                 children: [
                   Image.network(
-                    'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background.webp?alt=media&token=cbe81dfb-ddc0-437c-821b-73bbfd0518bf',
+                    'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background_compressed.webp?alt=media&token=c2d3b503-40c4-485e-b683-f936841a648c',
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 389,

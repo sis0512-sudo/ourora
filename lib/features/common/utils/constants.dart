@@ -25,28 +25,28 @@ class AppConstants {
       subtitle: 'All good things which exist are',
       title: 'THE FRUITS OF\nORIGINALITY',
       imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_1.webp?alt=media&token=fdd07a8b-0257-42e4-a552-27c77b43fbed',
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_1_compressed.webp?alt=media&token=70293302-e1ab-4e56-8b51-481461b58d72',
       mainAxisAlignment: MainAxisAlignment.end,
     ),
     HeroSlide(
       subtitle: 'Make',
       title: 'IT HAPPEN',
       imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_2.webp?alt=media&token=90ba36bd-62eb-4c34-8bd2-3d8bad21b24b',
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_2_compressed.webp?alt=media&token=7bf73550-09ae-4af8-af10-ffcea4e915a4',
       mainAxisAlignment: MainAxisAlignment.start,
     ),
     HeroSlide(
       subtitle: 'Show me',
       title: 'YOUR STORY',
       imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_3.webp?alt=media&token=a759f2da-51d7-4adf-b29b-90957221c8d6',
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_3_compressed.webp?alt=media&token=ccecd443-0e14-41cd-8346-d674ff01bf59',
       mainAxisAlignment: MainAxisAlignment.start,
     ),
     HeroSlide(
       subtitle: 'It\'s',
       title: 'YOUR PLACE',
       imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_4.webp?alt=media&token=847795f9-f7a1-4212-a075-3e454ac8a86e',
+          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_4_compressed.webp?alt=media&token=1613e704-57f5-458f-868c-7e16cfd6edc9',
       mainAxisAlignment: MainAxisAlignment.center,
     ),
   ];

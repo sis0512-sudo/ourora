@@ -15,7 +15,7 @@ class WorkPostImageColumn extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: imageUrls.length,
       separatorBuilder: (_, _) => const SizedBox(height: 16),
-      itemBuilder: (context, index) => WorkPostImage(url: imageUrls[index]),
+      itemBuilder: (context, index) => WorkPostImage(imageUrl: imageUrls[index]),
     );
   }
 }

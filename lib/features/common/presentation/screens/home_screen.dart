@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ourora/features/common/application/instagram_controller.dart';
 import 'package:ourora/features/common/presentation/widgets/feature_cards_section.dart';
 import 'package:ourora/features/common/presentation/widgets/fid_section.dart';
 import 'package:ourora/features/common/presentation/widgets/footer_cta_section.dart';
@@ -10,16 +12,16 @@ import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_feed_section.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   static const String route = '/';
 
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _imagesPrecached = false;
 
@@ -37,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     for (final url in [
       _footerCtaUrl,
-      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background.webp?alt=media&token=cbe81dfb-ddc0-437c-821b-73bbfd0518bf',
+      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background_compressed.webp?alt=media&token=c2d3b503-40c4-485e-b683-f936841a648c',
       'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fmachine_list.webp?alt=media&token=b7a3113e-619b-4bf5-abd0-26365484f931',
       'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fregular_course_timetable.webp?alt=media&token=2cdffe85-f2d4-450e-afac-f071e2427388',
     ]) {
@@ -53,6 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final feed = ref.watch(instagramControllerProvider);
+
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
