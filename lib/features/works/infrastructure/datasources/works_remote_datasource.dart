@@ -108,6 +108,13 @@ class WorksRemoteDatasource implements WorksDatasource {
   }
 
   @override
+  Future<WorkItem?> fetchWorkById(String id) async {
+    final doc = await _firestore.collection('works').doc(id).get();
+    if (!doc.exists) return null;
+    return WorkItem.fromFirestore(doc.data()!);
+  }
+
+  @override
   Future<List<WorkItem>> fetchAllWorks({WorkType? type}) async {
     Query<Map<String, dynamic>> query = _firestore.collection('works').orderBy('createdAt', descending: true);
     if (type != null) {

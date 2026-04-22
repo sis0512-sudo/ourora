@@ -41,4 +41,8 @@ class WorksRepository {
   Future<List<WorkItem>> fetchAllWorks({WorkType? type}) async {
     return _datasource.fetchAllWorks(type: type);
   }
+
+  Future<WorkItem?> fetchWorkById(String id) async {
+    return _datasource.fetchWorkById(id);
+  }
 }

@@ -36,7 +36,6 @@ dependencies:
   go_router: ^17.0.0
   # UI / 반응형
   carousel_slider: ^5.0.0
-  cached_network_image: ^3.4.1
   responsive_framework: ^1.4.0
   google_fonts: ^8.0.2
   auto_size_text: ^3.0.0

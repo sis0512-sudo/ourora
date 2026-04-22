@@ -9,6 +9,7 @@ import 'package:ourora/features/class/presentation/screens/regular_course_screen
 import 'package:ourora/features/common/presentation/screens/home_screen.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
+import 'package:ourora/features/works/presentation/screens/work_post_screen.dart';
 import 'package:ourora/features/works/presentation/screens/works_screen.dart';
 
 CustomTransitionPage<void> _noTransitionPage(GoRouterState state, Widget child) {
@@ -30,6 +31,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(path: AboutScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const AboutScreen())),
           GoRoute(path: FIDPScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const FIDPScreen())),
           GoRoute(path: WorksScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const WorksScreen())),
+          GoRoute(
+            path: WorkPostScreen.routePattern,
+            pageBuilder: (context, state) => _noTransitionPage(state, WorkPostScreen(workId: state.pathParameters['id']!)),
+          ),
           GoRoute(path: ClassScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const ClassScreen())),
           GoRoute(path: RegularCourseScreen.route, pageBuilder: (context, state) => _noTransitionPage(state, const RegularCourseScreen())),
           GoRoute(path: Ourora8Screen.route, pageBuilder: (context, state) => _noTransitionPage(state, const Ourora8Screen())),

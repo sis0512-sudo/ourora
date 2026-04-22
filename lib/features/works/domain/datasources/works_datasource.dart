@@ -20,4 +20,6 @@ abstract class WorksDatasource {
   });
 
   Future<List<WorkItem>> fetchAllWorks({WorkType? type});
+
+  Future<WorkItem?> fetchWorkById(String id);
 }

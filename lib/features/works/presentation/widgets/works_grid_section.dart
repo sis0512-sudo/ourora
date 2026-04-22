@@ -1,12 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:ourora/features/works/application/works_controller.dart';
 import 'package:ourora/features/works/domain/work_item.dart';
+import 'package:ourora/features/works/presentation/screens/work_post_screen.dart';
 
 class WorksGridSection extends ConsumerWidget {
   const WorksGridSection({super.key});
@@ -287,58 +288,50 @@ class _WorkGridItemState extends State<_WorkGridItem> {
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          if (lightImageUrls != null)
-            CachedNetworkImage(
-              imageUrl: lightImageUrls,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
+      child: GestureDetector(
+        onTap: () => context.go(WorkPostScreen.routeFor(widget.work.id)),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (lightImageUrls != null)
+              Image.network(lightImageUrls, fit: BoxFit.cover)
+            else
+              Container(
                 color: AppTheme.lightGray,
-                child: const Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange)),
+                child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray),
               ),
-              errorWidget: (context, url, error) => Container(
-                color: AppTheme.lightGray,
-                child: const Icon(Icons.broken_image_outlined, color: AppTheme.borderGray),
-              ),
-            )
-          else
-            Container(
-              color: AppTheme.lightGray,
-              child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray),
-            ),
-          AnimatedOpacity(
-            duration: const Duration(milliseconds: 200),
-            opacity: _hovered ? 1.0 : 0.0,
-            child: Container(
-              color: AppTheme.black.withValues(alpha: 0.65),
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.work.title,
-                    style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (widget.work.description.isNotEmpty) ...[
-                    const SizedBox(height: 8),
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: _hovered ? 1.0 : 0.0,
+              child: Container(
+                color: AppTheme.black.withValues(alpha: 0.65),
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Text(
-                      widget.work.description,
-                      style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 12, color: AppTheme.white),
+                      widget.work.title,
+                      style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
                       textAlign: TextAlign.center,
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    if (widget.work.description.isNotEmpty) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.work.description,
+                        style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 12, color: AppTheme.white),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
