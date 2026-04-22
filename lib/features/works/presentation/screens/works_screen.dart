@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
+import 'package:ourora/features/works/presentation/widgets/works_grid_section.dart';
+import 'package:ourora/features/works/presentation/widgets/works_upload_section.dart';
 
 class WorksScreen extends StatelessWidget {
   static const String route = '/works';
@@ -13,7 +16,8 @@ class WorksScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(delegate: NavBarDelegate(), pinned: true),
-          const SliverFillRemaining(child: Center(child: Text('WORKS — 작품과 작업들'))),
+          if (kDebugMode) const SliverToBoxAdapter(child: WorksUploadSection()),
+          const SliverToBoxAdapter(child: WorksGridSection()),
           const SliverToBoxAdapter(child: SiteFooter()),
         ],
       ),
