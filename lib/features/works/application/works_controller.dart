@@ -57,10 +57,10 @@ class WorksState {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 WorksRepository worksRepository(Ref ref) => WorksRepository();
 
-@riverpod
+@Riverpod(keepAlive: true)
 class WorksController extends _$WorksController {
   late WorksRepository _repository;
 

@@ -100,7 +100,13 @@ class _GridItemState extends State<_GridItem> {
                 if (loadingProgress == null) return child;
                 return Container(
                   color: AppTheme.lightGray,
-                  child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppTheme.coral,
+                      value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                    ),
+                  ),
                 );
               },
             ),

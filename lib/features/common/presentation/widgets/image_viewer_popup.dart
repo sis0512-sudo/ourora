@@ -70,7 +70,15 @@ class _ImageViewerPopupState extends State<ImageViewerPopup> {
                         return SizedBox(
                           width: 80,
                           height: 80,
-                          child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.white, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppTheme.coral,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          ),
                         );
                       },
                     ),

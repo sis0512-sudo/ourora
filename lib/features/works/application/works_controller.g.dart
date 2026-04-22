@@ -22,7 +22,7 @@ final class WorksRepositoryProvider
         argument: null,
         retry: null,
         name: r'worksRepositoryProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -49,7 +49,7 @@ final class WorksRepositoryProvider
   }
 }
 
-String _$worksRepositoryHash() => r'910e479d7d328349c31bafaba8bd1258dc6e9279';
+String _$worksRepositoryHash() => r'3a074bc856d1282ba677a915a5b14581bd2ffcef';
 
 @ProviderFor(WorksController)
 const worksControllerProvider = WorksControllerProvider._();
@@ -62,7 +62,7 @@ final class WorksControllerProvider
         argument: null,
         retry: null,
         name: r'worksControllerProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -83,7 +83,7 @@ final class WorksControllerProvider
   }
 }
 
-String _$worksControllerHash() => r'd3e298ef270641d32cf791db1654b87c57badf5d';
+String _$worksControllerHash() => r'03f5fa27c16024f0eefd4d06cee2d2013d52b386';
 
 abstract class _$WorksController extends $Notifier<WorksState> {
   WorksState build();

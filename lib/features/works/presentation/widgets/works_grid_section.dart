@@ -294,7 +294,23 @@ class _WorkGridItemState extends State<_WorkGridItem> {
           fit: StackFit.expand,
           children: [
             if (lightImageUrls != null)
-              Image.network(lightImageUrls, fit: BoxFit.cover)
+              Image.network(
+                lightImageUrls,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Container(
+                    color: AppTheme.lightGray,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: AppTheme.coral,
+                        value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+                      ),
+                    ),
+                  );
+                },
+              )
             else
               Container(
                 color: AppTheme.lightGray,
