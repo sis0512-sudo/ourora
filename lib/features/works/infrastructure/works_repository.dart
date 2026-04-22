@@ -30,7 +30,10 @@ class WorksRepository {
     );
   }
 
-  Future<List<WorkItem>> fetchWorks() async {
-    return _datasource.fetchWorks();
+  Future<({List<WorkItem> items, Object? nextCursor})> fetchWorksPage({
+    Object? cursor,
+    int limit = 9,
+  }) async {
+    return _datasource.fetchWorksPage(cursor: cursor, limit: limit);
   }
 }

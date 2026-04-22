@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutProfileSection extends StatelessWidget {
@@ -18,12 +19,33 @@ class _ProfileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppTheme.black,
-      padding: EdgeInsets.symmetric(vertical: 48, horizontal: 100),
-      child: Column(
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('CHIEF', style: const TextStyle(fontFamily: 'sans-serif', fontSize: 46, fontWeight: FontWeight.bold, letterSpacing: 11.5, color: AppTheme.textGray)),
-          Text('공방장 프로필', style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 17, fontWeight: FontWeight.normal, letterSpacing: 4, color: AppTheme.textGray)),
+          Text(
+            'CHIEF',
+            style: TextStyle(
+              fontFamily: 'sans-serif',
+              fontSize: 46,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 11.5,
+              color: AppTheme.white.withValues(alpha: 0.8),
+            ),
+          ),
+          Text(
+            '공방장 프로필',
+            style: TextStyle(
+              fontFamily: 'Noto Sans KR',
+              fontSize: 17,
+              fontWeight: FontWeight.normal,
+              letterSpacing: 4,
+              color: AppTheme.white.withValues(alpha: 0.8),
+            ),
+          ),
           const SizedBox(height: 32),
           _Section(
             title: 'EDUCATION',
@@ -71,6 +93,8 @@ class _ProfileContent extends StatelessWidget {
           ),
           _Section(title: 'PREVIOUS WORKS', items: const [_TextItem('사용자 경험(UX : User Experience) 디자이너'), _TextItem('컴퓨터 소프트웨어 프로그래머')]),
         ],
+          ),
+        ),
       ),
     );
   }
@@ -103,7 +127,16 @@ class _LinkItem extends _ProfileItem {
         Text('$label - ', style: AppTheme.profileText()),
         GestureDetector(
           onTap: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
-          child: Text(url, style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 10, height: 2.5, color: AppTheme.textGray, decoration: TextDecoration.underline)),
+          child: Text(
+            url,
+            style: TextStyle(
+              fontFamily: 'Noto Sans KR',
+              fontSize: 10,
+              height: 2.5,
+              color: AppTheme.white.withValues(alpha: 0.5),
+              decoration: TextDecoration.underline,
+            ),
+          ),
         ),
       ],
     );
@@ -123,7 +156,17 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 18, fontWeight: FontWeight.bold, height: 2.5, letterSpacing: 0.14, color: AppTheme.textGray)),
+          Text(
+            title,
+            style: TextStyle(
+              fontFamily: 'Noto Sans KR',
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              height: 2.5,
+              letterSpacing: 0.14,
+              color: AppTheme.white.withValues(alpha: 0.8),
+            ),
+          ),
           ...items.map((item) => item.build(context)),
           const SizedBox(height: 8),
         ],

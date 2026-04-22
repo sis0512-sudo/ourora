@@ -89,8 +89,17 @@ class WorksRemoteDatasource implements WorksDatasource {
   }
 
   @override
-  Future<List<WorkItem>> fetchWorks() async {
-    final snapshot = await _firestore.collection('works').orderBy('createdAt', descending: true).get();
-    return snapshot.docs.map((doc) => WorkItem.fromFirestore(doc.data())).toList();
+  Future<({List<WorkItem> items, Object? nextCursor})> fetchWorksPage({
+    Object? cursor,
+    int limit = 9,
+  }) async {
+    var query = _firestore.collection('works').orderBy('createdAt', descending: true).limit(limit);
+    if (cursor != null) {
+      query = query.startAfterDocument(cursor as DocumentSnapshot);
+    }
+    final snapshot = await query.get();
+    final items = snapshot.docs.map((doc) => WorkItem.fromFirestore(doc.data())).toList();
+    final nextCursor = snapshot.docs.length == limit ? snapshot.docs.last : null;
+    return (items: items, nextCursor: nextCursor);
   }
 }

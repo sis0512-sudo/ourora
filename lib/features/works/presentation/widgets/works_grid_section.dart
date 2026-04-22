@@ -40,7 +40,7 @@ class WorksGridSection extends ConsumerWidget {
       );
     }
 
-    if (state.error != null) {
+    if (state.error != null && state.works.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 60),
@@ -56,12 +56,25 @@ class WorksGridSection extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columns, crossAxisSpacing: 4, mainAxisSpacing: 4),
-      itemCount: state.works.length,
-      itemBuilder: (context, index) => _WorkGridItem(work: state.works[index]),
+    return Column(
+      children: [
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            crossAxisSpacing: 4,
+            mainAxisSpacing: 4,
+          ),
+          itemCount: state.works.length,
+          itemBuilder: (context, index) => _WorkGridItem(work: state.works[index]),
+        ),
+        if (state.isLoadingMore)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 40),
+            child: Center(child: CircularProgressIndicator(color: AppTheme.accentOrange, strokeWidth: 2)),
+          ),
+      ],
     );
   }
 }

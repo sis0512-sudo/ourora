@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/about/presentation/screens/fidp_screen.dart';
+import 'package:ourora/features/common/utils/utils.dart';
 
 class AboutFidpSection extends StatelessWidget {
   const AboutFidpSection({super.key});
@@ -11,19 +12,23 @@ class AboutFidpSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppTheme.white,
-      padding: EdgeInsets.symmetric(vertical: 100, horizontal: 48),
+      padding: EdgeInsets.symmetric(vertical: 100),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 680),
+          constraints: const BoxConstraints(maxWidth: 480),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('F+I+D+P', style: const TextStyle(fontFamily: 'sans-serif', fontSize: 36, fontWeight: FontWeight.w300, letterSpacing: 3, color: AppTheme.black), textAlign: TextAlign.center),
+              Text(
+                'F+I+D+P',
+                style: const TextStyle(fontFamily: 'sans-serif', fontSize: 36, fontWeight: FontWeight.w300, letterSpacing: 3, color: AppTheme.black),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 20),
               Container(width: double.infinity, height: 1, color: AppTheme.borderGray),
               const SizedBox(height: 28),
               Text(
-                '오로라공방은 가구(Furniture)와 IT(Information Technology), 그리고 디자인(Design)과 사람(People)이라는 4가지 주제들과 함께 합니다.',
+                Utils.formatText('오로라공방은 가구(Furniture)와 IT(Information Technology), 그리고 디자인(Design)과 사람(People)이라는 4가지 주제들과 함께 합니다.'),
                 style: AppTheme.bodyKorean().copyWith(height: 1.6),
                 textAlign: TextAlign.center,
               ),

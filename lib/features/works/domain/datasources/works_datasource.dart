@@ -13,5 +13,8 @@ abstract class WorksDatasource {
     void Function(double progress)? onProgress,
   });
 
-  Future<List<WorkItem>> fetchWorks();
+  Future<({List<WorkItem> items, Object? nextCursor})> fetchWorksPage({
+    Object? cursor,
+    int limit = 9,
+  });
 }

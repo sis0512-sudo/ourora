@@ -30,7 +30,7 @@ class AppTheme {
   static TextStyle brandBodyText() => GoogleFonts.notoSansKr(fontSize: 14, fontWeight: FontWeight.w400, color: white, height: 2.0);
 
   // About — Profile 섹션
-  static TextStyle profileText() => const TextStyle(fontFamily: 'Noto Sans KR', fontSize: 14, height: 2.5, letterSpacing: 0.14, color: textGray);
+  static TextStyle profileText() => TextStyle(fontFamily: 'Noto Sans KR', fontSize: 14, height: 2.5, letterSpacing: 0.14, color: white.withValues(alpha: 0.5));
 
   // Contact
   static TextStyle contactBody() => GoogleFonts.nanumMyeongjo(fontSize: 20, fontWeight: FontWeight.w400, height: 1.5, color: black);
