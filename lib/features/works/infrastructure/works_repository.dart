@@ -33,7 +33,12 @@ class WorksRepository {
   Future<({List<WorkItem> items, Object? nextCursor})> fetchWorksPage({
     Object? cursor,
     int limit = 9,
+    WorkType? type,
   }) async {
-    return _datasource.fetchWorksPage(cursor: cursor, limit: limit);
+    return _datasource.fetchWorksPage(cursor: cursor, limit: limit, type: type);
+  }
+
+  Future<List<WorkItem>> fetchAllWorks({WorkType? type}) async {
+    return _datasource.fetchAllWorks(type: type);
   }
 }

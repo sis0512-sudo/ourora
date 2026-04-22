@@ -83,7 +83,7 @@ final class WorksControllerProvider
   }
 }
 
-String _$worksControllerHash() => r'8be7b0b133eb88661f3b365cff9a2654f8af8e30';
+String _$worksControllerHash() => r'd3e298ef270641d32cf791db1654b87c57badf5d';
 
 abstract class _$WorksController extends $Notifier<WorksState> {
   WorksState build();

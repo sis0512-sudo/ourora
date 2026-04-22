@@ -16,5 +16,8 @@ abstract class WorksDatasource {
   Future<({List<WorkItem> items, Object? nextCursor})> fetchWorksPage({
     Object? cursor,
     int limit = 9,
+    WorkType? type,
   });
+
+  Future<List<WorkItem>> fetchAllWorks({WorkType? type});
 }

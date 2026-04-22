@@ -92,8 +92,12 @@ class WorksRemoteDatasource implements WorksDatasource {
   Future<({List<WorkItem> items, Object? nextCursor})> fetchWorksPage({
     Object? cursor,
     int limit = 9,
+    WorkType? type,
   }) async {
     var query = _firestore.collection('works').orderBy('createdAt', descending: true).limit(limit);
+    if (type != null) {
+      query = _firestore.collection('works').where('type', isEqualTo: type.name).orderBy('createdAt', descending: true).limit(limit);
+    }
     if (cursor != null) {
       query = query.startAfterDocument(cursor as DocumentSnapshot);
     }
@@ -101,5 +105,21 @@ class WorksRemoteDatasource implements WorksDatasource {
     final items = snapshot.docs.map((doc) => WorkItem.fromFirestore(doc.data())).toList();
     final nextCursor = snapshot.docs.length == limit ? snapshot.docs.last : null;
     return (items: items, nextCursor: nextCursor);
+  }
+
+  @override
+  Future<List<WorkItem>> fetchAllWorks({WorkType? type}) async {
+    Query<Map<String, dynamic>> query = _firestore.collection('works').orderBy('createdAt', descending: true);
+    if (type != null) {
+      // where + orderBy on different fields requires a composite index, so filter
+      // by type only and sort client-side to avoid the index requirement.
+      query = _firestore.collection('works').where('type', isEqualTo: type.name);
+    }
+    final snapshot = await query.get();
+    final items = snapshot.docs.map((doc) => WorkItem.fromFirestore(doc.data())).toList();
+    if (type != null) {
+      items.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    }
+    return items;
   }
 }

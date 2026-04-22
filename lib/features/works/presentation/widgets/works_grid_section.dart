@@ -18,12 +18,14 @@ class WorksGridSection extends ConsumerWidget {
 
     return Container(
       color: AppTheme.white,
-      padding: EdgeInsets.symmetric(vertical: 80),
+      padding: const EdgeInsets.symmetric(vertical: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TitleWidget(title: 'WORKS', isSubTitle: false),
           const SizedBox(height: 40),
+          _FilterBar(selectedType: state.selectedType, searchQuery: state.searchQuery),
+          const SizedBox(height: 32),
           _buildBody(context, state, columns),
         ],
       ),
@@ -46,14 +48,24 @@ class WorksGridSection extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 60),
           child: Text(
             '불러올 수 없습니다.',
-            style: TextStyle(color: AppTheme.textGray, fontSize: 14, fontFamily: 'NanumGothic'),
+            style: const TextStyle(color: AppTheme.textGray, fontSize: 14, fontFamily: 'NanumGothic'),
           ),
         ),
       );
     }
 
-    if (state.works.isEmpty) {
-      return const SizedBox.shrink();
+    final displayed = state.displayedWorks;
+
+    if (displayed.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 60),
+          child: Text(
+            '결과가 없습니다.',
+            style: const TextStyle(color: AppTheme.textGray, fontSize: 14, fontFamily: 'NanumGothic'),
+          ),
+        ),
+      );
     }
 
     return Column(
@@ -61,13 +73,9 @@ class WorksGridSection extends ConsumerWidget {
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: columns,
-            crossAxisSpacing: 4,
-            mainAxisSpacing: 4,
-          ),
-          itemCount: state.works.length,
-          itemBuilder: (context, index) => _WorkGridItem(work: state.works[index]),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columns, crossAxisSpacing: 4, mainAxisSpacing: 4),
+          itemCount: displayed.length,
+          itemBuilder: (context, index) => _WorkGridItem(work: displayed[index]),
         ),
         if (state.isLoadingMore)
           const Padding(
@@ -75,6 +83,186 @@ class WorksGridSection extends ConsumerWidget {
             child: Center(child: CircularProgressIndicator(color: AppTheme.accentOrange, strokeWidth: 2)),
           ),
       ],
+    );
+  }
+}
+
+class _FilterBar extends ConsumerStatefulWidget {
+  final WorkType? selectedType;
+  final String searchQuery;
+
+  const _FilterBar({required this.selectedType, required this.searchQuery});
+
+  @override
+  ConsumerState<_FilterBar> createState() => _FilterBarState();
+}
+
+class _FilterBarState extends ConsumerState<_FilterBar> {
+  late final TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController(text: widget.searchQuery);
+  }
+
+  @override
+  void didUpdateWidget(_FilterBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.searchQuery != oldWidget.searchQuery && widget.searchQuery.isEmpty && _searchController.text.isNotEmpty) {
+      _searchController.clear();
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSubmit(String value) {
+    ref.read(worksControllerProvider.notifier).setSearchQuery(value);
+  }
+
+  void _onClear() {
+    _searchController.clear();
+    ref.read(worksControllerProvider.notifier).setSearchQuery('');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final showSearch = widget.selectedType == null;
+
+    return Row(
+      children: [
+        _TypeButtons(selectedType: widget.selectedType),
+        const Spacer(),
+        if (showSearch)
+          SizedBox(
+            width: 240,
+            child: _SearchField(controller: _searchController, onSubmit: _onSubmit, onClear: _onClear),
+          ),
+      ],
+    );
+  }
+}
+
+class _TypeButtons extends ConsumerWidget {
+  final WorkType? selectedType;
+
+  const _TypeButtons({required this.selectedType});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(worksControllerProvider.notifier);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _FilterChip(label: 'ALL', selected: selectedType == null, onTap: () => notifier.setType(null)),
+        const SizedBox(width: 8),
+        _FilterChip(label: 'FURNITURE', selected: selectedType == WorkType.furniture, onTap: () => notifier.setType(WorkType.furniture)),
+        const SizedBox(width: 8),
+        _FilterChip(label: 'ETC', selected: selectedType == WorkType.etc, onTap: () => notifier.setType(WorkType.etc)),
+      ],
+    );
+  }
+}
+
+class _FilterChip extends StatefulWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _FilterChip({required this.label, required this.selected, required this.onTap});
+
+  @override
+  State<_FilterChip> createState() => _FilterChipState();
+}
+
+class _FilterChipState extends State<_FilterChip> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final active = widget.selected || _hovered;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          height: 48,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          alignment: Alignment.center,
+          child: SelectionContainer.disabled(
+            child: Text(
+              widget.label,
+              style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w600, color: (widget.selected || active) ? AppTheme.coral : AppTheme.textGray),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchField extends StatefulWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onSubmit;
+  final VoidCallback onClear;
+
+  const _SearchField({required this.controller, required this.onSubmit, required this.onClear});
+
+  @override
+  State<_SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends State<_SearchField> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_rebuild);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_rebuild);
+    super.dispose();
+  }
+
+  void _rebuild() => setState(() {});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: widget.controller,
+      onSubmitted: widget.onSubmit,
+      textInputAction: TextInputAction.search,
+      style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 13, color: AppTheme.black),
+      decoration: InputDecoration(
+        hintText: 'Search...',
+        hintStyle: const TextStyle(fontFamily: 'NanumGothic', fontSize: 13, color: AppTheme.borderGray),
+        prefixIcon: const Icon(Icons.search, size: 18, color: AppTheme.borderGray),
+        suffixIcon: widget.controller.text.isNotEmpty
+            ? GestureDetector(
+                onTap: widget.onClear,
+                child: const Icon(Icons.close, size: 16, color: AppTheme.borderGray),
+              )
+            : null,
+        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: AppTheme.borderGray),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: AppTheme.black),
+        ),
+      ),
     );
   }
 }
