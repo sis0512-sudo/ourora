@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class BulletList extends StatelessWidget {
   final String? title;
@@ -14,7 +15,9 @@ class BulletList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle itemBaseStyle = itemStyle ?? AppTheme.bodyKorean();
+    final isMobile = Responsive.isMobileDevice;
+
+    TextStyle itemBaseStyle = itemStyle ?? (isMobile ? AppTheme.bodyKorean().copyWith(fontSize: 20) : AppTheme.bodyKorean());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
