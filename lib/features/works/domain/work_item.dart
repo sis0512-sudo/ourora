@@ -5,6 +5,7 @@ class WorkItem {
   final String title;
   final String description;
   final List<String> imageUrls;
+  final List<String> lightImageUrls;
   final String? youtubeUrl;
   final WorkType type;
   final DateTime createdAt;
@@ -14,6 +15,7 @@ class WorkItem {
     required this.title,
     required this.description,
     required this.imageUrls,
+    required this.lightImageUrls,
     this.youtubeUrl,
     required this.type,
     required this.createdAt,
@@ -24,6 +26,7 @@ class WorkItem {
     'title': title,
     'description': description,
     'imageUrls': imageUrls,
+    'lightImageUrls': lightImageUrls,
     'youtubeUrl': youtubeUrl,
     'type': type.name,
     'createdAt': createdAt.toIso8601String(),
@@ -34,6 +37,7 @@ class WorkItem {
     title: data['title'] as String,
     description: data['description'] as String,
     imageUrls: List<String>.from(data['imageUrls'] as List),
+    lightImageUrls: List<String>.from(data['lightImageUrls'] as List),
     youtubeUrl: data['youtubeUrl'] as String?,
     type: WorkType.values.firstWhere((t) => t.name == data['type']),
     createdAt: DateTime.parse(data['createdAt'] as String),

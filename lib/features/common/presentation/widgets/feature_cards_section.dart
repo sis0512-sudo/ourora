@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/utils/constants.dart';
 
 enum FeatureCard {
   workshop(assetPath: 'assets/svgs/icon_workshop.svg', title: 'WORKSHOP', subtitle: '공방 소개', desc: '공방에 대한 소개와 문화, 그리고 추구하는 목표와 방향을 이야기합니다.', route: '/about'),
@@ -34,7 +35,7 @@ class FeatureCardsSection extends StatelessWidget {
       color: AppTheme.white,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 980),
+          constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
           child: SizedBox(
             height: 450,
             child: Row(

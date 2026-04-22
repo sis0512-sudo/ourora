@@ -7,6 +7,7 @@ import 'package:ourora/features/about/presentation/screens/about_screen.dart';
 import 'package:ourora/features/class/presentation/screens/class_screen.dart';
 import 'package:ourora/features/class/presentation/screens/ourora8_screen.dart';
 import 'package:ourora/features/class/presentation/screens/regular_course_screen.dart';
+import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
 import 'package:ourora/features/works/presentation/screens/works_screen.dart';
@@ -21,19 +22,23 @@ class NavBar extends StatelessWidget {
     return Container(
       height: height,
       color: AppTheme.white,
-      padding: const EdgeInsets.symmetric(horizontal: 110),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: GestureDetector(
-              onTap: () => context.go('/'),
-              child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
-            ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () => context.go('/'),
+                  child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
+                ),
+              ),
+              _DesktopMenu(),
+            ],
           ),
-          _DesktopMenu(),
-        ],
+        ),
       ),
     );
   }

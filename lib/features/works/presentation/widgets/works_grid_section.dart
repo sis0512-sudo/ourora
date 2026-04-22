@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:ourora/features/works/application/works_controller.dart';
 import 'package:ourora/features/works/domain/work_item.dart';
@@ -14,20 +15,14 @@ class WorksGridSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(worksControllerProvider);
     final columns = Responsive.gridColumns(context);
-    final hPadding = Responsive.isMobile(context) ? 24.0 : 80.0;
 
     return Container(
       color: AppTheme.white,
-      padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: 80),
+      padding: EdgeInsets.symmetric(vertical: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'WORKS',
-            style: GoogleFonts.montserrat(fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 3, color: AppTheme.black),
-          ),
-          const SizedBox(height: 8),
-          Container(width: 40, height: 2, color: AppTheme.accentOrange),
+          TitleWidget(title: 'WORKS', isSubTitle: false),
           const SizedBox(height: 40),
           _buildBody(context, state, columns),
         ],
@@ -49,7 +44,10 @@ class WorksGridSection extends ConsumerWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 60),
-          child: Text('불러올 수 없습니다.', style: TextStyle(color: AppTheme.textGray, fontSize: 14, fontFamily: 'NanumGothic')),
+          child: Text(
+            '불러올 수 없습니다.',
+            style: TextStyle(color: AppTheme.textGray, fontSize: 14, fontFamily: 'NanumGothic'),
+          ),
         ),
       );
     }
@@ -61,11 +59,7 @@ class WorksGridSection extends ConsumerWidget {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: columns,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-      ),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columns, crossAxisSpacing: 4, mainAxisSpacing: 4),
       itemCount: state.works.length,
       itemBuilder: (context, index) => _WorkGridItem(work: state.works[index]),
     );
@@ -86,7 +80,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = widget.work.imageUrls.isNotEmpty ? widget.work.imageUrls.first : null;
+    final lightImageUrls = widget.work.lightImageUrls.isNotEmpty ? widget.work.lightImageUrls.first : null;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -95,18 +89,24 @@ class _WorkGridItemState extends State<_WorkGridItem> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          if (imageUrl != null)
+          if (lightImageUrls != null)
             CachedNetworkImage(
-              imageUrl: imageUrl,
+              imageUrl: lightImageUrls,
               fit: BoxFit.cover,
               placeholder: (context, url) => Container(
                 color: AppTheme.lightGray,
                 child: const Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange)),
               ),
-              errorWidget: (context, url, error) => Container(color: AppTheme.lightGray, child: const Icon(Icons.broken_image_outlined, color: AppTheme.borderGray)),
+              errorWidget: (context, url, error) => Container(
+                color: AppTheme.lightGray,
+                child: const Icon(Icons.broken_image_outlined, color: AppTheme.borderGray),
+              ),
             )
           else
-            Container(color: AppTheme.lightGray, child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray)),
+            Container(
+              color: AppTheme.lightGray,
+              child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray),
+            ),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
             opacity: _hovered ? 1.0 : 0.0,
@@ -129,7 +129,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                       widget.work.description,
                       style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 12, color: AppTheme.white),
                       textAlign: TextAlign.center,
-                      maxLines: 3,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],

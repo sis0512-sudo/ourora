@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SiteFooter extends StatelessWidget {
@@ -10,51 +11,52 @@ class SiteFooter extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: AppTheme.black,
-      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.maxFinite,
-            child: Wrap(
-              spacing: 40,
-              runSpacing: 24,
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 저작권
-                _FooterTextBlock(lines: const ['© 2021 OURORA STUDIO.', 'All rights reserved.']),
+                SizedBox(
+                  width: double.maxFinite,
+                  child: Wrap(
+                    spacing: 40,
+                    runSpacing: 24,
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      // 저작권
+                      _FooterTextBlock(lines: const ['© 2021 OURORA STUDIO.', 'All rights reserved.']),
 
-                // 주소
-                _FooterTextBlock(lines: const ['B1 6 Mokdong-ro21Gil, Yangcheon-gu,', 'Seoul, Korea.']),
+                      // 주소
+                      _FooterTextBlock(lines: const ['B1 6 Mokdong-ro21Gil, Yangcheon-gu,', 'Seoul, Korea.']),
 
-                // 이메일 + 전화
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => launchUrl(Uri.parse('mailto:contact@ourora.com')),
-                      child: Text(
-                        'E. contact@ourora.com',
-                        style: AppTheme.footerText(),
+                      // 이메일 + 전화
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () => launchUrl(Uri.parse('mailto:contact@ourora.com')),
+                            child: Text('E. contact@ourora.com', style: AppTheme.footerText()),
+                          ),
+                          Text('T. 010-7586-8765', style: AppTheme.footerText()),
+                        ],
                       ),
-                    ),
-                    Text(
-                      'T. 010-7586-8765',
-                      style: AppTheme.footerText(),
-                    ),
-                  ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 60),
+                // 로고
+                ColorFiltered(
+                  colorFilter: const ColorFilter.matrix([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]),
+                  child: Image.asset('assets/images/logo.png', width: 221, height: 60, fit: BoxFit.contain),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 60),
-          // 로고
-          ColorFiltered(
-            colorFilter: const ColorFilter.matrix([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0]),
-            child: Image.asset('assets/images/logo.png', width: 221, height: 60, fit: BoxFit.contain),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -68,14 +70,7 @@ class _FooterTextBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: lines
-          .map(
-            (line) => Text(
-              line,
-              style: AppTheme.footerText(),
-            ),
-          )
-          .toList(),
+      children: lines.map((line) => Text(line, style: AppTheme.footerText())).toList(),
     );
   }
 }

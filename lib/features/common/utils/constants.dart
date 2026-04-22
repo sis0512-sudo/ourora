@@ -74,7 +74,7 @@ class AppConstants {
 
   static String videoUrl(String videoId) => 'https://www.youtube.com/watch?v=$videoId';
 
-  static EdgeInsetsGeometry get horizontalPadding => const EdgeInsets.symmetric(horizontal: 120);
+  static double get windowMaxWidth => 980;
 
   static String firestoreDatabaseId = 'ourora';
   static String firebaseFunctionsRegion = 'asia-northeast3';

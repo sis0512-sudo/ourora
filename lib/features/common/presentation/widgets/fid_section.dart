@@ -15,7 +15,7 @@ class FidSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 64),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 980),
+          constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
           child: Column(
             children: [
               Text(

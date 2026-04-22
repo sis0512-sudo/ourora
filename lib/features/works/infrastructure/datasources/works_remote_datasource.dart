@@ -8,16 +8,9 @@ import 'package:ourora/features/works/domain/datasources/works_datasource.dart';
 import 'package:ourora/features/works/domain/work_item.dart';
 
 class WorksRemoteDatasource implements WorksDatasource {
-  WorksRemoteDatasource({
-    FirebaseFirestore? firestore,
-    FirebaseStorage? storage,
-  }) : _firestore =
-           firestore ??
-           FirebaseFirestore.instanceFor(
-             app: Firebase.app(),
-             databaseId: AppConstants.firestoreDatabaseId,
-           ),
-       _storage = storage ?? FirebaseStorage.instance;
+  WorksRemoteDatasource({FirebaseFirestore? firestore, FirebaseStorage? storage})
+    : _firestore = firestore ?? FirebaseFirestore.instanceFor(app: Firebase.app(), databaseId: AppConstants.firestoreDatabaseId),
+      _storage = storage ?? FirebaseStorage.instance;
 
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
@@ -32,9 +25,7 @@ class WorksRemoteDatasource implements WorksDatasource {
     required WorkType type,
     void Function(double progress)? onProgress,
   }) async {
-    final docRef = _firestore
-        .collection('works')
-        .doc(customId != null && customId.isNotEmpty ? customId : null);
+    final docRef = _firestore.collection('works').doc(customId != null && customId.isNotEmpty ? customId : null);
     final id = docRef.id;
 
     onProgress?.call(0);
@@ -45,9 +36,7 @@ class WorksRemoteDatasource implements WorksDatasource {
       final image = entry.value;
       final ext = _extractExtension(image.name);
       final ref = _storage.ref('works/$id/image_$index.$ext');
-      final metadata = SettableMetadata(
-        contentType: _contentTypeForExtension(ext),
-      );
+      final metadata = SettableMetadata(contentType: _contentTypeForExtension(ext));
       await ref.putData(image.bytes, metadata);
       final url = await ref.getDownloadURL();
       completedCount += 1;
@@ -63,6 +52,7 @@ class WorksRemoteDatasource implements WorksDatasource {
       title: title,
       description: description,
       imageUrls: imageUrls,
+      lightImageUrls: imageUrls,
       youtubeUrl: youtubeUrl?.isEmpty == true ? null : youtubeUrl,
       type: type,
       createdAt: DateTime.now(),
@@ -100,12 +90,7 @@ class WorksRemoteDatasource implements WorksDatasource {
 
   @override
   Future<List<WorkItem>> fetchWorks() async {
-    final snapshot = await _firestore
-        .collection('works')
-        .orderBy('createdAt', descending: true)
-        .get();
-    return snapshot.docs
-        .map((doc) => WorkItem.fromFirestore(doc.data()))
-        .toList();
+    final snapshot = await _firestore.collection('works').orderBy('createdAt', descending: true).get();
+    return snapshot.docs.map((doc) => WorkItem.fromFirestore(doc.data())).toList();
   }
 }
