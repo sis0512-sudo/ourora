@@ -36,7 +36,7 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                   ClassHeader(
                     title: 'REGULAR COURSE\n정규과정',
                     description: '기초부터 차근차근 중급이상의 기술과 디자인 스킬을\n습득할 수 있는 정규과정입니다.',
-                    image: SvgPicture.asset('assets/svgs/regular_course.svg', height: 200, fit: BoxFit.contain),
+                    image: isMobile ? const SizedBox.shrink() : SvgPicture.asset('assets/svgs/regular_course.svg', height: 200, fit: BoxFit.contain),
                   ),
                   RegularCard(
                     descriptionStyle: descriptionStyle,
