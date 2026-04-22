@@ -10,17 +10,13 @@ class Responsive {
   static bool get isMobileDevice {
     if (kDebugMode) {
       final ua = _jsUserAgent.toLowerCase();
-      return ua.contains('mobile') ||
-          ua.contains('android') ||
-          ua.contains('iphone') ||
-          ua.contains('ipad');
+      return ua.contains('mobile') || ua.contains('android') || ua.contains('iphone') || ua.contains('ipad');
     }
-    return defaultTargetPlatform == TargetPlatform.android ||
-        defaultTargetPlatform == TargetPlatform.iOS;
+    return defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
   }
 
   static int gridColumns(BuildContext context) {
-    if (isMobileDevice) return 2;
+    if (isMobileDevice) return 1;
     return 3;
   }
 

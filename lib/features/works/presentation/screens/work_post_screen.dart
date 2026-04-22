@@ -9,10 +9,7 @@ import 'package:ourora/features/works/domain/work_item.dart';
 import 'package:ourora/features/works/presentation/widgets/work_post/work_post_back_button.dart';
 import 'package:ourora/features/works/presentation/widgets/work_post/work_post_detail_body.dart';
 
-final _workDetailProvider = FutureProvider.family<WorkItem?, String>((
-  ref,
-  id,
-) async {
+final _workDetailProvider = FutureProvider.family<WorkItem?, String>((ref, id) async {
   final repo = ref.watch(worksRepositoryProvider);
   return repo.fetchWorkById(id);
 });
@@ -38,23 +35,14 @@ class WorkPostScreen extends ConsumerWidget {
             child: async.when(
               loading: () => const SizedBox(
                 height: 400,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.accentOrange,
-                    strokeWidth: 2,
-                  ),
-                ),
+                child: Center(child: CircularProgressIndicator(color: AppTheme.accentOrange, strokeWidth: 2)),
               ),
               error: (e, _) => SizedBox(
                 height: 400,
                 child: Center(
                   child: Text(
                     '불러올 수 없습니다.',
-                    style: const TextStyle(
-                      fontFamily: 'NanumGothic',
-                      fontSize: 14,
-                      color: AppTheme.textGray,
-                    ),
+                    style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 14, color: AppTheme.textGray),
                   ),
                 ),
               ),
@@ -68,11 +56,7 @@ class WorkPostScreen extends ConsumerWidget {
                         children: [
                           Text(
                             '존재하지 않는 작품입니다.',
-                            style: const TextStyle(
-                              fontFamily: 'NanumGothic',
-                              fontSize: 16,
-                              color: AppTheme.textGray,
-                            ),
+                            style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 16, color: AppTheme.textGray),
                           ),
                           const SizedBox(height: 24),
                           const WorkPostBackButton(),

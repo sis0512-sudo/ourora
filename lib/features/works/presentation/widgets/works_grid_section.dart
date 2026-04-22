@@ -14,17 +14,18 @@ class WorksGridSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isMobile = Responsive.isMobileDevice;
     final state = ref.watch(worksControllerProvider);
     final columns = Responsive.gridColumns(context);
 
     return Container(
       color: AppTheme.white,
-      padding: const EdgeInsets.symmetric(vertical: 80),
+      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32) : const EdgeInsets.symmetric(vertical: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TitleWidget(title: 'WORKS', isSubTitle: false),
-          const SizedBox(height: 40),
+          SizedBox(height: isMobile ? 20 : 40),
           _FilterBar(selectedType: state.selectedType, searchQuery: state.searchQuery),
           const SizedBox(height: 32),
           _buildBody(context, state, columns),
@@ -132,19 +133,31 @@ class _FilterBarState extends ConsumerState<_FilterBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
     final showSearch = widget.selectedType == null;
 
-    return Row(
-      children: [
-        _TypeButtons(selectedType: widget.selectedType),
-        const Spacer(),
-        if (showSearch)
-          SizedBox(
-            width: 240,
-            child: _SearchField(controller: _searchController, onSubmit: _onSubmit, onClear: _onClear),
-          ),
-      ],
-    );
+    return isMobile
+        ? Column(
+            children: [
+              _TypeButtons(selectedType: widget.selectedType),
+              if (showSearch)
+                SizedBox(
+                  width: 240,
+                  child: _SearchField(controller: _searchController, onSubmit: _onSubmit, onClear: _onClear),
+                ),
+            ],
+          )
+        : Row(
+            children: [
+              _TypeButtons(selectedType: widget.selectedType),
+              const Spacer(),
+              if (showSearch)
+                SizedBox(
+                  width: 240,
+                  child: _SearchField(controller: _searchController, onSubmit: _onSubmit, onClear: _onClear),
+                ),
+            ],
+          );
   }
 }
 
@@ -283,6 +296,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
   @override
   Widget build(BuildContext context) {
     final lightImageUrls = widget.work.lightImageUrls.isNotEmpty ? widget.work.lightImageUrls.first : null;
+    final isMobile = Responsive.isMobileDevice;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -316,36 +330,37 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                 color: AppTheme.lightGray,
                 child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray),
               ),
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
-              opacity: _hovered ? 1.0 : 0.0,
-              child: Container(
-                color: AppTheme.black.withValues(alpha: 0.65),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.work.title,
-                      style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (widget.work.description.isNotEmpty) ...[
-                      const SizedBox(height: 8),
+            if (!isMobile)
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: _hovered ? 1.0 : 0.0,
+                child: Container(
+                  color: AppTheme.black.withValues(alpha: 0.65),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Text(
-                        widget.work.description,
-                        style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 12, color: AppTheme.white),
+                        widget.work.title,
+                        style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
                         textAlign: TextAlign.center,
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
+                      if (widget.work.description.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          widget.work.description,
+                          style: const TextStyle(fontFamily: 'NanumGothic', fontSize: 12, color: AppTheme.white),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
