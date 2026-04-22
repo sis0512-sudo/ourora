@@ -34,7 +34,7 @@ class AboutFidpSection extends StatelessWidget {
                 const SizedBox(height: 28),
                 Text(
                   Utils.formatText('오로라공방은 가구(Furniture)와 IT(Information Technology), 그리고 디자인(Design)과 사람(People)이라는 4가지 주제들과 함께 합니다.'),
-                  style: AppTheme.bodyKorean().copyWith(height: 1.6),
+                  style: AppTheme.bodyKorean(isMobile).copyWith(height: 1.6),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 36),

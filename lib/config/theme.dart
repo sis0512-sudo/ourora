@@ -17,10 +17,12 @@ class AppTheme {
   static const Color transparent = Color(0x00000000);
 
   // 타이포그래피 — 공통
-  static TextStyle navItem() => const TextStyle(fontFamily: 'Raleway', fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 1.5, color: black);
-  static TextStyle mainSectionTitle() => GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: 3, color: black);
-  static TextStyle bodyKorean() => GoogleFonts.nanumGothic(fontSize: 16, fontWeight: FontWeight.w400, color: black);
-  static TextStyle pageTitle() => const TextStyle(fontFamily: 'BMHanna', fontSize: 28, color: black, letterSpacing: 4);
+  static TextStyle navItem(bool isMobile) =>
+      TextStyle(fontFamily: 'Raleway', fontSize: isMobile ? 20 : 16, fontWeight: FontWeight.w600, letterSpacing: 1.5, color: black);
+  static TextStyle mainSectionTitle(bool isMobile) =>
+      GoogleFonts.montserrat(fontSize: isMobile ? 24 : 18, fontWeight: FontWeight.w800, letterSpacing: 3, color: black);
+  static TextStyle bodyKorean(bool isMobile) => GoogleFonts.nanumGothic(fontSize: isMobile ? 20 : 16, fontWeight: FontWeight.w400, color: black);
+  static TextStyle pageTitle(bool isMobile) => TextStyle(fontFamily: 'BMHanna', fontSize: isMobile ? 32 : 28, color: black, letterSpacing: 4);
 
   // Site Footer
   static TextStyle footerText() => const TextStyle(fontFamily: 'Roboto', fontSize: 14, height: 1.5, fontWeight: FontWeight.w100, color: textGray);

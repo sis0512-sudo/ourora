@@ -3,15 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class MembershipHeaderSection extends StatelessWidget {
   const MembershipHeaderSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Container(
       width: double.maxFinite,
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32) : const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -22,7 +25,7 @@ class MembershipHeaderSection extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                SvgPicture.asset('assets/svgs/ourora_membership_logo.svg', height: 200),
+                SvgPicture.asset('assets/svgs/ourora_membership_logo.svg', height: isMobile ? 300 : 200),
                 Text(
                   'OURORA MEMBERSHIP',
                   style: GoogleFonts.roboto(fontSize: 25, fontWeight: FontWeight.bold, color: AppTheme.black),

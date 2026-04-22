@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/bullet_list.dart';
 import 'package:ourora/features/common/presentation/widgets/image_viewer_popup.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class RegularCard extends StatefulWidget {
   final String title;
@@ -35,6 +36,8 @@ class _RegularCardState extends State<RegularCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Column(
       children: [
         Padding(padding: const EdgeInsets.only(top: 16), child: Divider()),
@@ -48,7 +51,7 @@ class _RegularCardState extends State<RegularCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (widget.titleCaption != null) Text(widget.titleCaption!, style: GoogleFonts.nanumGothic(fontSize: 15, color: AppTheme.black)),
-                  Text(widget.title, style: AppTheme.pageTitle()),
+                  Text(widget.title, style: AppTheme.pageTitle(isMobile)),
                   const SizedBox(height: 8),
                 ],
               ),

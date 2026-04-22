@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:ourora/features/membership/presentation/widgets/membership_card.dart';
 
 class MembershipShareSection extends StatelessWidget {
@@ -8,14 +9,22 @@ class MembershipShareSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleWidget(title: '공방 쉐어(share) 멤버십', isSubTitle: true),
+          Padding(
+            padding: isMobile ? const EdgeInsetsGeometry.symmetric(horizontal: 32) : EdgeInsets.zero,
+            child: TitleWidget(title: '공방 쉐어(share) 멤버십', isSubTitle: true),
+          ),
           const SizedBox(height: 20),
-          Text('클래스 이수 후, 지속적인 개인 자유작업, 취미 목공, 작품활동, 기술 및 디자인 연구 등을 위한 공방 쉐어(share)입니다.', style: AppTheme.bodyKorean()),
+          Padding(
+            padding: isMobile ? const EdgeInsetsGeometry.symmetric(horizontal: 32) : EdgeInsets.zero,
+            child: Text('클래스 이수 후, 지속적인 개인 자유작업, 취미 목공, 작품활동, 기술 및 디자인 연구 등을 위한 공방 쉐어(share)입니다.', style: AppTheme.bodyKorean(isMobile)),
+          ),
           const SizedBox(height: 20),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,

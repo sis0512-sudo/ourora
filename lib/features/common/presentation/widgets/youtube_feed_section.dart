@@ -60,7 +60,7 @@ class _YoutubeFeedSectionState extends ConsumerState<YoutubeFeedSection> {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: kYoutubeArrowWidth + 32),
-            child: Text('⠿  Youtube Feed', style: AppTheme.mainSectionTitle()),
+            child: Text('⠿  Youtube Feed', style: AppTheme.mainSectionTitle(isMobile)),
           ),
           const SizedBox(height: 24),
           isMobile

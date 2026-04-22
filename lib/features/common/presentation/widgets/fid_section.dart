@@ -63,7 +63,7 @@ class FidSection extends StatelessWidget {
                   surfaceTintColor: AppTheme.transparent,
                 ),
                 onPressed: () => context.go(FIDPScreen.route),
-                child: Text('Read More >>', style: isMobile ? AppTheme.navItem().copyWith(fontSize: 18) : AppTheme.navItem()),
+                child: Text('Read More >>', style: AppTheme.navItem(isMobile)),
               ),
             ],
           ),

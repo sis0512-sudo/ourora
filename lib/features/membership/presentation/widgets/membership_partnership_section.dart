@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/title_widget.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:ourora/features/membership/presentation/widgets/membership_card.dart';
 
 class MembershipPartnershipSection extends StatelessWidget {
@@ -8,14 +9,22 @@ class MembershipPartnershipSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleWidget(title: '협력 파트너십', isSubTitle: true),
+          Padding(
+            padding: isMobile ? const EdgeInsetsGeometry.symmetric(horizontal: 32) : EdgeInsets.zero,
+            child: TitleWidget(title: '협력 파트너십', isSubTitle: true),
+          ),
           const SizedBox(height: 20),
-          Text('개인 / 팀 단위의 작품 활동, 또는 공방 창업 및 사업준비를 위한 협력 파트너십입니다.', style: AppTheme.bodyKorean()),
+          Padding(
+            padding: isMobile ? const EdgeInsetsGeometry.symmetric(horizontal: 32) : EdgeInsets.zero,
+            child: Text('개인 / 팀 단위의 작품 활동, 또는 공방 창업 및 사업준비를 위한 협력 파트너십입니다.', style: AppTheme.bodyKorean(isMobile)),
+          ),
           const SizedBox(height: 20),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,

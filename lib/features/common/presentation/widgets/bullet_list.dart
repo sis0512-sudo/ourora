@@ -17,7 +17,7 @@ class BulletList extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobileDevice;
 
-    TextStyle itemBaseStyle = itemStyle ?? (isMobile ? AppTheme.bodyKorean().copyWith(fontSize: 20) : AppTheme.bodyKorean());
+    TextStyle itemBaseStyle = itemStyle ?? AppTheme.bodyKorean(isMobile);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

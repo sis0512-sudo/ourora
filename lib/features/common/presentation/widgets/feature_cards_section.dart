@@ -81,9 +81,9 @@ class _FeatureCardWidget extends StatelessWidget {
         children: [
           SvgPicture.asset(card.assetPath, height: isMobile ? 120 : 90, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
           const SizedBox(height: 36),
-          Text(card.title, style: isMobile ? AppTheme.mainSectionTitle().copyWith(fontSize: 30) : AppTheme.mainSectionTitle()),
+          Text(card.title, style: AppTheme.mainSectionTitle(isMobile)),
           const SizedBox(height: 24),
-          Text(card.subtitle, style: isMobile ? AppTheme.bodyKorean().copyWith(fontSize: 20) : AppTheme.bodyKorean()),
+          Text(card.subtitle, style: AppTheme.bodyKorean(isMobile)),
           const SizedBox(height: 24),
           Text(
             card.desc,
@@ -97,7 +97,7 @@ class _FeatureCardWidget extends StatelessWidget {
             child: TextButton(
               style: TextButton.styleFrom(backgroundColor: AppTheme.transparent, padding: EdgeInsets.zero),
               onPressed: () => context.go(card.route),
-              child: Text('Read More >', style: AppTheme.navItem().copyWith(fontSize: isMobile ? 18 : 14)),
+              child: Text('Read More >', style: AppTheme.navItem(isMobile)),
             ),
           ),
         ],

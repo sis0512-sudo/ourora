@@ -12,6 +12,7 @@ import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
 import 'package:ourora/features/works/presentation/screens/works_screen.dart';
+import 'package:web/web.dart' as web;
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -27,8 +28,17 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   OverlayEntry? _drawerEntry;
 
+  void _setIframesPointerEvents(String value) {
+    final iframes = web.document.querySelectorAll('iframe');
+    for (int i = 0; i < iframes.length; i++) {
+      final iframe = iframes.item(i) as web.HTMLElement?;
+      iframe?.style.pointerEvents = value;
+    }
+  }
+
   void _openDrawer() {
     if (_drawerEntry != null) return;
+    _setIframesPointerEvents('none');
     _drawerEntry = OverlayEntry(builder: (_) => _MobileDrawer(onClose: _closeDrawer));
     Overlay.of(context).insert(_drawerEntry!);
   }
@@ -36,6 +46,7 @@ class _NavBarState extends State<NavBar> {
   void _closeDrawer() {
     _drawerEntry?.remove();
     _drawerEntry = null;
+    _setIframesPointerEvents('auto');
   }
 
   @override
@@ -245,7 +256,7 @@ class _DrawerItemState extends State<_DrawerItem> {
               SelectionContainer.disabled(
                 child: Text(
                   widget.label,
-                  style: AppTheme.navItem().copyWith(fontSize: isMobile ? 24 : 14, color: isMobile ? AppTheme.white : AppTheme.textGray),
+                  style: AppTheme.navItem(isMobile).copyWith(fontSize: isMobile ? 24 : 14, color: isMobile ? AppTheme.white : AppTheme.textGray),
                 ),
               ),
               if (widget.trailing != null) widget.trailing!,
@@ -291,7 +302,7 @@ class _DrawerSubItemState extends State<_DrawerSubItem> {
           child: SelectionContainer.disabled(
             child: Text(
               widget.label,
-              style: AppTheme.navItem().copyWith(fontSize: isMobile ? 18 : 12, color: isMobile ? AppTheme.white : AppTheme.textGray),
+              style: AppTheme.navItem(isMobile).copyWith(fontSize: isMobile ? 18 : 12, color: isMobile ? AppTheme.white : AppTheme.textGray),
             ),
           ),
         ),
@@ -343,6 +354,8 @@ class _NavItemState extends State<_NavItem> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -351,7 +364,7 @@ class _NavItemState extends State<_NavItem> {
         onTap: () => context.go(widget.route),
         child: AnimatedDefaultTextStyle(
           duration: const Duration(milliseconds: 150),
-          style: AppTheme.navItem().copyWith(color: _hovered ? AppTheme.red : AppTheme.textGray),
+          style: AppTheme.navItem(isMobile).copyWith(color: _hovered ? AppTheme.red : AppTheme.textGray),
           child: SelectionContainer.disabled(child: Text(widget.label)),
         ),
       ),
@@ -425,6 +438,8 @@ class _ClassNavItemState extends State<_ClassNavItem> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return CompositedTransformTarget(
       link: _layerLink,
       child: MouseRegion(
@@ -438,7 +453,7 @@ class _ClassNavItemState extends State<_ClassNavItem> {
           onTap: () => context.go(ClassScreen.route),
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 150),
-            style: AppTheme.navItem().copyWith(color: _hovered ? AppTheme.red : AppTheme.textGray),
+            style: AppTheme.navItem(isMobile).copyWith(color: _hovered ? AppTheme.red : AppTheme.textGray),
             child: const SelectionContainer.disabled(child: Text('CLASS')),
           ),
         ),
@@ -481,6 +496,8 @@ class _DropdownItemState extends State<_DropdownItem> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -494,7 +511,7 @@ class _DropdownItemState extends State<_DropdownItem> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           color: _hovered ? AppTheme.lightGray : AppTheme.white,
-          child: SelectionContainer.disabled(child: Text(widget.label, style: AppTheme.navItem().copyWith(fontSize: 12))),
+          child: SelectionContainer.disabled(child: Text(widget.label, style: AppTheme.navItem(isMobile).copyWith(fontSize: 12))),
         ),
       ),
     );

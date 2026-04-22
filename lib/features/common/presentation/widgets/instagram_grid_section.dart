@@ -38,9 +38,11 @@ class InstagramGridSection extends ConsumerWidget {
   }
 
   Widget _buildGrid(BuildContext context, WidgetRef ref, InstagramFeedState feed, int columns) {
+    final isMobile = Responsive.isMobileDevice;
+
     if (feed.posts.isEmpty && !feed.isLoading) {
       if (feed.error != null) {
-        return Center(child: Text('불러올 수 없습니다.', style: AppTheme.bodyKorean()));
+        return Center(child: Text('불러올 수 없습니다.', style: AppTheme.bodyKorean(isMobile)));
       }
       return const SizedBox.shrink();
     }
@@ -89,6 +91,8 @@ class _GridItemState extends State<_GridItem> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -130,7 +134,7 @@ class _GridItemState extends State<_GridItem> {
                       const SizedBox(height: 8),
                       Text(
                         widget.post.caption!,
-                        style: AppTheme.bodyKorean().copyWith(color: AppTheme.white, fontSize: 16),
+                        style: AppTheme.bodyKorean(isMobile).copyWith(color: AppTheme.white, fontSize: 16),
                         textAlign: TextAlign.center,
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
