@@ -3,6 +3,7 @@ import * as logger from "firebase-functions/logger";
 import { defineSecret } from "firebase-functions/params";
 import { initializeApp } from "firebase-admin/app";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import type { Request } from "express";
 
 const youtubeApiKey = defineSecret("YOUTUBE_API_KEY");
 const instagramAccessToken = defineSecret("INSTAGRAM_ACCESS_TOKEN");
@@ -245,11 +246,9 @@ function getInstagramCacheDocId(afterCursor?: string): string {
 // ─── OG Render ───────────────────────────────────────────────────────────────
 
 const HOSTING_URL = "https://www.ourorastudio.com";
+const HOSTING_FETCH_URL = "https://ourora-78e54.web.app";
 const DEFAULT_OG_IMAGE =
   "https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Flogo.png?alt=media&token=741d2b5e-5306-410f-bec4-d63f70786e46";
-
-const CRAWLER_UA_PATTERN =
-  /bot|crawl|spider|facebookexternalhit|twitterbot|kakaotalk|discordbot|linkedinbot|whatsapp|slackbot|telegrambot|line\//i;
 
 interface OgMeta {
   title: string;
@@ -257,6 +256,14 @@ interface OgMeta {
   url: string;
   image: string;
   type: "website" | "article";
+}
+
+type OgMetaSource = "route-default" | "post" | "post-missing" | "post-error";
+
+interface OgMetaResult {
+  meta: OgMeta;
+  source: OgMetaSource;
+  postId: string | null;
 }
 
 function getOgMetaForPath(path: string): OgMeta {
@@ -307,13 +314,18 @@ function pickFirstString(values: unknown): string | null {
   return null;
 }
 
-async function getOgMetaForRequest(path: string): Promise<OgMeta> {
+async function getOgMetaForRequest(path: string): Promise<OgMetaResult> {
   const postId = postIdFromPath(path);
-  if (!postId) return getOgMetaForPath(path);
+  if (!postId) {
+    return { meta: getOgMetaForPath(path), source: "route-default", postId: null };
+  }
 
   try {
     const snap = await db.collection("works").doc(postId).get();
-    if (!snap.exists) return getOgMetaForPath(path);
+    if (!snap.exists) {
+      logger.warn("OG post doc not found", { postId, path });
+      return { meta: getOgMetaForPath(path), source: "post-missing", postId };
+    }
 
     const data = snap.data() ?? {};
     const title = parseString(data.title) ?? "OURORA STUDIO";
@@ -323,16 +335,28 @@ async function getOgMetaForRequest(path: string): Promise<OgMeta> {
       pickFirstString(data.imageUrls) ??
       DEFAULT_OG_IMAGE;
 
+    logger.info("OG post meta resolved", {
+      postId,
+      path,
+      title: truncate(title, 120),
+      descriptionLength: description.length,
+      image: truncate(image, 200),
+    });
+
     return {
-      title,
-      description,
-      image,
-      url: `${HOSTING_URL}/post/${postId}`,
-      type: "article",
+      meta: {
+        title,
+        description,
+        image,
+        url: `${HOSTING_URL}/post/${postId}`,
+        type: "article",
+      },
+      source: "post",
+      postId,
     };
   } catch (error) {
     logger.error("Failed to resolve OG metadata for post", { postId, error: getErrorMessage(error) });
-    return getOgMetaForPath(path);
+    return { meta: getOgMetaForPath(path), source: "post-error", postId };
   }
 }
 
@@ -355,6 +379,106 @@ function buildCrawlerHtml(meta: OgMeta): string {
 </html>`;
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function applyOrInsertMetaTag(html: string, selector: RegExp, tag: string): string {
+  if (selector.test(html)) {
+    return html.replace(selector, tag);
+  }
+  return html.replace("</head>", `  ${tag}\n</head>`);
+}
+
+function applyMetaToIndexHtml(indexHtml: string, meta: OgMeta): string {
+  let html = indexHtml;
+  const titleTag = `<title>${escapeHtml(meta.title)}</title>`;
+  if (/<title>[\s\S]*?<\/title>/i.test(html)) {
+    html = html.replace(/<title>[\s\S]*?<\/title>/i, titleTag);
+  } else {
+    html = html.replace("</head>", `  ${titleTag}\n</head>`);
+  }
+
+  html = applyOrInsertMetaTag(
+    html,
+    /<meta[^>]+name=["']description["'][^>]*>/i,
+    `<meta name="description" content="${escapeHtml(meta.description)}" />`
+  );
+  html = applyOrInsertMetaTag(
+    html,
+    /<meta[^>]+property=["']og:type["'][^>]*>/i,
+    `<meta property="og:type" content="${escapeHtml(meta.type)}" />`
+  );
+  html = applyOrInsertMetaTag(
+    html,
+    /<meta[^>]+property=["']og:url["'][^>]*>/i,
+    `<meta property="og:url" content="${escapeHtml(meta.url)}" />`
+  );
+  html = applyOrInsertMetaTag(
+    html,
+    /<meta[^>]+property=["']og:title["'][^>]*>/i,
+    `<meta property="og:title" content="${escapeHtml(meta.title)}" />`
+  );
+  html = applyOrInsertMetaTag(
+    html,
+    /<meta[^>]+property=["']og:description["'][^>]*>/i,
+    `<meta property="og:description" content="${escapeHtml(meta.description)}" />`
+  );
+  html = applyOrInsertMetaTag(
+    html,
+    /<meta[^>]+property=["']og:image["'][^>]*>/i,
+    `<meta property="og:image" content="${escapeHtml(meta.image)}" />`
+  );
+
+  return html;
+}
+
+function parsePathname(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  try {
+    if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+      return new URL(trimmed).pathname || "/";
+    }
+  } catch {
+    // ignore URL parse error and continue
+  }
+
+  const noQuery = trimmed.split("?")[0];
+  if (!noQuery.startsWith("/")) return `/${noQuery}`;
+  return noQuery || "/";
+}
+
+function getFirstHeaderValue(value: string | string[] | undefined): string | null {
+  if (!value) return null;
+  if (Array.isArray(value)) return value[0] ?? null;
+  return value;
+}
+
+function resolveRequestPath(req: Request): string {
+  const candidates: Array<string | null | undefined> = [
+    req.path,
+    req.originalUrl,
+    req.url,
+    getFirstHeaderValue(req.headers["x-original-url"]),
+    getFirstHeaderValue(req.headers["x-forwarded-uri"]),
+    getFirstHeaderValue(req.headers["x-rewrite-url"]),
+  ];
+
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    const parsed = parsePathname(candidate);
+    if (parsed) return parsed;
+  }
+
+  return "/";
+}
+
 let cachedIndexHtml: string | null = null;
 let indexHtmlCachedAt = 0;
 const INDEX_HTML_TTL_MS = 5 * 60 * 1000;
@@ -363,9 +487,10 @@ async function getIndexHtml(): Promise<string> {
   if (cachedIndexHtml && Date.now() - indexHtmlCachedAt < INDEX_HTML_TTL_MS) {
     return cachedIndexHtml;
   }
-  const res = await fetch(`${HOSTING_URL}/index.html`);
+  const fetchUrl = `${HOSTING_FETCH_URL}/index.html`;
+  const res = await fetch(fetchUrl);
   if (!res.ok) {
-    throw new Error(`Failed to fetch index.html: ${res.status} ${res.statusText}`);
+    throw new Error(`Failed to fetch index.html from ${fetchUrl}: ${res.status} ${res.statusText}`);
   }
   cachedIndexHtml = await res.text();
   indexHtmlCachedAt = Date.now();
@@ -375,24 +500,37 @@ async function getIndexHtml(): Promise<string> {
 export const ogRender = onRequest(
   { region: "asia-northeast3" },
   async (req, res) => {
-    const ua = req.headers["user-agent"] ?? "";
-    const isCrawler = CRAWLER_UA_PATTERN.test(ua) || /opengraph|preview|validator|inspector/i.test(ua);
-    const meta = await getOgMetaForRequest(req.path);
+    const uaHeader = req.headers["user-agent"];
+    const ua = Array.isArray(uaHeader) ? uaHeader.join(" ") : uaHeader ?? "";
+    const requestPath = resolveRequestPath(req);
+    const og = await getOgMetaForRequest(requestPath);
+    const meta = og.meta;
 
-    if (isCrawler) {
-      res.set("Content-Type", "text/html; charset=utf-8");
-      res.set("Cache-Control", "public, max-age=3600");
-      res.send(buildCrawlerHtml(meta));
-      return;
-    }
+    logger.info("ogRender request classified", {
+      path: requestPath,
+      reqPath: req.path,
+      reqOriginalUrl: req.originalUrl,
+      reqUrl: req.url,
+      metaSource: og.source,
+      postId: og.postId,
+      ua: truncate(ua, 300),
+    });
+
+    res.set("X-OG-Meta-Source", og.source);
+    if (og.postId) res.set("X-OG-Post-Id", og.postId);
 
     try {
-      const html = await getIndexHtml();
+      const html = applyMetaToIndexHtml(await getIndexHtml(), meta);
+      res.set("X-OG-Render-Mode", "index-with-dynamic-og");
       res.set("Content-Type", "text/html; charset=utf-8");
       res.set("Cache-Control", "no-store");
       res.send(html);
     } catch (err) {
-      logger.error("Failed to fetch index.html", { err });
+      logger.error("Failed to fetch index.html", {
+        error: getErrorMessage(err),
+        stack: err instanceof Error ? err.stack : null,
+      });
+      res.set("X-OG-Render-Mode", "fallback-crawler-html");
       res.set("Content-Type", "text/html; charset=utf-8");
       res.set("Cache-Control", "no-store");
       res.status(200).send(buildCrawlerHtml(meta));
