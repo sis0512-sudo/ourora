@@ -50,30 +50,12 @@ class _FIDPScreenState extends State<FIDPScreen> with SingleTickerProviderStateM
               height: 389,
               child: Stack(
                 children: [
-                  Image.network(
-                    'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background_compressed.webp?alt=media&token=c2d3b503-40c4-485e-b683-f936841a648c',
+                  Image.asset(
+                    'assets/images/fidp_background_compressed.webp',
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 389,
                     alignment: Alignment.bottomCenter,
-                    cacheHeight: 389,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        width: double.infinity,
-                        height: 389,
-                        color: AppTheme.lightGray,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: AppTheme.accentOrange,
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        ),
-                      );
-                    },
                   ),
                   Positioned.fill(
                     child: FadeTransition(

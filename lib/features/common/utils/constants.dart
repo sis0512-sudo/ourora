@@ -12,10 +12,10 @@ class FeatureCardData {
 class HeroSlide {
   final String subtitle;
   final String title;
-  final String imageUrl;
+  final String imagePath;
   final MainAxisAlignment mainAxisAlignment;
 
-  const HeroSlide({required this.subtitle, required this.title, required this.imageUrl, this.mainAxisAlignment = MainAxisAlignment.end});
+  const HeroSlide({required this.subtitle, required this.title, required this.imagePath, this.mainAxisAlignment = MainAxisAlignment.end});
 }
 
 class AppConstants {
@@ -24,31 +24,12 @@ class AppConstants {
     HeroSlide(
       subtitle: 'All good things which exist are',
       title: 'THE FRUITS OF\nORIGINALITY',
-      imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_1_compressed.webp?alt=media&token=70293302-e1ab-4e56-8b51-481461b58d72',
+      imagePath: 'assets/images/hero_1_compressed.webp',
       mainAxisAlignment: MainAxisAlignment.end,
     ),
-    HeroSlide(
-      subtitle: 'Make',
-      title: 'IT HAPPEN',
-      imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_2_compressed.webp?alt=media&token=7bf73550-09ae-4af8-af10-ffcea4e915a4',
-      mainAxisAlignment: MainAxisAlignment.start,
-    ),
-    HeroSlide(
-      subtitle: 'Show me',
-      title: 'YOUR STORY',
-      imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_3_compressed.webp?alt=media&token=ccecd443-0e14-41cd-8346-d674ff01bf59',
-      mainAxisAlignment: MainAxisAlignment.start,
-    ),
-    HeroSlide(
-      subtitle: 'It\'s',
-      title: 'YOUR PLACE',
-      imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fhero_4_compressed.webp?alt=media&token=1613e704-57f5-458f-868c-7e16cfd6edc9',
-      mainAxisAlignment: MainAxisAlignment.center,
-    ),
+    HeroSlide(subtitle: 'Make', title: 'IT HAPPEN', imagePath: 'assets/images/hero_2_compressed.webp', mainAxisAlignment: MainAxisAlignment.start),
+    HeroSlide(subtitle: 'Show me', title: 'YOUR STORY', imagePath: 'assets/images/hero_3_compressed.webp', mainAxisAlignment: MainAxisAlignment.start),
+    HeroSlide(subtitle: 'It\'s', title: 'YOUR PLACE', imagePath: 'assets/images/hero_4_compressed.webp', mainAxisAlignment: MainAxisAlignment.center),
   ];
 
   // FID 섹션 데이터

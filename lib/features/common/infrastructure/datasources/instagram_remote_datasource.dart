@@ -3,10 +3,10 @@ import 'package:ourora/features/common/domain/datasources/instagram_datasource.d
 import 'package:ourora/features/common/infrastructure/entities/instagram_post.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 
-class InstagramFunctionsDatasource implements InstagramDatasource {
+class InstagramRemoteDatasource implements InstagramDatasource {
   final FirebaseFunctions _functions;
 
-  InstagramFunctionsDatasource({FirebaseFunctions? functions})
+  InstagramRemoteDatasource({FirebaseFunctions? functions})
     : _functions = functions ?? FirebaseFunctions.instanceFor(region: AppConstants.firebaseFunctionsRegion);
 
   @override
@@ -33,5 +33,5 @@ class InstagramFunctionsDatasource implements InstagramDatasource {
 
     final nextCursor = data['nextCursor'] as String?;
     return (posts: posts, nextCursor: nextCursor);
-  }
+  } // 특정 폴더의 모든 파일 URL 가져오기
 }

@@ -65,8 +65,8 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
               left: 0,
               right: 0,
               height: _visibleHeight + _extraHeight,
-              child: Image.network(
-                'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffooter_cta_background.webp?alt=media&token=372ab332-88c0-4348-aa3f-679c2daa8c7b',
+              child: Image.asset(
+                'assets/images/footer_cta_background.webp',
                 fit: BoxFit.cover,
                 alignment: Alignment.center,
                 width: double.infinity,

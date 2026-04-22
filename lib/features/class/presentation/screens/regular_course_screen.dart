@@ -96,28 +96,10 @@ class _RegularCourseScreenState extends State<RegularCourseScreen> {
                   description:
                       '※ 개인별 진도로 진행하므로, 주 1~2회 원하시는 시간에 수업을 들으실 수 있습니다.\n※ 원활한 수업진행을 위해 각 시간별 최대 인원은 5명입니다. 수업 등록시 희망 시간에 배정된 인원 수를 사전에 문의 후 등록하여 주시기 바랍니다.',
                   descriptionStyle: descriptionStyle,
-                  image: Image.network(
-                    'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fregular_course_timetable.webp?alt=media&token=2cdffe85-f2d4-450e-afac-f071e2427388',
+                  image: Image.asset(
+                    'assets/images/regular_course_timetable.webp',
                     width: 600,
                     fit: BoxFit.contain,
-                    cacheWidth: 600,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        width: 600,
-                        height: 300,
-                        color: AppTheme.lightGray,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: AppTheme.accentOrange,
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        ),
-                      );
-                    },
                   ),
                 ),
               ],

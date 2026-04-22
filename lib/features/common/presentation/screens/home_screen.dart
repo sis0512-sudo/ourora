@@ -10,7 +10,6 @@ import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/screen_content_sliver.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_feed_section.dart';
-import 'package:ourora/features/common/utils/constants.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const String route = '/';
@@ -23,29 +22,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
-  bool _imagesPrecached = false;
-
-  static const String _footerCtaUrl =
-      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffooter_cta_background.webp?alt=media&token=372ab332-88c0-4348-aa3f-679c2daa8c7b';
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_imagesPrecached) return;
-    _imagesPrecached = true;
-
-    for (final slide in AppConstants.heroSlides) {
-      precacheImage(NetworkImage(slide.imageUrl), context);
-    }
-    for (final url in [
-      _footerCtaUrl,
-      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Ffidp_background_compressed.webp?alt=media&token=c2d3b503-40c4-485e-b683-f936841a648c',
-      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fmachine_list.webp?alt=media&token=b7a3113e-619b-4bf5-abd0-26365484f931',
-      'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Fregular_course_timetable.webp?alt=media&token=2cdffe85-f2d4-450e-afac-f071e2427388',
-    ]) {
-      precacheImage(NetworkImage(url), context);
-    }
-  }
 
   @override
   void dispose() {
@@ -55,6 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final feed = ref.watch(instagramControllerProvider);
 
     return Scaffold(

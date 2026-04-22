@@ -58,7 +58,7 @@ class _HeroSliderState extends State<HeroSlider> {
             transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
             child: _HeroSlide(
               key: ValueKey(_currentIndex),
-              imageUrl: slide.imageUrl,
+              imagePath: slide.imagePath,
               subtitle: slide.subtitle,
               title: slide.title,
               mainAxisAlignment: slide.mainAxisAlignment,
@@ -120,25 +120,19 @@ class _HeroSliderState extends State<HeroSlider> {
 }
 
 class _HeroSlide extends StatelessWidget {
-  final String imageUrl;
+  final String imagePath;
   final String subtitle;
   final String title;
   final MainAxisAlignment mainAxisAlignment;
 
-  const _HeroSlide({super.key, required this.imageUrl, required this.subtitle, required this.title, this.mainAxisAlignment = MainAxisAlignment.end});
+  const _HeroSlide({super.key, required this.imagePath, required this.subtitle, required this.title, this.mainAxisAlignment = MainAxisAlignment.end});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
-          alignment: Alignment.center,
-          width: double.infinity,
-          height: double.infinity,
-        ),
+        Image.asset(imagePath, fit: BoxFit.cover, alignment: Alignment.center, width: double.infinity, height: double.infinity),
         Center(
           child: Column(
             mainAxisAlignment: mainAxisAlignment,

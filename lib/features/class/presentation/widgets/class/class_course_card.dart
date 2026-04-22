@@ -6,7 +6,7 @@ class ClassCourseCard extends StatefulWidget {
   final String title;
   final String subTitle;
   final String description;
-  final String imageUrl;
+  final String assetPath;
   final bool showLogo;
   final VoidCallback? onTap;
 
@@ -15,7 +15,7 @@ class ClassCourseCard extends StatefulWidget {
     required this.title,
     required this.subTitle,
     required this.description,
-    required this.imageUrl,
+    required this.assetPath,
     required this.onTap,
     this.showLogo = false,
   });
@@ -35,18 +35,11 @@ class _ClassCourseCardState extends State<ClassCourseCard> {
       child: Stack(
         alignment: Alignment.topLeft,
         children: [
-          Image.network(
-            widget.imageUrl,
+          Image.asset(
+            widget.assetPath,
             width: double.infinity,
             height: double.infinity,
             fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Container(
-                color: AppTheme.lightGray,
-                child: Center(child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accentOrange, value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null)),
-              );
-            },
           ),
           if (widget.showLogo) Positioned(top: 16, left: 16, child: Image.asset('assets/images/ourora8_logo.png', width: 385, height: 108)),
           Positioned(
