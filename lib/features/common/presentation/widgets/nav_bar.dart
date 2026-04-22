@@ -199,7 +199,8 @@ class _MobileDrawerState extends State<_MobileDrawer> with SingleTickerProviderS
                     _DrawerItem(
                       label: 'CLASS',
                       trailing: Icon(_classExpanded ? Icons.expand_less : Icons.expand_more, size: 20, color: AppTheme.white),
-                      onTap: () => setState(() => _classExpanded = !_classExpanded),
+                      onTap: () => _goTo(ClassScreen.route),
+                      onTrailingTap: () => setState(() => _classExpanded = !_classExpanded),
                     ),
                     if (_classExpanded) ...[
                       _DrawerSubItem(label: 'REGULAR COURSE', onTap: () => _goTo(RegularCourseScreen.route)),
@@ -219,11 +220,12 @@ class _MobileDrawerState extends State<_MobileDrawer> with SingleTickerProviderS
 }
 
 class _DrawerItem extends StatefulWidget {
-  const _DrawerItem({required this.label, required this.onTap, this.trailing});
+  const _DrawerItem({required this.label, required this.onTap, this.trailing, this.onTrailingTap});
 
   final String label;
   final VoidCallback onTap;
   final Widget? trailing;
+  final VoidCallback? onTrailingTap;
 
   @override
   State<_DrawerItem> createState() => _DrawerItemState();
@@ -259,7 +261,16 @@ class _DrawerItemState extends State<_DrawerItem> {
                   style: AppTheme.navItem(isMobile).copyWith(fontSize: isMobile ? 24 : 14, color: isMobile ? AppTheme.white : AppTheme.textGray),
                 ),
               ),
-              if (widget.trailing != null) widget.trailing!,
+              if (widget.trailing != null)
+                widget.onTrailingTap != null
+                    ? GestureDetector(
+                        onTap: () {
+                          widget.onTrailingTap!();
+                        },
+                        behavior: HitTestBehavior.opaque,
+                        child: widget.trailing!,
+                      )
+                    : widget.trailing!,
             ],
           ),
         ),
