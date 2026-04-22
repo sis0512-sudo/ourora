@@ -10,9 +10,9 @@ class InstagramRemoteDatasource implements InstagramDatasource {
     : _functions = functions ?? FirebaseFunctions.instanceFor(region: AppConstants.firebaseFunctionsRegion);
 
   @override
-  Future<({List<InstagramPost> posts, String? nextCursor})> fetchPage({String? afterCursor}) async {
+  Future<({List<InstagramPost> posts, String? nextCursor})> fetchPage({String? afterCursor, int pageSize = 9}) async {
     final callable = _functions.httpsCallable('fetchInstagramPage');
-    final response = await callable.call(<String, dynamic>{'afterCursor': afterCursor});
+    final response = await callable.call(<String, dynamic>{'afterCursor': afterCursor, 'pageSize': pageSize});
 
     final data = response.data as Map<dynamic, dynamic>;
     final rawPosts = (data['posts'] as List<dynamic>? ?? const []);

@@ -3,6 +3,7 @@ import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/infrastructure/entities/youtube_video.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_arrow_button.dart';
 import 'package:ourora/features/common/utils/constants.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const double kYoutubeCardWidth = 320;
@@ -22,6 +23,8 @@ class _YoutubeCardState extends State<YoutubeCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return GestureDetector(
       onTap: () => launchUrl(Uri.parse(AppConstants.videoUrl(widget.video.videoId)), mode: LaunchMode.externalApplication),
       child: MouseRegion(
@@ -29,7 +32,7 @@ class _YoutubeCardState extends State<YoutubeCard> {
         onExit: (_) => setState(() => _hovered = false),
         cursor: SystemMouseCursors.click,
         child: Container(
-          width: kYoutubeCardWidth,
+          width: isMobile ? double.maxFinite : kYoutubeCardWidth,
           margin: const EdgeInsets.only(right: kYoutubeCardGap),
           color: AppTheme.white,
           child: Column(
@@ -39,9 +42,9 @@ class _YoutubeCardState extends State<YoutubeCard> {
                 children: [
                   Image.network(
                     widget.video.thumbnailUrl,
-                    width: kYoutubeCardWidth,
-                    height: kYoutubeThumbnailHeight,
-                    fit: BoxFit.cover,
+                    width: isMobile ? double.maxFinite : kYoutubeCardWidth,
+                    height: isMobile ? null : kYoutubeThumbnailHeight,
+                    fit: BoxFit.fitWidth,
                     cacheWidth: kYoutubeCardWidth.toInt(),
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;
@@ -72,18 +75,19 @@ class _YoutubeCardState extends State<YoutubeCard> {
                       child: AnimatedScale(scale: _hovered ? 1.1 : 1.0, duration: const Duration(milliseconds: 200), child: const _PlayIcon()),
                     ),
                   ),
-                  Positioned(
-                    bottom: 8,
-                    right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                      color: AppTheme.black.withValues(alpha: 0.75),
-                      child: Text(
-                        widget.video.duration,
-                        style: const TextStyle(color: AppTheme.white, fontSize: 12, fontWeight: FontWeight.w500),
+                  if (!isMobile)
+                    Positioned(
+                      bottom: 8,
+                      right: 8,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                        color: AppTheme.black.withValues(alpha: 0.75),
+                        child: Text(
+                          widget.video.duration,
+                          style: const TextStyle(color: AppTheme.white, fontSize: 12, fontWeight: FontWeight.w500),
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
               Padding(
@@ -95,7 +99,7 @@ class _YoutubeCardState extends State<YoutubeCard> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              if (widget.video.description.isNotEmpty)
+              if (widget.video.description.isNotEmpty && !isMobile)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                   child: Text(

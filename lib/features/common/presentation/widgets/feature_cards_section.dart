@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 enum FeatureCard {
   workshop(assetPath: 'assets/svgs/icon_workshop.svg', title: 'WORKSHOP', subtitle: '공방 소개', desc: '공방에 대한 소개와 문화, 그리고 추구하는 목표와 방향을 이야기합니다.', route: '/about'),
@@ -31,21 +32,35 @@ class FeatureCardsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Container(
       color: AppTheme.white,
-      child: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
-          child: SizedBox(
-            height: 450,
-            child: Row(
-              children: FeatureCard.values.map((card) {
-                return SizedBox(width: 245, child: _FeatureCardWidget(card: card));
-              }).toList(),
+      child: isMobile
+          ? Padding(
+              padding: const EdgeInsets.all(60),
+              child: Column(
+                children: FeatureCard.values.map((card) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: _FeatureCardWidget(card: card),
+                  );
+                }).toList(),
+              ),
+            )
+          : Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
+                child: SizedBox(
+                  height: 450,
+                  child: Row(
+                    children: FeatureCard.values.map((card) {
+                      return SizedBox(width: 245, child: _FeatureCardWidget(card: card));
+                    }).toList(),
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -57,20 +72,22 @@ class _FeatureCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 32, vertical: isMobile ? 20 : 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(card.assetPath, height: 90, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
+          SvgPicture.asset(card.assetPath, height: isMobile ? 120 : 90, colorFilter: const ColorFilter.mode(AppTheme.black, BlendMode.srcIn)),
           const SizedBox(height: 36),
-          Text(card.title, style: AppTheme.mainSectionTitle()),
+          Text(card.title, style: isMobile ? AppTheme.mainSectionTitle().copyWith(fontSize: 30) : AppTheme.mainSectionTitle()),
           const SizedBox(height: 24),
-          Text(card.subtitle, style: AppTheme.bodyKorean()),
+          Text(card.subtitle, style: isMobile ? AppTheme.bodyKorean().copyWith(fontSize: 20) : AppTheme.bodyKorean()),
           const SizedBox(height: 24),
           Text(
             card.desc,
-            style: GoogleFonts.nanumGothic(fontSize: 14, color: AppTheme.black),
+            style: GoogleFonts.nanumGothic(fontSize: isMobile ? 18 : 14, color: AppTheme.black),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -80,7 +97,7 @@ class _FeatureCardWidget extends StatelessWidget {
             child: TextButton(
               style: TextButton.styleFrom(backgroundColor: AppTheme.transparent, padding: EdgeInsets.zero),
               onPressed: () => context.go(card.route),
-              child: Text('Read More >', style: AppTheme.navItem().copyWith(fontSize: 14)),
+              child: Text('Read More >', style: AppTheme.navItem().copyWith(fontSize: isMobile ? 18 : 14)),
             ),
           ),
         ],

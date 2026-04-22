@@ -4,6 +4,7 @@ import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/application/youtube_controller.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_arrow_button.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_card.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class YoutubeFeedSection extends ConsumerStatefulWidget {
   const YoutubeFeedSection({super.key});
@@ -49,6 +50,7 @@ class _YoutubeFeedSectionState extends ConsumerState<YoutubeFeedSection> {
   @override
   Widget build(BuildContext context) {
     final videosAsync = ref.watch(youtubeControllerProvider);
+    final isMobile = Responsive.isMobileDevice;
 
     return Container(
       color: AppTheme.white,
@@ -61,30 +63,49 @@ class _YoutubeFeedSectionState extends ConsumerState<YoutubeFeedSection> {
             child: Text('⠿  Youtube Feed', style: AppTheme.mainSectionTitle()),
           ),
           const SizedBox(height: 24),
-          SizedBox(
-            height: kYoutubeThumbnailHeight + 140,
-            child: videosAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, _) => const Center(child: Text('영상을 불러올 수 없습니다.')),
-              data: (videos) => Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(width: 32),
-                  YoutubeArrowButton(direction: YoutubeArrowDirection.prev, disabled: _atStart, onTap: () => _scrollBy(-kYoutubeCardWidth)),
-                  Expanded(
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: videos.length,
-                      itemBuilder: (context, index) => YoutubeCard(video: videos[index]),
+          isMobile
+              ? Column(
+                  children: [
+                    videosAsync.when(
+                      loading: () => const Center(child: CircularProgressIndicator()),
+                      error: (_, _) => const Center(child: Text('영상을 불러올 수 없습니다.')),
+                      data: (videos) => Column(
+                        children: videos
+                            .map(
+                              (video) => Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: YoutubeCard(video: video),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ],
+                )
+              : SizedBox(
+                  height: kYoutubeThumbnailHeight + 140,
+                  child: videosAsync.when(
+                    loading: () => const Center(child: CircularProgressIndicator()),
+                    error: (_, _) => const Center(child: Text('영상을 불러올 수 없습니다.')),
+                    data: (videos) => Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 32),
+                        YoutubeArrowButton(direction: YoutubeArrowDirection.prev, disabled: _atStart, onTap: () => _scrollBy(-kYoutubeCardWidth)),
+                        Expanded(
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: videos.length,
+                            itemBuilder: (context, index) => YoutubeCard(video: videos[index]),
+                          ),
+                        ),
+                        YoutubeArrowButton(direction: YoutubeArrowDirection.next, disabled: _atEnd, onTap: () => _scrollBy(kYoutubeCardWidth)),
+                        const SizedBox(width: 32),
+                      ],
                     ),
                   ),
-                  YoutubeArrowButton(direction: YoutubeArrowDirection.next, disabled: _atEnd, onTap: () => _scrollBy(kYoutubeCardWidth)),
-                  const SizedBox(width: 32),
-                ],
-              ),
-            ),
-          ),
+                ),
         ],
       ),
     );

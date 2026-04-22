@@ -8,34 +8,247 @@ import 'package:ourora/features/class/presentation/screens/class_screen.dart';
 import 'package:ourora/features/class/presentation/screens/ourora8_screen.dart';
 import 'package:ourora/features/class/presentation/screens/regular_course_screen.dart';
 import 'package:ourora/features/common/utils/constants.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:ourora/features/contact/presentation/screens/contact_screen.dart';
 import 'package:ourora/features/membership/presentation/screens/membership_screen.dart';
 import 'package:ourora/features/works/presentation/screens/works_screen.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
   const NavBar({super.key});
 
-  static const double height = 85;
+  static const double mobileHeight = 100;
+  static const double desktopHeight = 85;
+  static double get height => Responsive.isMobileDevice ? mobileHeight : desktopHeight;
+
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+  OverlayEntry? _drawerEntry;
+
+  void _openDrawer() {
+    if (_drawerEntry != null) return;
+    _drawerEntry = OverlayEntry(builder: (_) => _MobileDrawer(onClose: _closeDrawer));
+    Overlay.of(context).insert(_drawerEntry!);
+  }
+
+  void _closeDrawer() {
+    _drawerEntry?.remove();
+    _drawerEntry = null;
+  }
+
+  @override
+  void dispose() {
+    _closeDrawer();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Container(
-      height: height,
+      height: NavBar.height,
       color: AppTheme.white,
       child: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
+          child: isMobile
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () => context.go('/'),
+                          child: Image.asset('assets/images/logo.png', width: 220, fit: BoxFit.contain),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: _HamburgerButton(onTap: _openDrawer),
+                      ),
+                    ],
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () => context.go('/'),
+                        child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
+                      ),
+                    ),
+                    const _DesktopMenu(),
+                  ],
+                ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HamburgerButton extends StatelessWidget {
+  const _HamburgerButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: const Icon(Icons.menu, size: 28, color: AppTheme.black),
+      ),
+    );
+  }
+}
+
+class _MobileDrawer extends StatefulWidget {
+  const _MobileDrawer({required this.onClose});
+
+  final VoidCallback onClose;
+
+  @override
+  State<_MobileDrawer> createState() => _MobileDrawerState();
+}
+
+class _MobileDrawerState extends State<_MobileDrawer> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<Offset> _slideAnim;
+  bool _classExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 280));
+    _slideAnim = Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _controller.forward();
+  }
+
+  Future<void> _close() async {
+    await _controller.reverse();
+    widget.onClose();
+  }
+
+  Future<void> _goTo(String route) async {
+    final router = GoRouter.of(context);
+    await _close();
+    router.go(route);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppTheme.transparent,
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: _close,
+            child: Container(color: AppTheme.black.withValues(alpha: 0.4)),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SlideTransition(
+              position: _slideAnim,
+              child: Container(
+                width: 280,
+                height: double.infinity,
+                color: AppTheme.black,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: _close,
+                            child: const Icon(Icons.close, size: 24, color: AppTheme.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    _DrawerItem(label: 'ABOUT', onTap: () => _goTo(AboutScreen.route)),
+                    _DrawerItem(label: 'WORKS', onTap: () => _goTo(WorksScreen.route)),
+                    _DrawerItem(
+                      label: 'CLASS',
+                      trailing: Icon(_classExpanded ? Icons.expand_less : Icons.expand_more, size: 20, color: AppTheme.white),
+                      onTap: () => setState(() => _classExpanded = !_classExpanded),
+                    ),
+                    if (_classExpanded) ...[
+                      _DrawerSubItem(label: 'REGULAR COURSE', onTap: () => _goTo(RegularCourseScreen.route)),
+                      _DrawerSubItem(label: 'OURORA 8', onTap: () => _goTo(Ourora8Screen.route)),
+                    ],
+                    _DrawerItem(label: 'MEMBERSHIP', onTap: () => _goTo(MembershipScreen.route)),
+                    _DrawerItem(label: 'CONTACT', onTap: () => _goTo(ContactScreen.route)),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DrawerItem extends StatefulWidget {
+  const _DrawerItem({required this.label, required this.onTap, this.trailing});
+
+  final String label;
+  final VoidCallback onTap;
+  final Widget? trailing;
+
+  @override
+  State<_DrawerItem> createState() => _DrawerItemState();
+}
+
+class _DrawerItemState extends State<_DrawerItem> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+          color: isMobile
+              ? AppTheme.black
+              : _hovered
+              ? AppTheme.lightGray
+              : AppTheme.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: () => context.go('/'),
-                  child: Image.asset('assets/images/logo.png', width: 169, height: 49, fit: BoxFit.contain),
+              SelectionContainer.disabled(
+                child: Text(
+                  widget.label,
+                  style: AppTheme.navItem().copyWith(fontSize: isMobile ? 24 : 14, color: isMobile ? AppTheme.white : AppTheme.textGray),
                 ),
               ),
-              _DesktopMenu(),
+              if (widget.trailing != null) widget.trailing!,
             ],
           ),
         ),
@@ -44,11 +257,55 @@ class NavBar extends StatelessWidget {
   }
 }
 
+class _DrawerSubItem extends StatefulWidget {
+  const _DrawerSubItem({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  State<_DrawerSubItem> createState() => _DrawerSubItemState();
+}
+
+class _DrawerSubItemState extends State<_DrawerSubItem> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.only(left: 44, right: 28, top: 13, bottom: 13),
+          color: isMobile
+              ? AppTheme.black
+              : _hovered
+              ? AppTheme.borderGray
+              : AppTheme.lightGray,
+          child: SelectionContainer.disabled(
+            child: Text(
+              widget.label,
+              style: AppTheme.navItem().copyWith(fontSize: isMobile ? 18 : 12, color: isMobile ? AppTheme.white : AppTheme.textGray),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _DesktopMenu extends StatelessWidget {
+  const _DesktopMenu();
+
   @override
   Widget build(BuildContext context) {
     const items = [('ABOUT', AboutScreen.route), ('WORKS', WorksScreen.route)];
-
     const trailingItems = [('MEMBERSHIP', MembershipScreen.route), ('CONTACT', ContactScreen.route)];
 
     return Row(
@@ -176,9 +433,7 @@ class _ClassNavItemState extends State<_ClassNavItem> {
           setState(() => _hovered = true);
           _showDropdown();
         },
-        onExit: (_) {
-          _scheduleClose();
-        },
+        onExit: (_) => _scheduleClose(),
         child: GestureDetector(
           onTap: () => context.go(ClassScreen.route),
           child: AnimatedDefaultTextStyle(
@@ -259,5 +514,5 @@ class NavBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => false;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 }

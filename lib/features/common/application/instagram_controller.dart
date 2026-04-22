@@ -40,7 +40,7 @@ class InstagramController extends _$InstagramController {
   late InstagramRepository _repository;
 
   @override
-  InstagramFeedState build() {
+  InstagramFeedState build(int pageSize) {
     _repository = ref.watch(instagramRepositoryProvider);
     Future.microtask(loadMore);
     return const InstagramFeedState();
@@ -51,11 +51,11 @@ class InstagramController extends _$InstagramController {
 
     state = state.copyWith(isLoading: true, clearError: true);
 
-    final result = await _repository.fetchPage(afterCursor: state.nextCursor);
+    final result = await _repository.fetchPage(afterCursor: state.nextCursor, pageSize: pageSize);
     result.fold(
       (failure) => state = state.copyWith(isLoading: false, error: failure.error),
       (page) => state = state.copyWith(
-        posts: [...state.posts, ...page.posts],
+        posts: [...state.posts, ...page.posts.take(pageSize)],
         isLoading: false,
         hasMore: page.nextCursor != null,
         nextCursor: page.nextCursor,

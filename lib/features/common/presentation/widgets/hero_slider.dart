@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class HeroSlider extends StatefulWidget {
   const HeroSlider({super.key});
@@ -46,7 +47,9 @@ class _HeroSliderState extends State<HeroSlider> {
 
   @override
   Widget build(BuildContext context) {
-    const double height = 694;
+    final isMobile = Responsive.isMobileDevice;
+
+    double height = isMobile ? 580 : 694;
     final slide = AppConstants.heroSlides[_currentIndex];
 
     return SizedBox(
@@ -129,6 +132,8 @@ class _HeroSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -141,13 +146,19 @@ class _HeroSlide extends StatelessWidget {
               const SizedBox(height: 96),
               Text(
                 subtitle,
-                style: const TextStyle(fontFamily: 'Playfair', fontSize: 26, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, color: AppTheme.white),
+                style: TextStyle(
+                  fontFamily: 'Playfair',
+                  fontSize: isMobile ? 20 : 26,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w500,
+                  color: AppTheme.white,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
               Text(
                 title,
-                style: const TextStyle(fontFamily: 'Raleway', fontSize: 60, fontWeight: FontWeight.w700, color: AppTheme.white, height: 1.1),
+                style: TextStyle(fontFamily: 'Raleway', fontSize: isMobile ? 40 : 60, fontWeight: FontWeight.w700, color: AppTheme.white, height: 1.1),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 96),

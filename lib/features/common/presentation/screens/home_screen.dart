@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ourora/features/common/application/instagram_controller.dart';
 import 'package:ourora/features/common/presentation/widgets/feature_cards_section.dart';
 import 'package:ourora/features/common/presentation/widgets/fid_section.dart';
 import 'package:ourora/features/common/presentation/widgets/footer_cta_section.dart';
@@ -31,9 +30,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    final feed = ref.watch(instagramControllerProvider);
-
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,

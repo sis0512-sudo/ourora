@@ -58,23 +58,30 @@ String _$instagramRepositoryHash() =>
     r'a2ed83137593999a48a16d8acca9b45b1430e478';
 
 @ProviderFor(InstagramController)
-const instagramControllerProvider = InstagramControllerProvider._();
+const instagramControllerProvider = InstagramControllerFamily._();
 
 final class InstagramControllerProvider
     extends $NotifierProvider<InstagramController, InstagramFeedState> {
-  const InstagramControllerProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'instagramControllerProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+  const InstagramControllerProvider._({
+    required InstagramControllerFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'instagramControllerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$instagramControllerHash();
+
+  @override
+  String toString() {
+    return r'instagramControllerProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
@@ -87,17 +94,55 @@ final class InstagramControllerProvider
       providerOverride: $SyncValueProvider<InstagramFeedState>(value),
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is InstagramControllerProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
 String _$instagramControllerHash() =>
-    r'cf2d77b61b69139b8e3572a6dd9025b97e29a6bf';
+    r'13950b512953e4dd1fd6a165484bde8922bbadda';
+
+final class InstagramControllerFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          InstagramController,
+          InstagramFeedState,
+          InstagramFeedState,
+          InstagramFeedState,
+          int
+        > {
+  const InstagramControllerFamily._()
+    : super(
+        retry: null,
+        name: r'instagramControllerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  InstagramControllerProvider call(int pageSize) =>
+      InstagramControllerProvider._(argument: pageSize, from: this);
+
+  @override
+  String toString() => r'instagramControllerProvider';
+}
 
 abstract class _$InstagramController extends $Notifier<InstagramFeedState> {
-  InstagramFeedState build();
+  late final _$args = ref.$arg as int;
+  int get pageSize => _$args;
+
+  InstagramFeedState build(int pageSize);
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
+    final created = build(_$args);
     final ref = this.ref as $Ref<InstagramFeedState, InstagramFeedState>;
     final element =
         ref.element

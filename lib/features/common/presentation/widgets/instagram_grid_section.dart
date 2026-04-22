@@ -11,21 +11,26 @@ class InstagramGridSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final feed = ref.watch(instagramControllerProvider);
+    final isMobile = Responsive.isMobileDevice;
+    final pageSize = isMobile ? 8 : 9;
+    final feed = ref.watch(instagramControllerProvider(pageSize));
     final columns = Responsive.gridColumns(context);
 
     return Container(
       color: AppTheme.white,
-      padding: const EdgeInsets.symmetric(vertical: 80),
+      padding: EdgeInsets.symmetric(vertical: isMobile ? 0 : 80),
       child: Column(
         children: [
-          Padding(padding: const EdgeInsets.symmetric(horizontal: 100), child: _buildGrid(context, ref, feed, columns)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: isMobile ? 32 : 100),
+            child: _buildGrid(context, ref, feed, columns),
+          ),
           if (feed.isLoading) ...[
             const SizedBox(height: 32),
             const CircularProgressIndicator(),
           ] else if (feed.hasMore) ...[
             const SizedBox(height: 40),
-            _loadMoreButton(ref),
+            _loadMoreButton(ref, isMobile, pageSize),
           ],
         ],
       ),
@@ -49,10 +54,10 @@ class InstagramGridSection extends ConsumerWidget {
     );
   }
 
-  Widget _loadMoreButton(WidgetRef ref) {
+  Widget _loadMoreButton(WidgetRef ref, bool isMobile, int pageSize) {
     return SizedBox(
-      width: 150,
-      height: 48,
+      width: isMobile ? 200 : 150,
+      height: isMobile ? 56 : 48,
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           side: const BorderSide(color: AppTheme.accentOrange),
@@ -60,10 +65,10 @@ class InstagramGridSection extends ConsumerWidget {
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           overlayColor: AppTheme.transparent,
         ),
-        onPressed: () => ref.read(instagramControllerProvider.notifier).loadMore(),
-        child: const Text(
+        onPressed: () => ref.read(instagramControllerProvider(pageSize).notifier).loadMore(),
+        child: Text(
           'Load More',
-          style: TextStyle(fontFamily: 'ArialBlack', fontSize: 13, color: AppTheme.accentOrange),
+          style: TextStyle(fontFamily: 'ArialBlack', fontSize: isMobile ? 18 : 13, color: AppTheme.accentOrange),
         ),
       ),
     );

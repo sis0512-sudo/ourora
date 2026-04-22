@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
+import 'package:ourora/features/common/utils/responsive.dart';
 
 class FooterCtaSection extends StatefulWidget {
   const FooterCtaSection({super.key, required this.scrollController});
@@ -52,55 +53,75 @@ class _FooterCtaSectionState extends State<FooterCtaSection> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobileDevice;
+
     return SizedBox(
       key: _key,
       width: double.infinity,
-      height: _visibleHeight,
+      height: isMobile ? 350 : _visibleHeight,
       child: ClipRect(
         child: Stack(
           children: [
             // 배경 이미지 — 실제 높이보다 크게, 패럴랙스 오프셋으로 위치 이동
-            Positioned(
-              top: -_parallaxOffset,
-              left: 0,
-              right: 0,
-              height: _visibleHeight + _extraHeight,
-              child: Image.asset(
-                'assets/images/footer_cta_background.webp',
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-            ),
+            isMobile
+                ? Image.asset(
+                    'assets/images/footer_cta_background.webp',
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    height: double.infinity,
+                  )
+                : Positioned(
+                    top: -_parallaxOffset,
+                    left: 0,
+                    right: 0,
+                    height: _visibleHeight + _extraHeight,
+                    child: Image.asset(
+                      'assets/images/footer_cta_background.webp',
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  ),
 
             // 텍스트 + 버튼
             Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'YOUR OWN LIGHT',
-                    style: TextStyle(fontFamily: 'ArialBlack', fontSize: 70, fontWeight: FontWeight.w900, color: AppTheme.white, letterSpacing: 4, height: 1.2),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'MAKE YOU SHINE IN THE WORLD',
-                    style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 24, fontWeight: FontWeight.w400, color: AppTheme.white, letterSpacing: 1.2),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppTheme.white,
-                      side: const BorderSide(color: AppTheme.white, width: 1.5),
-                      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'YOUR OWN LIGHT',
+                      style: TextStyle(
+                        fontFamily: 'ArialBlack',
+                        fontSize: isMobile ? 40 : 70,
+                        fontWeight: FontWeight.w900,
+                        color: AppTheme.white,
+                        letterSpacing: 4,
+                        height: 1.2,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    child: Text('Read More >>', style: const TextStyle(fontSize: 16, letterSpacing: 0.5)),
-                  ),
-                ],
+                    const SizedBox(height: 12),
+                    Text(
+                      'MAKE YOU SHINE IN THE WORLD',
+                      style: const TextStyle(fontFamily: 'ArialBlack', fontSize: 24, fontWeight: FontWeight.w400, color: AppTheme.white, letterSpacing: 1.2),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 32),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppTheme.white,
+                        side: const BorderSide(color: AppTheme.white, width: 1.5),
+                        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                      ),
+                      child: Text('Read More >>', style: const TextStyle(fontSize: 16, letterSpacing: 0.5)),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
