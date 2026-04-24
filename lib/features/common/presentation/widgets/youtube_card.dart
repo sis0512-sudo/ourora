@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/infrastructure/entities/youtube_video.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_arrow_button.dart';
-import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,12 +20,14 @@ class YoutubeCard extends StatefulWidget {
 class _YoutubeCardState extends State<YoutubeCard> {
   bool _hovered = false;
 
+  String videoUrl(String videoId) => 'https://www.youtube.com/watch?v=$videoId';
+
   @override
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobileDevice;
 
     return GestureDetector(
-      onTap: () => launchUrl(Uri.parse(AppConstants.videoUrl(widget.video.videoId)), mode: LaunchMode.externalApplication),
+      onTap: () => launchUrl(Uri.parse(videoUrl(widget.video.videoId)), mode: LaunchMode.externalApplication),
       child: MouseRegion(
         onEnter: (_) => setState(() => _hovered = true),
         onExit: (_) => setState(() => _hovered = false),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ourora/features/class/presentation/widgets/class_header.dart';
+import 'package:ourora/features/class/presentation/widgets/class/class_header.dart';
 import 'package:ourora/features/class/presentation/widgets/ourora8/ourora8_content_section.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/screen_content_sliver.dart';

@@ -2,8 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ourora/config/theme.dart';
-import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
+
+class HeroSlide {
+  final String subtitle;
+  final String title;
+  final String imagePath;
+  final MainAxisAlignment mainAxisAlignment;
+
+  const HeroSlide({required this.subtitle, required this.title, required this.imagePath, this.mainAxisAlignment = MainAxisAlignment.end});
+}
 
 class HeroSlider extends StatefulWidget {
   const HeroSlider({super.key});
@@ -15,6 +23,19 @@ class HeroSlider extends StatefulWidget {
 class _HeroSliderState extends State<HeroSlider> {
   int _currentIndex = 0;
   Timer? _timer;
+
+  // Hero 슬라이더 텍스트
+  List<HeroSlide> heroSlides = [
+    HeroSlide(
+      subtitle: 'All good things which exist are',
+      title: 'THE FRUITS OF\nORIGINALITY',
+      imagePath: 'assets/images/hero_1_compressed.webp',
+      mainAxisAlignment: MainAxisAlignment.end,
+    ),
+    HeroSlide(subtitle: 'Make', title: 'IT HAPPEN', imagePath: 'assets/images/hero_2_compressed.webp', mainAxisAlignment: MainAxisAlignment.start),
+    HeroSlide(subtitle: 'Show me', title: 'YOUR STORY', imagePath: 'assets/images/hero_3_compressed.webp', mainAxisAlignment: MainAxisAlignment.start),
+    HeroSlide(subtitle: 'It\'s', title: 'YOUR PLACE', imagePath: 'assets/images/hero_4_compressed.webp', mainAxisAlignment: MainAxisAlignment.center),
+  ];
 
   @override
   void initState() {
@@ -38,11 +59,11 @@ class _HeroSliderState extends State<HeroSlider> {
   }
 
   void _next() {
-    setState(() => _currentIndex = (_currentIndex + 1) % AppConstants.heroSlides.length);
+    setState(() => _currentIndex = (_currentIndex + 1) % heroSlides.length);
   }
 
   void _prev() {
-    setState(() => _currentIndex = (_currentIndex - 1 + AppConstants.heroSlides.length) % AppConstants.heroSlides.length);
+    setState(() => _currentIndex = (_currentIndex - 1 + heroSlides.length) % heroSlides.length);
   }
 
   @override
@@ -50,7 +71,7 @@ class _HeroSliderState extends State<HeroSlider> {
     final isMobile = Responsive.isMobileDevice;
 
     double height = isMobile ? 580 : 694;
-    final slide = AppConstants.heroSlides[_currentIndex];
+    final slide = heroSlides[_currentIndex];
 
     return SizedBox(
       height: height,
@@ -103,7 +124,7 @@ class _HeroSliderState extends State<HeroSlider> {
             right: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: AppConstants.heroSlides.asMap().entries.map((entry) {
+              children: heroSlides.asMap().entries.map((entry) {
                 return Container(
                   width: 8,
                   height: 8,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ourora/features/class/presentation/widgets/class_header.dart';
+import 'package:ourora/features/class/presentation/widgets/class/class_header.dart';
 import 'package:ourora/features/class/presentation/widgets/regular/regular_course_content_section.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/screen_content_sliver.dart';
