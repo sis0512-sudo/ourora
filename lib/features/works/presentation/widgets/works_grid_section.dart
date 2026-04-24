@@ -1,3 +1,5 @@
+// 작품 갤러리의 그리드 레이아웃을 구성하는 섹션 위젯.
+// 제목·필터바·작품 그리드를 포함하며, 로딩/에러/빈 상태를 각각 처리합니다.
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +19,7 @@ class WorksGridSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isMobile = Responsive.isMobileDevice;
     final state = ref.watch(worksControllerProvider);
-    final columns = Responsive.gridColumns(context);
+    final columns = Responsive.gridColumns(context); // 모바일: 1열, 데스크톱: 3열
 
     return Container(
       color: AppTheme.white,
@@ -27,6 +29,7 @@ class WorksGridSection extends ConsumerWidget {
         children: [
           TitleWidget(title: 'WORKS', isSubTitle: false),
           SizedBox(height: isMobile ? 20 : 40),
+          // 타입 필터 버튼 + 검색 입력 필드
           const WorksFilterBar(),
           const SizedBox(height: 32),
           _buildBody(context, state, columns),
@@ -35,6 +38,7 @@ class WorksGridSection extends ConsumerWidget {
     );
   }
 
+  // 현재 상태(로딩/에러/데이터)에 따라 적절한 위젯을 반환합니다.
   Widget _buildBody(BuildContext context, WorksState state, int columns) {
     if (state.isLoading) {
       return const Center(
@@ -54,6 +58,7 @@ class WorksGridSection extends ConsumerWidget {
       );
     }
 
+    // displayedWorks: 검색어가 있으면 필터링된 목록, 없으면 전체 목록
     final displayed = state.displayedWorks;
 
     if (displayed.isEmpty) {
@@ -69,11 +74,12 @@ class WorksGridSection extends ConsumerWidget {
       children: [
         GridView.builder(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(), // 부모 스크롤뷰가 담당
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columns, crossAxisSpacing: 4, mainAxisSpacing: 4),
           itemCount: displayed.length,
           itemBuilder: (context, index) => _WorkGridItem(work: displayed[index]),
         ),
+        // 추가 페이지 로딩 중일 때 하단 스피너 표시
         if (state.isLoadingMore)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 40),
@@ -84,6 +90,8 @@ class WorksGridSection extends ConsumerWidget {
   }
 }
 
+// 그리드의 각 셀(작품 하나)을 표시하는 위젯.
+// 호버 시(데스크톱) 어두운 오버레이와 작품 제목이 나타납니다.
 class _WorkGridItem extends StatefulWidget {
   final WorkItem work;
 
@@ -98,6 +106,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
 
   @override
   Widget build(BuildContext context) {
+    // 그리드에는 경량 이미지(lightImageUrls)의 첫 번째 장을 사용합니다.
     final lightImageUrls = widget.work.lightImageUrls.isNotEmpty ? widget.work.lightImageUrls.first : null;
     final isMobile = Responsive.isMobileDevice;
 
@@ -106,10 +115,12 @@ class _WorkGridItemState extends State<_WorkGridItem> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
+        // 클릭 시 해당 작품의 상세 페이지(/post/:id)로 이동
         onTap: () => context.go(WorkPostScreen.routeFor(widget.work.id)),
         child: Stack(
           fit: StackFit.expand,
           children: [
+            // 썸네일 이미지 (없으면 회색 플레이스홀더)
             if (lightImageUrls != null)
               Image.network(
                 lightImageUrls,
@@ -135,6 +146,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                 color: AppTheme.lightGray,
                 child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray),
               ),
+            // 데스크톱 호버 오버레이: 작품 제목과 설명 표시
             if (!isMobile)
               AnimatedOpacity(
                 duration: const Duration(milliseconds: 200),

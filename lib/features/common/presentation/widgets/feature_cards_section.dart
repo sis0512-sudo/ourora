@@ -1,3 +1,5 @@
+// 홈 화면에서 WORKSHOP / WORKS / CLASS / MEMBERSHIP 4개의 기능 카드를 표시하는 섹션.
+// 각 카드는 아이콘·제목·설명·'Read More' 버튼으로 구성되며 해당 페이지로 이동합니다.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +8,8 @@ import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 
+// 각 기능 카드의 데이터를 열거형(enum)으로 정의합니다.
+// 열거형을 사용하면 카드 데이터와 순서가 한 곳에서 관리됩니다.
 enum FeatureCard {
   workshop(
     assetPath: 'assets/svgs/icon_workshop.svg',
@@ -44,13 +48,15 @@ enum FeatureCard {
     required this.route,
   });
 
-  final String assetPath;
-  final String title;
-  final String subtitle;
-  final String desc;
-  final String route;
+  final String assetPath; // SVG 아이콘 파일 경로
+  final String title;     // 영문 제목 (예: 'WORKS')
+  final String subtitle;  // 한글 부제목 (예: '작품과 작업들')
+  final String desc;      // 카드 설명 문자열
+  final String route;     // 클릭 시 이동할 URL 경로
 }
 
+// 4개의 기능 카드를 배치하는 섹션 위젯.
+// 모바일: 세로 Column 배치, 데스크톱: 가로 Row 배치
 class FeatureCardsSection extends StatelessWidget {
   const FeatureCardsSection({super.key});
 
@@ -94,6 +100,7 @@ class FeatureCardsSection extends StatelessWidget {
   }
 }
 
+// 기능 카드 하나를 표시하는 위젯: 아이콘 → 제목 → 부제목 → 설명 → 버튼 순서로 배치됩니다.
 class _FeatureCardWidget extends StatelessWidget {
   final FeatureCard card;
 
@@ -111,12 +118,13 @@ class _FeatureCardWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // SVG 아이콘 (AppTheme.black으로 색상 변경)
           SvgPicture.asset(
             card.assetPath,
             height: isMobile ? 120 : 90,
             colorFilter: const ColorFilter.mode(
               AppTheme.black,
-              BlendMode.srcIn,
+              BlendMode.srcIn, // SVG의 모든 색상을 black으로 교체
             ),
           ),
           const SizedBox(height: 36),
@@ -133,6 +141,7 @@ class _FeatureCardWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
+          // 'Read More >' 버튼 클릭 시 해당 페이지로 이동
           SizedBox(
             width: 158,
             height: 35,

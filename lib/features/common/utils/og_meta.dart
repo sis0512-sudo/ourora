@@ -1,15 +1,20 @@
-const ogBaseUrl = 'https://www.ourorastudio.com';
+// OG(Open Graph) 메타 태그 데이터를 정의하는 파일.
+// OG 태그는 카카오톡·SNS 공유 시 나타나는 제목·설명·이미지를 결정합니다.
+// 각 페이지 경로(path)에 맞는 OgMeta 객체를 생성하여 반환합니다.
+
+const ogBaseUrl = 'https://www.ourorastudio.com'; // 사이트 기본 URL
 const _siteTitle = 'OURORA STUDIO';
-const _titleSeparator = ' | ';
+const _titleSeparator = ' | '; // 페이지 제목과 사이트 이름 사이 구분자
 const _defaultImage =
     'https://firebasestorage.googleapis.com/v0/b/ourora-78e54.firebasestorage.app/o/images%2Flogo.png?alt=media&token=741d2b5e-5306-410f-bec4-d63f70786e46';
 
+// OG 메타 태그에 필요한 데이터를 담는 데이터 클래스
 class OgMeta {
-  final String title;
-  final String description;
-  final String url;
-  final String image;
-  final String type;
+  final String title;       // 공유 시 보이는 제목
+  final String description; // 공유 시 보이는 설명
+  final String url;         // 공유 페이지의 정규 URL
+  final String image;       // 공유 시 보이는 대표 이미지 URL
+  final String type;        // OG 타입 (website / article)
 
   const OgMeta({
     required this.title,
@@ -20,6 +25,8 @@ class OgMeta {
   });
 }
 
+// OgMeta 객체를 편리하게 생성하는 내부 헬퍼 함수.
+// 제목에 ' | OURORA STUDIO'를 자동으로 붙여줍니다.
 OgMeta _meta({
   required String title,
   required String description,
@@ -34,8 +41,10 @@ OgMeta _meta({
   image: image,
 );
 
+// 현재 URL 경로(path)에 맞는 OgMeta를 반환합니다.
+// router.dart의 redirect에서 페이지 이동 시마다 호출됩니다.
 OgMeta ogMetaForPath(String path) {
-  final base = path.split('?').first;
+  final base = path.split('?').first; // 쿼리 파라미터 제거
   return switch (base) {
     '/about' => _meta(
       title: '공방 소개',
@@ -74,11 +83,13 @@ OgMeta ogMetaForPath(String path) {
       description: '오로라공방에 목공 수업, 가구 제작, 공방 이용에 관해 문의하세요. 서울 목동 위치.',
       path: '/contact',
     ),
+    // /works 또는 /works/... 로 시작하는 모든 경로
     _ when base == '/works' || base.startsWith('/works/') => _meta(
       title: '작품 갤러리',
       description: '오로라공방에서 만든 가구 작품들을 감상하세요. 원목 가구, 목공예 작품 갤러리입니다.',
       path: '/works',
     ),
+    // 매칭되는 경로가 없으면 홈페이지 기본 메타 사용
     _ => _meta(
       title: '가구공방 오로라공방',
       description:
@@ -87,6 +98,8 @@ OgMeta ogMetaForPath(String path) {
   };
 }
 
+// 작품 상세 페이지(/post/:id)에 맞는 OgMeta를 생성합니다.
+// 작품 제목·설명·대표 이미지를 받아 공유 시 해당 작품 정보가 보이도록 합니다.
 OgMeta ogMetaForPost({
   required String id,
   required String title,
@@ -97,5 +110,5 @@ OgMeta ogMetaForPost({
   description: description,
   url: '$ogBaseUrl/post/$id',
   image: image != null && image.isNotEmpty ? image : _defaultImage,
-  type: 'article',
+  type: 'article', // 게시물 타입
 );

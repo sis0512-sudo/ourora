@@ -1,6 +1,6 @@
 # OURORA STUDIO — Flutter Web
 
-가구공방 오로라스튜디오 홈페이지. Flutter Web 단일 스크롤 랜딩 페이지.
+가구공방 오로라스튜디오 홈페이지. Flutter Web 멀티페이지 사이트.
 
 ---
 
@@ -11,7 +11,8 @@
 - 라우팅: `go_router` (전환 애니메이션 없음 — `_noTransitionPage`)
 - 데이터 모델: `freezed` + `fpdart` (`Either` 기반 에러처리)
 - HTTP: `http` 패키지 직접 사용 (Instagram Graph API, YouTube)
-- 기타: `carousel_slider`, `cached_network_image`, `flutter_svg`, `video_player`, `url_launcher`
+- Firebase: `cloud_firestore`, `cloud_functions`, `firebase_storage` (works 데이터)
+- 기타: `carousel_slider`, `flutter_svg`, `video_player`, `url_launcher`, `responsive_framework`, `auto_size_text`
 
 ---
 
@@ -22,8 +23,7 @@ lib/
 ├── main.dart / app.dart / bootstrap.dart
 ├── config/
 │   ├── theme.dart       ← AppTheme (색상·텍스트스타일)
-│   ├── router.dart      ← routerProvider (GoRouter)
-│   └── providers.dart
+│   └── router.dart      ← routerProvider (GoRouter)
 └── features/
     ├── common/
     │   ├── application/     ← instagram_controller, youtube_controller (riverpod_generator)
@@ -34,14 +34,24 @@ lib/
     │   │   ├── widgets/     ← nav_bar, hero_slider, feature_cards_section,
     │   │   │                   instagram_grid_section, fid_section,
     │   │   │                   youtube_feed_section, footer_cta_section,
-    │   │   │                   site_footer, image_viewer_popup, youtube_card...
+    │   │   │                   site_footer, image_viewer_popup, youtube_card,
+    │   │   │                   screen_content_sliver, title_widget, bullet_list,
+    │   │   │                   youtube_arrow_button
     │   │   └── providers/
-    │   └── utils/           ← constants.dart, responsive.dart, utils.dart
+    │   └── utils/           ← constants.dart, responsive.dart, utils.dart,
+    │                           og_meta.dart, og_updater.dart
     ├── about/               ← about_screen, fidp_screen + 위젯들
     ├── class/               ← class_screen, regular_course_screen, ourora8_screen
     ├── membership/          ← membership_screen + 위젯들
     ├── contact/             ← contact_screen + 위젯들
-    └── works/               ← works_screen
+    └── works/
+        ├── application/     ← works_controller (riverpod_generator)
+        ├── domain/          ← work_item, works_datasource
+        ├── infrastructure/  ← works_remote_datasource, works_repository (Firestore)
+        └── presentation/
+            ├── screens/     ← works_screen, work_post_screen
+            └── widgets/     ← works_grid_section, works_filter_bar,
+                                works_upload_section, work_post/*
 ```
 
 ---
@@ -54,13 +64,14 @@ lib/
 | `/about` | AboutScreen |
 | `/fidp` | FIDPScreen |
 | `/works` | WorksScreen |
+| `/post/:id` | WorkPostScreen |
 | `/class` | ClassScreen |
 | `/class/regular` | RegularCourseScreen |
 | `/class/ourora8` | Ourora8Screen |
 | `/membership` | MembershipScreen |
 | `/contact` | ContactScreen |
 
-전체 `ShellRoute` → `SelectionArea`로 감싸짐.
+전체 `ShellRoute` → `SelectionArea`로 감싸짐. 라우트 변경 시 `updateOgMeta()` 호출.
 
 ---
 
@@ -96,18 +107,19 @@ tablet  768 ~ 1199px
 desktop >= 1200px
 ```
 
+`AppConstants.windowMaxWidth = 980` — 콘텐츠 최대 너비 제한에 사용.
+
 ---
 
 ## 폰트
 
 | 용도 | 패밀리 |
 |------|--------|
-| 영문 네비/타이틀 | Raleway (asset) |
+| 영문 네비/타이틀 | Raleway (google_fonts) |
 | 섹션 타이틀 | Montserrat (google_fonts) |
-| 한글 본문 | NanumGothic (asset) |
+| 한글 본문·기본 | Noto Sans KR (google_fonts) |
 | 페이지 타이틀 | BMHanna (asset) |
 | 영문 굵은 로고 | ArialBlack (asset) |
-| 한글 보조 | Noto Sans KR (google_fonts) |
 
 ---
 
@@ -122,6 +134,11 @@ desktop >= 1200px
 **YouTube**
 - `YoutubeRepository`: 영상 ID 하드코딩 또는 API 응답
 - 썸네일: `https://img.youtube.com/vi/{id}/hqdefault.jpg`
+
+**Works (Firestore)**
+- `WorksRepository`: Firestore DB `ourora` (`asia-northeast3`) 에서 작품 목록/상세 조회
+- `WorksRemoteDatasource`: Cloud Functions / Storage 연동
+- `works_controller.dart`: riverpod_generator 기반
 
 ---
 
@@ -143,10 +160,13 @@ SiteFooter          — 주소·연락처·저작권
 ## 연락처 상수 (AppConstants)
 
 ```dart
-email   = 'contact@ourora.com'
-phone   = '010-7586-8765'
-address = 'B1 6 Mokdong-ro21Gil, Yangcheon-gu, Seoul, Korea.'
-horizontalPadding = EdgeInsets.symmetric(horizontal: 120)
+email                = 'contact@ourora.com'
+phone                = '010-7586-8765'
+address              = 'B1 6 Mokdong-ro21Gil, Yangcheon-gu, Seoul, Korea.'
+copyright            = '© 2021 OURORA STUDIO. All rights reserved.'
+windowMaxWidth       = 980.0
+firestoreDatabaseId  = 'ourora'
+firebaseFunctionsRegion = 'asia-northeast3'
 ```
 
 ---
@@ -154,15 +174,17 @@ horizontalPadding = EdgeInsets.symmetric(horizontal: 120)
 ## 에셋 목록
 
 ```
-assets/images/   hero_1~4.webp, logo.png, about_background.webp,
-                 footer_cta_background.webp, fidp_background.webp,
+assets/images/   hero_1_compressed.webp ~ hero_4_compressed.webp,
+                 logo.png, about_background.webp,
+                 footer_cta_background.webp, fidp_background_compressed.webp,
                  regular_course_background.webp, expert_course_background.webp,
-                 machine_list.webp, ourora8_course.png, ourora8_logo.png,
-                 regular_course_timetable.png, course_1_1~3_1.png
-assets/svgs/     icon_workshop/works/class/membership.svg,
-                 ourora_membership_logo.svg, regular_course.svg
-assets/videos/   about_background.mp4
-assets/fonts/    NanumGothic.otf, BMHanna.otf, arial_black.ttf
+                 machine_list.webp, ourora8_logo.png,
+                 regular_course_timetable.webp
+assets/svgs/     icon_workshop.svg, icon_works.svg, icon_class.svg,
+                 icon_membership.svg, ourora_membership_logo.svg,
+                 regular_course.svg, facebook.svg, twitter.svg,
+                 linkedin.svg, link.svg
+assets/fonts/    BMHanna.otf, arial_black.ttf
 ```
 
 ---

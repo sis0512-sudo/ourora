@@ -1,3 +1,5 @@
+// 홈 화면의 F·I·D·P 섹션. 오로라공방의 4가지 핵심 가치를 소개합니다.
+// Furniture / IT Convergence / Design / People 4개 항목을 표시합니다.
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +16,7 @@ class FidSection extends StatefulWidget {
 }
 
 class _FidSectionState extends State<FidSection> {
+  // F·I·D·P 각 항목의 데이터 (알파벳, 제목, 설명)
   List<Map<String, String>> fidItems = [
     {'letter': 'F', 'title': 'FURNITURE', 'desc': '나무로 가구를 만드는 가구공방입니다. 물론 다른 것들도 만듭니다.'},
     {'letter': 'I', 'title': 'IT CONVERGENCE', 'desc': '가구와 IT 기술과의 융합을 통한 새로운 디자인 가능성을 모색합니다.'},
@@ -33,11 +36,13 @@ class _FidSectionState extends State<FidSection> {
           constraints: BoxConstraints(maxWidth: AppConstants.windowMaxWidth),
           child: Column(
             children: [
+              // 섹션 타이틀
               Text(
                 '오로라 공방은?',
                 style: TextStyle(fontFamily: 'BMHanna', fontSize: isMobile ? 28 : 20, fontWeight: FontWeight.w700, letterSpacing: 4, color: AppTheme.darkBg),
               ),
               const SizedBox(height: 12),
+              // 제목 아래 구분선
               Container(
                 width: isMobile ? 60 : 40,
                 height: 3,
@@ -46,6 +51,7 @@ class _FidSectionState extends State<FidSection> {
                 ),
               ),
               const SizedBox(height: 48),
+              // 모바일: Column, 데스크톱: Row 배치
               isMobile
                   ? Column(
                       children: fidItems.map((item) {
@@ -66,6 +72,7 @@ class _FidSectionState extends State<FidSection> {
                       }).toList(),
                     ),
               const SizedBox(height: 48),
+              // 'Read More >>' 버튼: FIDP 상세 페이지로 이동
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: AppTheme.black),
@@ -85,10 +92,11 @@ class _FidSectionState extends State<FidSection> {
   }
 }
 
+// F·I·D·P 항목 하나를 표시하는 위젯: 큰 알파벳 → 소제목 → 설명 순서로 배치됩니다.
 class _FidItem extends StatelessWidget {
-  final String letter;
-  final String title;
-  final String desc;
+  final String letter; // 'F', 'I', 'D', 'P' 중 하나
+  final String title;  // 영문 제목 (예: 'FURNITURE')
+  final String desc;   // 한글 설명
 
   const _FidItem({required this.letter, required this.title, required this.desc});
 
@@ -101,6 +109,7 @@ class _FidItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          // ArialBlack 폰트의 큰 알파벳 문자 (F/I/D/P)
           Text(
             letter,
             style: TextStyle(fontFamily: 'ArialBlack', fontSize: isMobile ? 80 : 70, fontWeight: FontWeight.bold),

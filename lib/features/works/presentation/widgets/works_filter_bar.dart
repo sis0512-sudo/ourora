@@ -1,3 +1,6 @@
+// 작품 갤러리의 필터 바 위젯.
+// ALL / FURNITURE / ETC 타입 필터 버튼과 검색어 입력 필드로 구성됩니다.
+// 타입 필터와 검색이 선택되어 있을 때는 검색 필드를 숨깁니다.
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +22,7 @@ class _WorksFilterBarState extends ConsumerState<WorksFilterBar> {
   @override
   void initState() {
     super.initState();
+    // 현재 저장된 검색어로 컨트롤러를 초기화합니다 (페이지 재진입 시 상태 복원)
     _searchController = TextEditingController(
       text: ref.read(worksControllerProvider).searchQuery,
     );
@@ -30,10 +34,12 @@ class _WorksFilterBarState extends ConsumerState<WorksFilterBar> {
     super.dispose();
   }
 
+  // 검색 입력 필드에서 Enter 키를 눌렀을 때 호출됩니다.
   void _onSubmit(String value) {
     ref.read(worksControllerProvider.notifier).setSearchQuery(value);
   }
 
+  // 검색어 지우기 버튼(X) 클릭 시 호출됩니다.
   void _onClear() {
     _searchController.clear();
     ref.read(worksControllerProvider.notifier).setSearchQuery('');
@@ -43,8 +49,10 @@ class _WorksFilterBarState extends ConsumerState<WorksFilterBar> {
   Widget build(BuildContext context) {
     final state = ref.watch(worksControllerProvider);
     final isMobile = Responsive.isMobileDevice;
+    // 타입 필터가 없을 때(전체)만 검색 필드를 표시합니다.
     final showSearch = state.selectedType == null;
 
+    // 외부에서 검색어가 초기화되었을 때 (예: 타입 필터 선택 시) 입력 필드도 초기화합니다.
     if (state.searchQuery.isEmpty && _searchController.text.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _searchController.clear();
@@ -61,6 +69,7 @@ class _WorksFilterBarState extends ConsumerState<WorksFilterBar> {
       ),
     );
 
+    // 모바일: Column 배치, 데스크톱: Row 배치(검색 필드는 오른쪽 끝)
     return isMobile
         ? Column(
             children: [
@@ -71,15 +80,16 @@ class _WorksFilterBarState extends ConsumerState<WorksFilterBar> {
         : Row(
             children: [
               typeButtons,
-              const Spacer(),
+              const Spacer(), // 필터와 검색 사이 빈 공간
               if (showSearch) searchField,
             ],
           );
   }
 }
 
+// ALL / FURNITURE / ETC 세 개의 필터 칩 버튼을 가로로 배치합니다.
 class _TypeButtons extends ConsumerWidget {
-  final WorkType? selectedType;
+  final WorkType? selectedType; // 현재 선택된 타입 (null이면 ALL)
 
   const _TypeButtons({required this.selectedType});
 
@@ -112,6 +122,8 @@ class _TypeButtons extends ConsumerWidget {
   }
 }
 
+// 필터 선택 칩 버튼 하나.
+// 선택되었거나 호버 중일 때 coral 색상으로 강조됩니다.
 class _FilterChip extends StatefulWidget {
   final String label;
   final bool selected;
@@ -151,6 +163,7 @@ class _FilterChipState extends State<_FilterChip> {
               style: GoogleFonts.montserrat(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
+                // 활성화(선택 or 호버) 시 coral, 비활성 시 textGray
                 color: active ? AppTheme.coral : AppTheme.textGray,
               ),
             ),
@@ -161,10 +174,13 @@ class _FilterChipState extends State<_FilterChip> {
   }
 }
 
+// 검색어를 입력하는 텍스트 필드.
+// Enter 키 또는 키보드의 검색 버튼으로 검색을 실행합니다.
+// 텍스트가 있을 때만 X 버튼(지우기)이 표시됩니다.
 class _SearchField extends StatefulWidget {
   final TextEditingController controller;
-  final ValueChanged<String> onSubmit;
-  final VoidCallback onClear;
+  final ValueChanged<String> onSubmit; // Enter 키 입력 시 콜백
+  final VoidCallback onClear;          // X 버튼 클릭 시 콜백
 
   const _SearchField({
     required this.controller,
@@ -180,6 +196,7 @@ class _SearchFieldState extends State<_SearchField> {
   @override
   void initState() {
     super.initState();
+    // 텍스트 변경 시 X 버튼 표시 여부를 업데이트합니다.
     widget.controller.addListener(_rebuild);
   }
 
@@ -196,37 +213,27 @@ class _SearchFieldState extends State<_SearchField> {
     return TextField(
       controller: widget.controller,
       onSubmitted: widget.onSubmit,
-      textInputAction: TextInputAction.search,
+      textInputAction: TextInputAction.search, // 키보드에 '검색' 버튼 표시
       style: GoogleFonts.notoSansKr(fontSize: 13, color: AppTheme.black),
       decoration: InputDecoration(
         hintText: 'Search...',
         hintStyle: GoogleFonts.notoSansKr(fontSize: 13, color: AppTheme.borderGray),
-        prefixIcon: const Icon(
-          Icons.search,
-          size: 18,
-          color: AppTheme.borderGray,
-        ),
+        prefixIcon: const Icon(Icons.search, size: 18, color: AppTheme.borderGray),
+        // 텍스트가 있을 때만 X(지우기) 버튼을 오른쪽에 표시합니다.
         suffixIcon: widget.controller.text.isNotEmpty
             ? GestureDetector(
                 onTap: widget.onClear,
-                child: const Icon(
-                  Icons.close,
-                  size: 16,
-                  color: AppTheme.borderGray,
-                ),
+                child: const Icon(Icons.close, size: 16, color: AppTheme.borderGray),
               )
             : null,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 12,
-        ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
           borderSide: BorderSide(color: AppTheme.borderGray),
         ),
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.zero,
-          borderSide: BorderSide(color: AppTheme.black),
+          borderSide: BorderSide(color: AppTheme.black), // 포커스 시 검정 테두리
         ),
       ),
     );

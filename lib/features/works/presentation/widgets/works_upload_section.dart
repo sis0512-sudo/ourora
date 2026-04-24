@@ -1,3 +1,6 @@
+// 작품 업로드 폼 위젯 (관리자용 DEBUG 섹션).
+// Flutter Web에서 파일 선택은 dart:html 대신 package:web을 사용합니다.
+// 제목·설명·이미지·YouTube URL·타입을 입력받아 Firebase에 저장합니다.
 import 'dart:async';
 import 'dart:js_interop';
 import 'dart:typed_data';
@@ -16,8 +19,10 @@ class WorksUploadSection extends StatefulWidget {
   State<WorksUploadSection> createState() => _WorksUploadSectionState();
 }
 
+// 업로드 진행 상태를 나타내는 열거형
 enum _UploadStatus { idle, uploading, success, error }
 
+// 사용자가 선택한 이미지 파일 정보를 담는 내부 모델
 class _PickedImage {
   final String name;
   final Uint8List bytes;
@@ -49,9 +54,12 @@ class _WorksUploadSectionState extends State<WorksUploadSection> {
     super.dispose();
   }
 
+  // 브라우저 파일 선택 대화상자를 열어 이미지를 선택합니다.
+  // package:web의 HTMLInputElement를 생성하고 클릭 이벤트를 발생시키는 방식으로 구현합니다.
   Future<void> _pickImages() async {
     final completer = Completer<List<_PickedImage>>();
 
+    // 숨겨진 <input type="file"> 요소를 DOM에 추가하여 파일 선택 UI를 띄웁니다
     final input = web.HTMLInputElement()
       ..type = 'file'
       ..multiple = true
@@ -69,6 +77,7 @@ class _WorksUploadSectionState extends State<WorksUploadSection> {
     }
   }
 
+  // 선택된 파일들을 읽어 _PickedImage 리스트로 변환합니다.
   Future<void> _processInputFiles(web.HTMLInputElement input, Completer<List<_PickedImage>> completer) async {
     final files = input.files;
     if (files == null || files.length == 0) {
@@ -87,6 +96,8 @@ class _WorksUploadSectionState extends State<WorksUploadSection> {
     completer.complete(picked);
   }
 
+  // FileReader API로 파일 바이너리 데이터를 Uint8List로 읽어옵니다.
+  // readAsArrayBuffer → JSArrayBuffer → toDart → asUint8List 순으로 변환합니다.
   Future<Uint8List> _readFileBytes(web.File file) {
     final completer = Completer<Uint8List>();
     final reader = web.FileReader();
