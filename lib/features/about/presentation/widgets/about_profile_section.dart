@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+TextStyle _profileText() => GoogleFonts.notoSansKr(
+  fontSize: 14,
+  height: 2.5,
+  letterSpacing: 0.14,
+  color: AppTheme.white.withValues(alpha: 0.5),
+);
 
 class AboutProfileSection extends StatelessWidget {
   const AboutProfileSection({super.key});
@@ -45,8 +53,7 @@ class _ProfileContent extends StatelessWidget {
                     ),
                     Text(
                       '공방장 프로필',
-                      style: TextStyle(
-                        fontFamily: 'Noto Sans KR',
+                      style: GoogleFonts.notoSansKr(
                         fontSize: 17,
                         fontWeight: FontWeight.normal,
                         letterSpacing: 4,
@@ -125,7 +132,7 @@ class _TextItem extends _ProfileItem {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: AppTheme.profileText());
+    return Text(text, style: _profileText());
   }
 }
 
@@ -141,13 +148,12 @@ class _LinkItem extends _ProfileItem {
     return isMobile
         ? Wrap(
             children: [
-              Text('$label - ', style: AppTheme.profileText()),
+              Text('$label - ', style: _profileText()),
               GestureDetector(
                 onTap: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
                 child: Text(
                   url,
-                  style: TextStyle(
-                    fontFamily: 'Noto Sans KR',
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 10,
                     height: 2.5,
                     color: AppTheme.white.withValues(alpha: 0.5),
@@ -159,13 +165,12 @@ class _LinkItem extends _ProfileItem {
           )
         : Row(
             children: [
-              Text('$label - ', style: AppTheme.profileText()),
+              Text('$label - ', style: _profileText()),
               GestureDetector(
                 onTap: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
                 child: Text(
                   url,
-                  style: TextStyle(
-                    fontFamily: 'Noto Sans KR',
+                  style: GoogleFonts.notoSansKr(
                     fontSize: 10,
                     height: 2.5,
                     color: AppTheme.white.withValues(alpha: 0.5),
@@ -193,8 +198,7 @@ class _Section extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontFamily: 'Noto Sans KR',
+            style: GoogleFonts.notoSansKr(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               height: 2.5,

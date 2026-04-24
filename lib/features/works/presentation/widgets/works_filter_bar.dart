@@ -197,18 +197,10 @@ class _SearchFieldState extends State<_SearchField> {
       controller: widget.controller,
       onSubmitted: widget.onSubmit,
       textInputAction: TextInputAction.search,
-      style: const TextStyle(
-        fontFamily: 'Noto Sans KR',
-        fontSize: 13,
-        color: AppTheme.black,
-      ),
+      style: GoogleFonts.notoSansKr(fontSize: 13, color: AppTheme.black),
       decoration: InputDecoration(
         hintText: 'Search...',
-        hintStyle: const TextStyle(
-          fontFamily: 'Noto Sans KR',
-          fontSize: 13,
-          color: AppTheme.borderGray,
-        ),
+        hintStyle: GoogleFonts.notoSansKr(fontSize: 13, color: AppTheme.borderGray),
         prefixIcon: const Icon(
           Icons.search,
           size: 18,

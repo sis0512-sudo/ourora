@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/constants.dart';
 import 'package:ourora/features/common/utils/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+TextStyle _footerText() => GoogleFonts.notoSansKr(
+  fontSize: 14,
+  height: 1.5,
+  fontWeight: FontWeight.w100,
+  color: AppTheme.textGray,
+);
 
 class SiteFooter extends StatelessWidget {
   const SiteFooter({super.key});
@@ -32,9 +40,9 @@ class SiteFooter extends StatelessWidget {
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () => launchUrl(Uri.parse('mailto:contact@ourora.com')),
-                        child: Text('E. contact@ourora.com', style: AppTheme.footerText()),
+                        child: Text('E. contact@ourora.com', style: _footerText()),
                       ),
-                      Text('T. 010-7586-8765', style: AppTheme.footerText()),
+                      Text('T. 010-7586-8765', style: _footerText()),
                       const SizedBox(height: 20),
                       _FooterTextBlock(lines: const ['© 2021 OURORA STUDIO.', 'All rights reserved.']),
                       const SizedBox(height: 60),
@@ -60,9 +68,9 @@ class SiteFooter extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: () => launchUrl(Uri.parse('mailto:contact@ourora.com')),
-                                  child: Text('E. contact@ourora.com', style: AppTheme.footerText()),
+                                  child: Text('E. contact@ourora.com', style: _footerText()),
                                 ),
-                                Text('T. 010-7586-8765', style: AppTheme.footerText()),
+                                Text('T. 010-7586-8765', style: _footerText()),
                               ],
                             ),
                           ],
@@ -93,7 +101,7 @@ class _FooterTextBlock extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-      children: lines.map((line) => Text(line, style: AppTheme.footerText(), textAlign: isMobile ? TextAlign.center : TextAlign.left)).toList(),
+      children: lines.map((line) => Text(line, style: _footerText(), textAlign: isMobile ? TextAlign.center : TextAlign.left)).toList(),
     );
   }
 }

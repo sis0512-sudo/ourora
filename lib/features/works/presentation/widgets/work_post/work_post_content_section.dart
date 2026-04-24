@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/utils/og_updater.dart';
 import 'package:ourora/features/works/application/works_controller.dart';
@@ -34,22 +35,18 @@ class WorkPostContentSection extends ConsumerWidget {
           ),
         ),
       ),
-      error: (e, _) => const SizedBox(
+      error: (e, _) => SizedBox(
         height: 400,
         child: Center(
           child: Text(
             '불러올 수 없습니다.',
-            style: TextStyle(
-              fontFamily: 'Noto Sans KR',
-              fontSize: 14,
-              color: AppTheme.textGray,
-            ),
+            style: GoogleFonts.notoSansKr(fontSize: 14, color: AppTheme.textGray),
           ),
         ),
       ),
       data: (work) {
         if (work == null) {
-          return const SizedBox(
+          return SizedBox(
             height: 400,
             child: Center(
               child: Column(
@@ -57,14 +54,10 @@ class WorkPostContentSection extends ConsumerWidget {
                 children: [
                   Text(
                     '존재하지 않는 작품입니다.',
-                    style: TextStyle(
-                      fontFamily: 'Noto Sans KR',
-                      fontSize: 16,
-                      color: AppTheme.textGray,
-                    ),
+                    style: GoogleFonts.notoSansKr(fontSize: 16, color: AppTheme.textGray),
                   ),
-                  SizedBox(height: 24),
-                  WorkPostBackButton(),
+                  const SizedBox(height: 24),
+                  const WorkPostBackButton(),
                 ],
               ),
             ),

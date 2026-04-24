@@ -51,16 +51,12 @@ class WorksGridSection extends ConsumerWidget {
     }
 
     if (state.error != null && state.works.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 60),
+          padding: const EdgeInsets.symmetric(vertical: 60),
           child: Text(
             '불러올 수 없습니다.',
-            style: TextStyle(
-              color: AppTheme.textGray,
-              fontSize: 14,
-              fontFamily: 'Noto Sans KR',
-            ),
+            style: GoogleFonts.notoSansKr(color: AppTheme.textGray, fontSize: 14),
           ),
         ),
       );
@@ -69,16 +65,12 @@ class WorksGridSection extends ConsumerWidget {
     final displayed = state.displayedWorks;
 
     if (displayed.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 60),
+          padding: const EdgeInsets.symmetric(vertical: 60),
           child: Text(
             '결과가 없습니다.',
-            style: TextStyle(
-              color: AppTheme.textGray,
-              fontSize: 14,
-              fontFamily: 'Noto Sans KR',
-            ),
+            style: GoogleFonts.notoSansKr(color: AppTheme.textGray, fontSize: 14),
           ),
         ),
       );
@@ -195,8 +187,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                         const SizedBox(height: 8),
                         Text(
                           widget.work.description,
-                          style: const TextStyle(
-                            fontFamily: 'Noto Sans KR',
+                          style: GoogleFonts.notoSansKr(
                             fontSize: 12,
                             color: AppTheme.white,
                           ),
