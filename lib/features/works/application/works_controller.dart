@@ -75,12 +75,7 @@ class WorksController extends _$WorksController {
     state = state.copyWith(isLoading: true, clearError: true, clearCursor: true, hasMore: true);
     try {
       final result = await _repository.fetchWorksPage(type: state.selectedType);
-      state = state.copyWith(
-        works: result.items,
-        isLoading: false,
-        hasMore: result.nextCursor != null,
-        cursor: result.nextCursor,
-      );
+      state = state.copyWith(works: result.items, isLoading: false, hasMore: result.nextCursor != null, cursor: result.nextCursor);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -91,12 +86,7 @@ class WorksController extends _$WorksController {
     state = state.copyWith(isLoadingMore: true, clearError: true);
     try {
       final result = await _repository.fetchWorksPage(cursor: state.cursor, type: state.selectedType);
-      state = state.copyWith(
-        works: [...state.works, ...result.items],
-        isLoadingMore: false,
-        hasMore: result.nextCursor != null,
-        cursor: result.nextCursor,
-      );
+      state = state.copyWith(works: [...state.works, ...result.items], isLoadingMore: false, hasMore: result.nextCursor != null, cursor: result.nextCursor);
     } catch (e) {
       state = state.copyWith(isLoadingMore: false, error: e.toString());
     }

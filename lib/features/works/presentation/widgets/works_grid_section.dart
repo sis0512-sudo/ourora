@@ -21,9 +21,7 @@ class WorksGridSection extends ConsumerWidget {
 
     return Container(
       color: AppTheme.white,
-      padding: isMobile
-          ? const EdgeInsets.symmetric(horizontal: 32)
-          : const EdgeInsets.symmetric(vertical: 80),
+      padding: isMobile ? const EdgeInsets.symmetric(horizontal: 32) : const EdgeInsets.symmetric(vertical: 80),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -42,10 +40,7 @@ class WorksGridSection extends ConsumerWidget {
       return const Center(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 60),
-          child: CircularProgressIndicator(
-            color: AppTheme.accentOrange,
-            strokeWidth: 2,
-          ),
+          child: CircularProgressIndicator(color: AppTheme.accentOrange, strokeWidth: 2),
         ),
       );
     }
@@ -54,10 +49,7 @@ class WorksGridSection extends ConsumerWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 60),
-          child: Text(
-            '불러올 수 없습니다.',
-            style: GoogleFonts.notoSansKr(color: AppTheme.textGray, fontSize: 14),
-          ),
+          child: Text('불러올 수 없습니다.', style: GoogleFonts.notoSansKr(color: AppTheme.textGray, fontSize: 14)),
         ),
       );
     }
@@ -68,10 +60,7 @@ class WorksGridSection extends ConsumerWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 60),
-          child: Text(
-            '결과가 없습니다.',
-            style: GoogleFonts.notoSansKr(color: AppTheme.textGray, fontSize: 14),
-          ),
+          child: Text('결과가 없습니다.', style: GoogleFonts.notoSansKr(color: AppTheme.textGray, fontSize: 14)),
         ),
       );
     }
@@ -81,23 +70,14 @@ class WorksGridSection extends ConsumerWidget {
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: columns,
-            crossAxisSpacing: 4,
-            mainAxisSpacing: 4,
-          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: columns, crossAxisSpacing: 4, mainAxisSpacing: 4),
           itemCount: displayed.length,
           itemBuilder: (context, index) => _WorkGridItem(work: displayed[index]),
         ),
         if (state.isLoadingMore)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 40),
-            child: Center(
-              child: CircularProgressIndicator(
-                color: AppTheme.accentOrange,
-                strokeWidth: 2,
-              ),
-            ),
+            child: Center(child: CircularProgressIndicator(color: AppTheme.accentOrange, strokeWidth: 2)),
           ),
       ],
     );
@@ -118,9 +98,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
 
   @override
   Widget build(BuildContext context) {
-    final lightImageUrls = widget.work.lightImageUrls.isNotEmpty
-        ? widget.work.lightImageUrls.first
-        : null;
+    final lightImageUrls = widget.work.lightImageUrls.isNotEmpty ? widget.work.lightImageUrls.first : null;
     final isMobile = Responsive.isMobileDevice;
 
     return MouseRegion(
@@ -136,6 +114,8 @@ class _WorkGridItemState extends State<_WorkGridItem> {
               Image.network(
                 lightImageUrls,
                 fit: BoxFit.cover,
+                cacheWidth: 400,
+                cacheHeight: 400,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Container(
@@ -144,10 +124,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
                         color: AppTheme.coral,
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                            : null,
+                        value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
                       ),
                     ),
                   );
@@ -156,10 +133,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
             else
               Container(
                 color: AppTheme.lightGray,
-                child: const Icon(
-                  Icons.image_not_supported_outlined,
-                  color: AppTheme.borderGray,
-                ),
+                child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.borderGray),
               ),
             if (!isMobile)
               AnimatedOpacity(
@@ -173,12 +147,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                     children: [
                       Text(
                         widget.work.title,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.white,
-                          letterSpacing: 1,
-                        ),
+                        style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: AppTheme.white, letterSpacing: 1),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -187,10 +156,7 @@ class _WorkGridItemState extends State<_WorkGridItem> {
                         const SizedBox(height: 8),
                         Text(
                           widget.work.description,
-                          style: GoogleFonts.notoSansKr(
-                            fontSize: 12,
-                            color: AppTheme.white,
-                          ),
+                          style: GoogleFonts.notoSansKr(fontSize: 12, color: AppTheme.white),
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

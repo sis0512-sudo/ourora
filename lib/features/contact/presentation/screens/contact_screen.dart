@@ -18,7 +18,7 @@ class ContactScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.white,
+      backgroundColor: AppTheme.black,
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(delegate: NavBarDelegate(), pinned: true),

@@ -9,6 +9,7 @@ import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/screen_content_sliver.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
 import 'package:ourora/features/common/presentation/widgets/youtube_feed_section.dart';
+import 'package:ourora/features/works/application/works_controller.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   static const String route = '/';
@@ -30,6 +31,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    final state = ref.watch(worksControllerProvider);
+
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,

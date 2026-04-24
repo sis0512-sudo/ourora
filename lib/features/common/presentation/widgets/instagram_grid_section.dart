@@ -105,6 +105,8 @@ class _GridItemState extends State<_GridItem> {
             Image.network(
               widget.post.displayUrl,
               fit: BoxFit.cover,
+              cacheWidth: 400,
+              cacheHeight: 400,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Container(

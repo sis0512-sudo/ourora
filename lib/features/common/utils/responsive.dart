@@ -19,9 +19,4 @@ class Responsive {
     if (isMobileDevice) return 1;
     return 3;
   }
-
-  static int featureColumns(BuildContext context) {
-    if (isMobileDevice) return 1;
-    return 4;
-  }
 }

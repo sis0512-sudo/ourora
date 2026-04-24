@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ourora/config/theme.dart';
 import 'package:ourora/features/common/presentation/widgets/nav_bar.dart';
 import 'package:ourora/features/common/presentation/widgets/screen_content_sliver.dart';
 import 'package:ourora/features/common/presentation/widgets/site_footer.dart';
@@ -14,6 +15,7 @@ class WorksScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor: AppTheme.black,
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           final metrics = notification.metrics;
