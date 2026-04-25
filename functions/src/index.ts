@@ -1,4 +1,5 @@
 import { HttpsError, onCall, onRequest } from "firebase-functions/v2/https";
+import { onSchedule } from "firebase-functions/v2/scheduler";
 import * as logger from "firebase-functions/logger";
 import { defineSecret } from "firebase-functions/params";
 import { initializeApp } from "firebase-admin/app";
@@ -145,6 +146,62 @@ function truncate(value: string, max: number): string {
   return `${value.slice(0, max)}...`;
 }
 
+async function getInstagramAccessToken(secretFallback: string): Promise<string> {
+  const snap = await db.collection("instagram_config").doc("token").get();
+  if (snap.exists) {
+    const token = snap.data()?.accessToken as string | undefined;
+    if (token) return token;
+  }
+  return secretFallback;
+}
+
+interface InstagramTokenRefreshResponse {
+  access_token?: string;
+  expires_in?: number;
+}
+
+export const refreshInstagramToken = onSchedule(
+  { region: "asia-northeast3", schedule: "0 0 1 * *", secrets: [instagramAccessToken] },
+  async () => {
+    const configRef = db.collection("instagram_config").doc("token");
+    const snap = await configRef.get();
+    const currentToken = snap.exists
+      ? ((snap.data()?.accessToken as string | undefined) ?? instagramAccessToken.value())
+      : instagramAccessToken.value();
+
+    if (!currentToken) {
+      logger.error("No Instagram token available for refresh");
+      return;
+    }
+
+    const url = `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${currentToken}`;
+    const response = await fetch(url);
+    const responseBody = await response.text();
+
+    if (!response.ok) {
+      logger.error("Instagram token refresh failed", {
+        status: response.status,
+        body: truncate(responseBody, 500),
+      });
+      return;
+    }
+
+    const data = JSON.parse(responseBody) as InstagramTokenRefreshResponse;
+    if (!data.access_token) {
+      logger.error("Instagram refresh response missing access_token", { body: truncate(responseBody, 500) });
+      return;
+    }
+
+    await configRef.set({
+      accessToken: data.access_token,
+      expiresIn: data.expires_in ?? null,
+      refreshedAt: FieldValue.serverTimestamp(),
+    });
+
+    logger.info("Instagram token refreshed", { expiresIn: data.expires_in });
+  }
+);
+
 export const fetchInstagramPage = onCall(
   { region: "asia-northeast3", secrets: [instagramAccessToken] },
   async (request) => {
@@ -171,7 +228,7 @@ export const fetchInstagramPage = onCall(
       }
     }
 
-    const accessToken = instagramAccessToken.value();
+    const accessToken = await getInstagramAccessToken(instagramAccessToken.value());
     if (!accessToken) {
       logger.error("Missing INSTAGRAM_ACCESS_TOKEN");
       throw new HttpsError("failed-precondition", "Instagram access token is not configured");
