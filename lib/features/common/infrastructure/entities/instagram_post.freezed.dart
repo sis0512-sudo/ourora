@@ -11,6 +11,7 @@ part of 'instagram_post.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$InstagramPost {
 
@@ -21,6 +22,8 @@ mixin _$InstagramPost {
 @pragma('vm:prefer-inline')
 $InstagramPostCopyWith<InstagramPost> get copyWith => _$InstagramPostCopyWithImpl<InstagramPost>(this as InstagramPost, _$identity);
 
+  /// Serializes this InstagramPost to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -28,7 +31,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is InstagramPost&&(identical(other.id, id) || other.id == id)&&(identical(other.mediaType, mediaType) || other.mediaType == mediaType)&&(identical(other.mediaUrl, mediaUrl) || other.mediaUrl == mediaUrl)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.permalink, permalink) || other.permalink == permalink)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.caption, caption) || other.caption == caption));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,mediaType,mediaUrl,thumbnailUrl,permalink,timestamp,caption);
 
@@ -209,11 +212,11 @@ return $default(_that.id,_that.mediaType,_that.mediaUrl,_that.thumbnailUrl,_that
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _InstagramPost extends InstagramPost {
   const _InstagramPost({required this.id, required this.mediaType, required this.mediaUrl, this.thumbnailUrl, required this.permalink, required this.timestamp, this.caption}): super._();
-  
+  factory _InstagramPost.fromJson(Map<String, dynamic> json) => _$InstagramPostFromJson(json);
 
 @override final  String id;
 @override final  String mediaType;
@@ -229,14 +232,17 @@ class _InstagramPost extends InstagramPost {
 @pragma('vm:prefer-inline')
 _$InstagramPostCopyWith<_InstagramPost> get copyWith => __$InstagramPostCopyWithImpl<_InstagramPost>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$InstagramPostToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _InstagramPost&&(identical(other.id, id) || other.id == id)&&(identical(other.mediaType, mediaType) || other.mediaType == mediaType)&&(identical(other.mediaUrl, mediaUrl) || other.mediaUrl == mediaUrl)&&(identical(other.thumbnailUrl, thumbnailUrl) || other.thumbnailUrl == thumbnailUrl)&&(identical(other.permalink, permalink) || other.permalink == permalink)&&(identical(other.timestamp, timestamp) || other.timestamp == timestamp)&&(identical(other.caption, caption) || other.caption == caption));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,mediaType,mediaUrl,thumbnailUrl,permalink,timestamp,caption);
 

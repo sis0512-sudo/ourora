@@ -30,12 +30,16 @@ class InstagramGridSection extends ConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: isMobile ? 32 : 100),
             child: _buildGrid(context, ref, feed, columns),
           ),
-          // 로딩 중일 때 스피너 표시
-          if (feed.isLoading) ...[
+          // 초기 로딩(데이터 없음) → 스피너
+          // 백그라운드 교체(isRefreshing) → 스피너 없이 시드 데이터 표시 유지
+          // 페이지네이션 로딩(isLoading) → 스피너
+          if (feed.posts.isEmpty && (feed.isLoading || feed.isRefreshing)) ...[
             const SizedBox(height: 32),
             const CircularProgressIndicator(),
-          // 더 불러올 게시물이 있으면 'Load More' 버튼 표시
-          ] else if (feed.hasMore) ...[
+          ] else if (feed.isLoading) ...[
+            const SizedBox(height: 32),
+            const CircularProgressIndicator(),
+          ] else if (feed.hasMore && !feed.isRefreshing) ...[
             const SizedBox(height: 40),
             _loadMoreButton(ref, isMobile, pageSize),
           ],

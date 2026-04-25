@@ -1,6 +1,7 @@
 // Firebase Cloud Functions를 통해 Instagram Graph API를 호출하는 실제 구현체.
 // 직접 API를 호출하지 않고 Cloud Functions를 경유하는 이유:
 // 브라우저에서 직접 호출 시 CORS 문제와 토큰 노출 위험이 있기 때문입니다.
+
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:ourora/features/common/domain/datasources/instagram_datasource.dart';
 import 'package:ourora/features/common/infrastructure/entities/instagram_post.dart';
@@ -39,6 +40,7 @@ class InstagramRemoteDatasource implements InstagramDatasource {
         .toList();
 
     final nextCursor = data['nextCursor'] as String?;
+
     return (posts: posts, nextCursor: nextCursor);
-  } // 특정 폴더의 모든 파일 URL 가져오기
+  }
 }

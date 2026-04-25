@@ -107,7 +107,7 @@ final class InstagramControllerProvider
 }
 
 String _$instagramControllerHash() =>
-    r'ab9e20cb7144b65f0a359bd140abc79c05ecd2cd';
+    r'8111fd81935342ce77c00c8563d4d19993ba32ad';
 
 final class InstagramControllerFamily extends $Family
     with
